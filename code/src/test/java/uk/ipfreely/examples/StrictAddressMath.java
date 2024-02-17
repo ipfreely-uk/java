@@ -5,9 +5,9 @@ import uk.ipfreely.Address;
 /**
  * Utility type for IP math with overflow/underflow checks that raise {@link ArithmeticException}.
  */
-public class IpStrictMath {
+public class StrictAddressMath {
 
-    private IpStrictMath() {}
+    private StrictAddressMath() {}
 
     /**
      * Raises {@link ArithmeticException} if the result would be greater than {@link uk.ipfreely.Family#max()}.
