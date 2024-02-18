@@ -23,7 +23,7 @@ public final class Addresses {
                 "::",
                 "dead:beef:cafe:babe:deaf:f001:face:1ace",
                 "0000:0000:0000:0000:0000:0000:0000:0000",
-                "fe80::",
+                "FE80::",
                 "::1",
                 "::1:1",
                 "::1:1:1",

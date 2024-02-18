@@ -81,6 +81,7 @@ class AddressSetsTest {
 
         {
             AddressSet<V6> actual = AddressSets.guarded(everything, zero);
+            actual = AddressSets.guarded(actual, zero);
 
             assertTrue(actual.getClass().getName().contains("Guarded"));
 
@@ -92,7 +93,10 @@ class AddressSetsTest {
             assertTrue(actual.contains(v6().max()));
         }
         {
-
+            Range<V6> address = Ranges.address(v6().fromUint(1));
+            AddressSet<V6> expected = AddressSets.of(address);
+            AddressSet<V6> actual = AddressSets.guarded(expected, v6().max());
+            assertSame(expected, actual, "unguarded");
         }
     }
 }

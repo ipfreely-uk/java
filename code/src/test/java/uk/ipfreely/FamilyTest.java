@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;
 
 public class FamilyTest {
@@ -34,6 +35,17 @@ public class FamilyTest {
     assertEquals(ip4, Family.parseUnknown(ip4.toBytes()));
     V6 ip6 = v6().parse("fe80::dead:1");
     assertEquals(ip6, Family.parseUnknown(ip6.toBytes()));
+  }
+
+  @Test
+  void fromLongs() {
+    V4 ip4 = Family.v4().parse(0L, 0xFFFFFFFFL);
+    assertEquals(0L, ip4.highBits());
+    assertEquals(0xFFFFFFFFL, ip4.lowBits());
+    V6 ip6 = v6().parse(0xabc, 0xdef);
+    assertEquals(0xabc, ip6.highBits());
+    assertEquals(0xdef, ip6.lowBits());
+    assertThrowsExactly(ParseException.class, () -> v4().parse(1, 0));
   }
 
   @Test
