@@ -12,8 +12,6 @@ final class V4Family extends Family<V4> {
 
     static final Family<V4> INST = new V4Family();
 
-    private final byte version = 4;
-
     private V4Family() {}
 
     @Override

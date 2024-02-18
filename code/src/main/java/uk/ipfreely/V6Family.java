@@ -13,8 +13,6 @@ final class V6Family extends Family<V6> {
 
     static final Family<V6> INST = new V6Family();
 
-    private final byte version = 6;
-
     private V6Family() {}
 
     @Override

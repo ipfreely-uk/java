@@ -61,7 +61,6 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
     }
 
     private double log(A ip) {
-        BigInteger bi = ip.toBigInteger();
         // https://stackoverflow.com/a/7982137
         int MAX_DIGITS_2 = 977;
 

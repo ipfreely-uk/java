@@ -13,7 +13,7 @@ import static uk.ipfreely.Validation.validate;
  * IPv6 address value. Immutable 128-bit unsigned integer.
  * Use {@link Family#v6()} to create values.
  */
-public class V6 extends Address<V6> {
+public final class V6 extends Address<V6> {
 
     private static final V6[] LOWS = IntStream.rangeClosed(0, 256).mapToObj(i -> new V6(0, i)).toArray(V6[]::new);
     private static final V6[] SPECIALS = initInterned();

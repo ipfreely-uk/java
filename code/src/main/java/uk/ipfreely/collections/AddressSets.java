@@ -62,12 +62,8 @@ public final class AddressSets {
      * @param <A> address type
      */
     public static <A extends Address<A>> AddressSet<A> guarded(AddressSet<A> set, A guard) {
-        if (set.getClass() == GuardedSet.class) {
-            GuardedSet<A> gs = (GuardedSet<A>) set;
-            if (gs.guard.equals(guard)) {
-                return set;
-            }
-            return new GuardedSet<>(gs.delegate, guard);
+        if (set instanceof GuardedSet) {
+            set = ((GuardedSet<A>) set).delegate;
         }
         if (Compare.less(set.size(), guard.toBigInteger())) {
             return set;
