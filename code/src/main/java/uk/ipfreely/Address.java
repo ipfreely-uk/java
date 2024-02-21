@@ -10,7 +10,6 @@ import java.net.InetAddress;
  * </p>
  * <p>
  *     Implementations are immutable positive integers that support arithmetic and bitwise ops.
- *     Mixing V4 and V6 types is NOT supported.
  * </p>
  *
  * <h2>Usage Hints</h2>
@@ -29,55 +28,58 @@ import java.net.InetAddress;
  *      </tr>
  *      <tr>
  *          <td>Network I/O</td>
- *          <td>NO</td>
+ *          <td></td>
  *          <td>YES</td>
  *      </tr>
  *      <tr>
  *          <td>DNS host names</td>
- *          <td>no</td>
+ *          <td></td>
  *          <td>YES</td>
  *      </tr>
  *      <tr>
  *          <td>Numeric type</td>
  *          <td>YES</td>
- *          <td>no</td>
+ *          <td></td>
  *      </tr>
  *      <tr>
  *          <td>Generic type</td>
  *          <td>YES</td>
- *          <td>no</td>
+ *          <td></td>
  *      </tr>
  *      <tr>
  *          <td>Canonical string form (RFC5952)</td>
  *          <td>YES</td>
- *          <td>no</td>
+ *          <td></td>
  *      </tr>
  *      <tr>
  *          <td>{@link Comparable}</td>
  *          <td>YES</td>
- *          <td>no</td>
+ *          <td></td>
  *      </tr>
  *      <tr>
  *          <td>{@link java.io.Serializable}</td>
- *          <td>no</td>
- *          <td>yes</td>
+ *          <td></td>
+ *          <td>YES</td>
  *      </tr>
  *  </table>
  *
  * <p>
- *     For {@link java.net.InetAddress} see also:
+ *     For {@link java.net.InetAddress} see the following libraries for overlapping utility methods:
  *     <a href="https://commons.apache.org/proper/commons-net/">Apache Commons Net</a>;
  *     <a href="https://guava.dev/">Google Guava</a>.
  * </p>
  *
  * <p>
  *     Inheritance outside the package is not supported.
+ *     Future implementations may become
+ *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
+ *     Future implementations may become
+ *     <a href="https://openjdk.org/projects/valhalla/">value objects</a>.
  * </p>
  *
  * @param <A> the address type
  */
 public abstract class Address<A extends Address<A>> implements Comparable<A> {
-
     Address() {}
 
     /**
