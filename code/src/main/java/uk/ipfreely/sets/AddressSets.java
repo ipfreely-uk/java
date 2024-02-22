@@ -45,7 +45,6 @@ public final class AddressSets {
         if (data.length == 1) {
             return data[0];
         }
-        Arrays.sort(data, AddressSets::compare);
         return new ArraySet<>(data);
     }
 

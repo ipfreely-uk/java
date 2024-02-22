@@ -15,7 +15,7 @@ import static uk.ipfreely.Family.v6;
 
 public class V6Test extends IpTests<V6> {
 
-  private Block<V6> net = AddressSets.block(v6().min(), 0);
+  private final Block<V6> net = AddressSets.block(v6().min(), 0);
 
   @Test
   public void testInternetSize() {
