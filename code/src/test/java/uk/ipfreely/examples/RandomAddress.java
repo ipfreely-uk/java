@@ -2,8 +2,8 @@ package uk.ipfreely.examples;
 
 import uk.ipfreely.Address;
 import uk.ipfreely.Family;
-import uk.ipfreely.collections.Block;
-import uk.ipfreely.collections.Range;
+import uk.ipfreely.sets.Block;
+import uk.ipfreely.sets.Range;
 
 import java.util.function.IntSupplier;
 

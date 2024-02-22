@@ -14,12 +14,13 @@ import static uk.ipfreely.Validation.validate;
  * <p>
  *     Inheritance outside the package is not supported.
  *     Instances have identity equality.
+ *     Future implementations may become
+ *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
  * </p>
  *
  * @param <A> {@link V4} or {@link V6}
  */
 public abstract class Family<A extends Address<A>> {
-
     Family() {}
 
     /**

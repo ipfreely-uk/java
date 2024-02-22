@@ -1,0 +1,72 @@
+package uk.ipfreely.sets;
+
+import uk.ipfreely.Address;
+import uk.ipfreely.Family;
+
+import java.math.BigInteger;
+import java.util.stream.Stream;
+
+/**
+ * <p>
+ *     Set of zero to {@link Family#max()} {@link Address}es.
+ * </p>
+ * <p>
+ *     Contiguous ranges MUST implement {@link Range}.
+ *     Implementations MUST be immutable.
+ *     {@link #iterator()} MUST produce values from least to greatest.
+ * </p>
+ *
+ * @param <A> address type
+ */
+public interface AddressSet<A extends Address<A>> extends Iterable<A> {
+
+    /**
+     * Contract: returns true if instance of {@code AddressSet} and all constituent ranges are identical.
+     *
+     * @param o other
+     * @return true if equal
+     */
+    boolean equals(Object o);
+
+    /**
+     * <p>{@link Range} Contract: {@code first().hashCode() * 31 + last().hashCode()}</p>
+     * <p>General {@code AddressSet} Contract: {@code ranges().mapToInt(Object::hashCode).reduce(0, (n, r) -> n * 31 + r)}</p>
+     *
+     * @return size hash
+     */
+    int hashCode();
+
+    /**
+     * <p>
+     *     Constituent {@link Range}s.
+     * </p>
+     * <p>
+     *     Adjacent or overlapping ranges MUST be combined into a single {@link Range}.
+     *     Elements MUST be produced from least {@link Address} to greatest.
+     * </p>
+     * <p>
+     *     A {@link Stream} of {@link Address} values can be obtained with {@code ranges().flatMap(Range::stream)}.
+     *     A {@link Stream} of {@link Block}s can be obtained with {@code ranges().flatMap(Range::blocks)}.
+     * </p>
+     *
+     * @return constituent ranges
+     */
+    Stream<Range<A>> ranges();
+
+    /**
+     * Checks for {@link Address} membership.
+     *
+     * @param address candidate
+     * @return true if the given address is present
+     */
+    boolean contains(Address<?> address);
+
+    /**
+     * Number of unique {@link Address}es in this set.
+     *
+     * @return count
+     */
+    default BigInteger size() {
+        return ranges().map(Range::size).reduce(BigInteger.ZERO, BigInteger::add);
+    }
+}

@@ -3,13 +3,12 @@ package uk.ipfreely.examples;
 import uk.ipfreely.Address;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
-import uk.ipfreely.collections.*;
+import uk.ipfreely.sets.*;
 
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class Subnets {
 
@@ -41,7 +40,7 @@ public final class Subnets {
         } else {
             A size = total(candidates);
             A zero = size.family().min();
-            A ran = RandomAddress.from(Ranges.from(zero, size), rng);
+            A ran = RandomAddress.from(AddressSets.range(zero, size), rng);
             Block<A> containerBlock = blockAt(candidates, ran);
             pick = RandomAddress.from(containerBlock, rng);
         }
@@ -49,7 +48,7 @@ public final class Subnets {
         int bits = maskBitsFor(family, desiredSize);
         A mask = family.masks().get(bits);
         A first = mask.or(pick);
-        return Optional.of(Ranges.block(first, bits));
+        return Optional.of(AddressSets.block(first, bits));
     }
 
     private static <A extends Address<A>> Block<A> blockAt(List<Block<A>> blocks, A ran) {
@@ -81,9 +80,9 @@ public final class Subnets {
      * @return set of private IPv4 ranges
      */
     public static AddressSet<V4> privateV4() {
-        Range<V4> classA = Ranges.parseCidr(Family.v4(), "10.0.0.0/8");
-        Range<V4> classB = Ranges.parseCidr(Family.v4(), "176.16.0.0/12");
-        Range<V4> classC = Ranges.parseCidr(Family.v4(), "192.168.0.0/16");
+        Range<V4> classA = AddressSets.parseCidr(Family.v4(), "10.0.0.0/8");
+        Range<V4> classB = AddressSets.parseCidr(Family.v4(), "176.16.0.0/12");
+        Range<V4> classC = AddressSets.parseCidr(Family.v4(), "192.168.0.0/16");
         return AddressSets.of(classA, classB, classC);
     }
 

@@ -1,6 +1,6 @@
 package uk.ipfreely.testing;
 
-import uk.ipfreely.collections.ExcessiveIterationException;
+import uk.ipfreely.sets.ExcessiveIterationException;
 
 import java.util.ArrayList;
 import java.util.Iterator;

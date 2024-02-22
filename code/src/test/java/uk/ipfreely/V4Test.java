@@ -1,8 +1,8 @@
 package uk.ipfreely;
 
 import org.junit.jupiter.api.Test;
-import uk.ipfreely.collections.Block;
-import uk.ipfreely.collections.Ranges;
+import uk.ipfreely.sets.AddressSets;
+import uk.ipfreely.sets.Block;
 import uk.ipfreely.testing.EqualsTester;
 
 import java.math.BigInteger;
@@ -11,11 +11,10 @@ import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
-import static uk.ipfreely.Family.v6;
 
 public class V4Test extends IpTests<V4> {
 
-  private final Block<V4> net = Ranges.block(v4().min(), 0);
+  private final Block<V4> net = AddressSets.block(v4().min(), 0);
 
   @Test
   public void testInternetSize() {

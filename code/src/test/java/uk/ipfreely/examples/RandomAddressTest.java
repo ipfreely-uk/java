@@ -5,8 +5,8 @@ import uk.ipfreely.Address;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
-import uk.ipfreely.collections.Range;
-import uk.ipfreely.collections.Ranges;
+import uk.ipfreely.sets.AddressSets;
+import uk.ipfreely.sets.Range;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ class RandomAddressTest {
     @Test
     void from() {
         {
-            Range<V4> range = Ranges.from(Family.v4().min(), Family.v4().max());
+            Range<V4> range = AddressSets.range(Family.v4().min(), Family.v4().max());
             Address<V4> address = RandomAddress.from(range, RAN::nextInt);
             assertTrue(range.contains(address));
         }

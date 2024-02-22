@@ -55,7 +55,7 @@ public class FamilyTest {
 
   @Test
   void regexV4() {
-    testRegex(Family.v6());
+    testRegex(Family.v4());
   }
 
   private void testRegex(Family<?> family) {
