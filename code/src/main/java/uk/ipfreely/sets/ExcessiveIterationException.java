@@ -24,4 +24,9 @@ import uk.ipfreely.Address;
  * @see AddressSets#guarded(AddressSet, Address) 
  */
 public class ExcessiveIterationException extends RuntimeException {
+
+    /**
+     * Constructor.
+     */
+    public ExcessiveIterationException() {}
 }
