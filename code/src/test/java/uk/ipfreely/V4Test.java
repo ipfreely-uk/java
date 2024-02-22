@@ -147,12 +147,6 @@ public class V4Test extends IpTests<V4> {
   }
 
   @Test
-  void cidrNotation() {
-    V4 a = v4().fromUint(0);
-    assertEquals("0.0.0.0/32", a.cidrNotation());
-  }
-
-  @Test
   void equals() {
     EqualsTester.test(
             v4().fromUint(1),

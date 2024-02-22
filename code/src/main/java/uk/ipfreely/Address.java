@@ -114,18 +114,6 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     public abstract String toString();
 
     /**
-     * <p>
-     *     Convenience method for producing the address in <a href="https://www.rfc-editor.org/rfc/rfc4632">CIDR</a>
-     *     notation. "127.0.0.1" becomes "127.0.0.1/32" where the trailing integer is {@link Family#bitWidth()}.
-     * </p>
-     *
-     * @return CIDR notation
-     */
-    public String cidrNotation() {
-        return toString() + '/' + family().bitWidth();
-    }
-
-    /**
      * The address as a {@link BigInteger}.
      *
      * @return the address as a positive integer

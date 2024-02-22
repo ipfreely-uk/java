@@ -159,12 +159,6 @@ public class V6Test extends IpTests<V6> {
   }
 
   @Test
-  void cidrNotation() {
-    V6 a = v6().fromUint(0);
-    assertEquals("::/128", a.cidrNotation());
-  }
-
-  @Test
   void equals() {
     EqualsTester.test(
             v6().fromUint(1),
