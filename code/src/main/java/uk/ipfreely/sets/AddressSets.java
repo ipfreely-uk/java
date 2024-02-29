@@ -311,12 +311,11 @@ public final class AddressSets {
         if (range instanceof Block) {
             return guarded((Block<A>) range, guard);
         }
-        boolean gr = (range instanceof GuardedRange);
-        if (gr && ((GuardedRange<A>) range).guard.equals(guard)) {
+        if (range instanceof GuardedRange && ((GuardedRange<A>) range).guard.equals(guard)) {
             return range;
         }
         if (Compare.lessOrEqual(range.last().subtract(range.first()), guard)) {
-            if (gr) {
+            if (range instanceof GuardedRange) {
                 return range(range.first(), range.last());
             }
             return range;
@@ -333,12 +332,11 @@ public final class AddressSets {
      * @param <A> address type
      */
     public static <A extends Address<A>> Block<A> guarded(Block<A> block, A guard) {
-        boolean gb = block instanceof GuardedBlock;
-        if (gb && ((GuardedBlock<A>) block).guard.equals(guard)) {
+        if (block instanceof GuardedBlock && ((GuardedBlock<A>) block).guard.equals(guard)) {
             return block;
         }
         if (Compare.lessOrEqual(block.last().subtract(block.first()), guard)) {
-            if (gb) {
+            if (block instanceof GuardedBlock) {
                 return block(block.first(), block.last());
             }
             return block;
