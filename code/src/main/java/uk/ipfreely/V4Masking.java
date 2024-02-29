@@ -26,6 +26,8 @@ final class V4Masking {
             xor >>>= 1;
             index++;
         }
-        return (xor == 0) ? (V4Consts.WIDTH - index) : -1;
+        return xor == 0
+                ? V4Consts.WIDTH - index
+                : -1;
     }
 }

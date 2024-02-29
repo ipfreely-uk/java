@@ -39,4 +39,27 @@ public final class Addresses {
         };
         return v6;
     }
+
+    public static String[] invalid(Family<?> family) {
+        if (family.equals(Family.v4())) {
+            String[] v4 = {
+                    "0.0..0",
+                    "255.255.0255.255",
+                    "555.555.555.555",
+                    "255.255.255.-1",
+                    "255.255.255.256",
+                    "::",
+            };
+            return v4;
+        }
+        String[] v6 = {
+                "0.0.0.0",
+                ":::",
+                "fe::fe::fe",
+                "0000000:0000:0000:0000:0000:0000:0000:0000",
+                "0000:0000:0000:0000:0000:0000:0000",
+                "G::",
+        };
+        return v6;
+    }
 }

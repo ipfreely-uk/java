@@ -33,6 +33,7 @@ final class V4Family extends Family<V4> {
         validate(arr.length == 4, "Invalid address; Ip4 addresses are 0.0.0.0 to 255.255.255.255", ip, ParseException::new);
         final byte[] bytes = new byte[4];
         for (int i = 0; i < 4; i++) {
+            validate(arr[i].length() <= 3, "Invalid segment;  Ip4 addresses are 0.0.0.0 to 255.255.255.255", ip, ParseException::new);
             final int n = parseUintSafe(arr[i].toString(), 10);
             validate(n >= 0 && n <= IpMath.BYTE_MASK, "Invalid digit; Ip4 addresses are 0.0.0.0 to 255.255.255.255", ip, ParseException::new);
             bytes[i] = (byte) n;

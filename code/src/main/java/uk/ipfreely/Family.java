@@ -158,16 +158,24 @@ public abstract class Family<A extends Address<A>> {
     }
 
     /**
-     * Calculates the mask bit size for a given IP address block.
-     * For {@code "172.0.0.0"} and {@code "172.255.255.255"} forming block {@code "172.0.0.0/8"} this will return {@code 8}.
-     * The first element MUST be less than or equal to the last.
-     * This method can be used to detect if an IP range is a valid block.
-     * The return value can be used as the mask index for {@link #masks()}.
-     * The maximum return value is {@link #bitWidth()}.
+     * <p>
+     *     Calculates the mask bit size for an IP address CIDR block range.
+     *     The first argument MUST be less than or equal to the last.
+     * </p>
+     * <p>
+     *     For {@code "172.0.0.0"} and {@code "172.255.255.255"} forming block {@code "172.0.0.0/8"} this will return {@code 8}.
+     * </p>
+     * <p>
+     *     The return value can be used as the mask index for {@link #masks()}.
+     *     Valid mask sizes are from zero to {@link #bitWidth()} inclusive.
+     * </p>
+     * <p>
+     *     {@code -1} is returned if the arguments do not form a valid block.
+     * </p>
      *
      * @param first the first element in an IP range
      * @param last  the last element in an IP range
-     * @return the mask size or -1 if this is not a valid block range
+     * @return mask size in bits or -1 if this is not a valid CIDR block range
      */
     public abstract int maskBitsForBlock(A first, A last);
 
@@ -220,7 +228,6 @@ public abstract class Family<A extends Address<A>> {
             if (ch >= 'A' && ch <= 'F') {
                 return V6Family.INST;
             }
-            break;
         }
         throw new ParseException("Not IP address:" + candidate);
     }
@@ -235,8 +242,8 @@ public abstract class Family<A extends Address<A>> {
     public static Address<?> parseUnknown(byte... address) {
         int v4len = V4Consts.WIDTH / Byte.SIZE;
         int v6len = V6Consts.WIDTH / Byte.SIZE;
-        boolean v4 = (v4len == address.length);
-        boolean v6 = (v6len == address.length);
+        boolean v4 = v4len == address.length;
+        boolean v6 = v6len == address.length;
         validate(v4 || v6, "IP addresses must be " + v4len + " or " + v6len + " bytes in length", address, ParseException::new);
 
         return v4 ? V4Family.INST.parse(address) : V6Family.INST.parse(address);

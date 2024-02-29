@@ -171,7 +171,7 @@ public final class V6 extends Address<V6> {
 
     @Override
     public V6 and(V6 mask) {
-        if ((high == mask.high) && (low == mask.low)) {
+        if (high == mask.high && low == mask.low) {
             return this;
         }
         return fromLongs(mask.high & high, mask.low & low);
@@ -182,7 +182,7 @@ public final class V6 extends Address<V6> {
         if (isZero(this)) {
             return mask;
         }
-        if (equals(mask) || (isZero(mask))) {
+        if (equals(mask) || isZero(mask)) {
             return this;
         }
         return fromLongs(mask.high | high, mask.low | low);

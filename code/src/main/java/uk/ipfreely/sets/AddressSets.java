@@ -23,25 +23,52 @@ public final class AddressSets {
      *     If all members form a contiguous range, returns {@link Range}.
      *     If all members form CIDR block, returns {@link Block}.
      * </p>
+     * <pre><code>
+     *     // EXAMPLE
+     *     Range&lt;V4&gt; classA = AddressSets.parseCidr(Family.v4(), "10.0.0.0/8");
+     *     Range&lt;V4&gt; classB = AddressSets.parseCidr(Family.v4(), "176.16.0.0/12");
+     *     Range&lt;V4&gt; classC = AddressSets.parseCidr(Family.v4(), "192.168.0.0/16");
+     *     // <a href="https://datatracker.ietf.org/doc/html/rfc1918#section-3">RFC-1918 Address Allocation for Private Internets</a>
+     *     AddressSet&lt;V4&gt; privateRanges = AddressSets.of(classA, classB, classC);
+     * </code></pre>
      *
      * @param ranges constituent ranges
      * @return set of addresses
      * @param <A> address type
+     * @param <R> range type
      */
     @SafeVarargs
-    public static <A extends Address<A>> AddressSet<A> of(Range<A>... ranges) {
+    public static <A extends Address<A>, R extends Range<A>> AddressSet<A> of(R... ranges) {
         return from(Arrays.asList(ranges));
     }
 
     /**
-     * Collection-based version of {@link #of(Range[])}.
+     * <p>Version of {@link #of(Range[])} intended for standard collections.</p>
+     * <pre><code>
+     *     // EXAMPLE
+     *     AddressSet&lt;V4&gt; empty = AddressSets.from(Collections.emptySet());
+     * </code></pre>
+     * <pre><code>
+     *     // EXAMPLE
+     *     List&lt;String&gt; addresses = Arrays.asList("192.168.0.1", "192.168.0.10", "192.168.0.11", "192.168.0.12");
+     *     // 4 entries: "192.168.0.1/32", "192.168.0.10/32", "192.168.0.11/32", "192.168.0.12/32"
+     *     Set&lt;Block&lt;V4&gt;&gt; raw = addresses.stream()
+     *                 .map(Family.v4()::parse)
+     *                 .map(AddressSets::address)
+     *                 .collect(Collectors.toSet());
+     *     // 2 entries: "192.168.0.1/32", "192.168.0.10-192.168.0.12"
+     *     Set&lt;Range&lt;V4&gt;&gt; rationalized = AddressSets.from(raw)
+     *                 .ranges()
+     *                 .collect(Collectors.toSet());
+     * </code></pre>
      *
      * @param ranges constituent ranges
      * @return set of addresses
      * @param <A> address type
+     * @param <R> range type
      */
     @SuppressWarnings("unchecked")
-    public static <A extends Address<A>> AddressSet<A> from(Iterable<Range<A>> ranges) {
+    public static <A extends Address<A>, R extends Range<A>> AddressSet<A> from(Iterable<R> ranges) {
         final Range<A>[] data = rationalize(ranges);
         if (data.length == 0) {
             return (AddressSet<A>) Empty.IMPL;
@@ -53,13 +80,13 @@ public final class AddressSets {
     }
 
     @SuppressWarnings("unchecked")
-    private static <A extends Address<A>> Range<A>[] rationalize(Iterable<Range<A>> ranges) {
+    private static <A extends Address<A>, R extends Range<A>> Range<A>[] rationalize(Iterable<R> ranges) {
         SortedSet<Range<A>> set = new TreeSet<>(AddressSets::compare);
         rationalize(set, ranges);
         return set.toArray(new Range[0]);
     }
 
-    private static <A extends Address<A>> void rationalize(SortedSet<Range<A>> set, Iterable<Range<A>> ranges) {
+    private static <A extends Address<A>, R extends Range<A>> void rationalize(SortedSet<Range<A>> set, Iterable<R> ranges) {
         for (Range<A> range : ranges) {
             Iterator<Range<A>> it = set.iterator();
             while(it.hasNext()) {
@@ -112,6 +139,11 @@ public final class AddressSets {
             @Override
             public int maskBits() {
                 return first().family().bitWidth();
+            }
+
+            @Override
+            public String toString() {
+                return "{" + cidrNotation() + "}";
             }
         }
 
@@ -179,6 +211,11 @@ public final class AddressSets {
             public A last() {
                 return last;
             }
+
+            @Override
+            public String toString() {
+                return "{" + cidrNotation() + "}";
+            }
         }
 
         Block<A> block = new AddressBlock();
@@ -216,7 +253,9 @@ public final class AddressSets {
         validate(first.compareTo(last) <= 0, "First address must be less than or equal to last", first, IllegalArgumentException::new);
 
         int maskSize = first.family().maskBitsForBlock(first, last);
-        return (maskSize < 0) ? new AddressRange() : block(first, last);
+        return maskSize < 0
+                ? new AddressRange()
+                : block(first, last);
     }
 
     /**
@@ -294,8 +333,7 @@ public final class AddressSets {
 
     /**
      * <p>
-     *     Guards {@link Range} against excessive iteration.
-     *     See {@link ExcessiveIterationException} for details.
+     *     {@link Range} version of {@link #guarded(AddressSet, Address)}.
      * </p>
      * <p>
      *     If {@code range.last().subtract(range.first())} is less than or equal to the guard the range

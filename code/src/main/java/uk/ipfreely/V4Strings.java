@@ -32,17 +32,17 @@ final class V4Strings {
         int quad = (value >>> shift) & 0xFF;
         int len = off;
         if (quad >= 100) {
-            len = Chars.append(buf, len, (char) (quad / 100 + '0'));
+            len = append(buf, len, (char) (quad / 100 + '0'));
             quad %= 100;
-            len = Chars.append(buf, len, (char) (quad / 10 + '0'));
+            len = append(buf, len, (char) (quad / 10 + '0'));
             quad %= 10;
-            len = Chars.append(buf, len, (char) (quad + '0'));
+            len = append(buf, len, (char) (quad + '0'));
         } else if (quad >= 10) {
-            len = Chars.append(buf, len, (char) (quad / 10 + '0'));
+            len = append(buf, len, (char) (quad / 10 + '0'));
             quad %= 10;
-            len = Chars.append(buf, len, (char) (quad + '0'));
+            len = append(buf, len, (char) (quad + '0'));
         } else {
-            len = Chars.append(buf, len, (char) (quad + '0'));
+            len = append(buf, len, (char) (quad + '0'));
         }
         return len;
     }
@@ -92,6 +92,6 @@ final class V4Strings {
     }
 
     private static boolean ipChar(char n) {
-        return n == '.' || (n >= '0' && n <= '9');
+        return n == '.' || n >= '0' && n <= '9';
     }
 }

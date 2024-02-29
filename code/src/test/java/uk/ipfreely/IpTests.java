@@ -36,6 +36,7 @@ public abstract class IpTests<A extends Address<A>> {
     Family<?> ver = min.family();
     BigInteger expectedSize = BigInteger.valueOf(2).pow(ver.bitWidth());
     assertEquals(expectedSize, min.family().maskAddressCount(0), ver.toString());
+    assertThrowsExactly(IllegalArgumentException.class, () -> min.family().maskAddressCount(min.family().bitWidth() + 1));
     // equality
     A expected = max.prev().prev();
     A actual = max.prev().prev();

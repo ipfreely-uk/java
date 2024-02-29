@@ -172,7 +172,7 @@ public final class V4 extends Address<V4> {
 
     @Override
     public V4 or(V4 mask) {
-        if ((value == mask.value) || (mask.value == 0)) {
+        if (value == mask.value || mask.value == 0) {
             return this;
         }
         if (value == 0) {

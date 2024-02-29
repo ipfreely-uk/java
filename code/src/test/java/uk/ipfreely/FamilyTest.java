@@ -27,6 +27,20 @@ public class FamilyTest {
 
     IpTests.expect("Not an IP address test", ParseException.class, () -> Family.parseUnknown("foobar"));
     IpTests.expect("Not an IP address test", ParseException.class, () -> Family.parseUnknown("z"));
+
+    for(String addr : Addresses.valid(Family.v4())) {
+      assertSame(V4.class, Family.parseUnknown(addr).getClass());
+    }
+    for(String addr : Addresses.valid(Family.v6())) {
+      assertSame(V6.class, Family.parseUnknown(addr).getClass());
+    }
+
+    for(String addr : Addresses.invalid(Family.v4())) {
+      assertThrowsExactly(ParseException.class, () -> v4().parse(addr), addr);
+    }
+    for(String addr : Addresses.invalid(Family.v6())) {
+      assertThrowsExactly(ParseException.class, () -> v6().parse(addr), addr);
+    }
   }
 
   @Test
@@ -64,6 +78,11 @@ public class FamilyTest {
     for (String candidate : Addresses.valid(family)) {
       Matcher m = p.matcher(candidate);
       assertTrue(m.matches());
+    }
+
+    for (String candidate : Addresses.invalid(family)) {
+      Matcher m = p.matcher(candidate);
+      assertFalse(m.matches());
     }
   }
 }

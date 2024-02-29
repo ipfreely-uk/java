@@ -19,7 +19,7 @@ final class V6Strings {
         for (int i = 0; i < IP6_SEGMENTS; i++) {
             if (shortAtSegment(high, low, i) == 0) {
                 final int count = countContiguousZeroShortsFrom(high, low, i);
-                if ((count > 1) && (count > zn - z0)) {
+                if (count > 1 && count > zn - z0) {
                     z0 = i;
                     zn = i + count;
                 }
@@ -102,14 +102,13 @@ final class V6Strings {
     private static int appendHex(final char[] buf, final int blen, final int shortVal) {
         final int NIBBLE_SIZE = 4;
         final int NIBBLE_MASK = 0xF;
-        final int TEN = 0xA;
 
         int offset = blen;
         if (shortVal == 0) {
             offset = Chars.append(buf, blen, '0');
         } else {
             for (int i = numberOfShortHexDigits(shortVal) - 1; i >= 0; i--) {
-                int shift = (i * NIBBLE_SIZE);
+                int shift = i * NIBBLE_SIZE;
                 int v = (shortVal >>> shift) & NIBBLE_MASK;
                 char c = hex(v);
                 offset = Chars.append(buf, offset, c);
@@ -121,7 +120,7 @@ final class V6Strings {
     private static char hex(int n) {
         return n < 10
                 ? (char) (n + '0')
-                : (char) ('a' + (n - 10));
+                : (char) ('a' + n - 10);
     }
 
     private static int numberOfShortHexDigits(final int n) {

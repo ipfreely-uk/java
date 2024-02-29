@@ -52,6 +52,7 @@ import java.util.stream.Stream;
  *         </td>
  *     </tr>
  * </table>
+ *
  * @param <A> address type
  */
 public interface AddressSet<A extends Address<A>> extends Iterable<A> {
