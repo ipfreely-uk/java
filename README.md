@@ -4,3 +4,7 @@
 # IPFreely.uk
 
 IP address manipulation library.
+
+## Documentation
+
+[Latest JavaDoc](https://ipfreely-uk.github.io/java/)
