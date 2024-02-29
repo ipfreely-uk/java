@@ -1,12 +1,10 @@
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Address;
-import uk.ipfreely.Family;
 
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -18,9 +16,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <p>
  *     Contiguous range of one or more IP addresses.
  * </p>
- * <p>
- *     Any implementation that is a valid CIDR block MUST implement {@link Block}.
- * </p>
+ * <p>See {@link AddressSet} for implementation contract.</p>
  *
  * @param <A> address type
  */

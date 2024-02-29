@@ -21,6 +21,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <li>Mask size: {@code 24} bits.</li>
  * <li>Size of block: 256 addresses.</li>
  * </ul>
+ * <p>See {@link AddressSet} for implementation contract.</p>
  *
  * @param <A> the type for the IP version
  */
