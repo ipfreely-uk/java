@@ -45,15 +45,6 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
     }
 
     /**
-     * IP address family.
-     *
-     * @return {@link Family#v4()} or {@link Family#v6()}
-     */
-    default Family<A> family() {
-        return first().family();
-    }
-
-    /**
      * The range size as a {@link BigInteger}.
      *
      * @return the number of addresses including first and last
@@ -78,53 +69,6 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
         }
         A addr = (A) address;
         return first.compareTo(addr) <= 0 && last().compareTo(addr) >= 0;
-    }
-
-    /**
-     * Tests address intersection.
-     *
-     * @param other the other sequence
-     * @return true if these ranges overlap
-     */
-    default boolean intersects(Range<A> other) {
-        return contains(other.first()) || other.contains(first());
-    }
-
-    /**
-     * The intersection of two ranges.
-     *
-     * @param other another range
-     * @return common elements
-     */
-    default Optional<Range<A>> intersection(Range<A> other) {
-        final Range<A> common;
-
-        if (other.contains(first())) {
-            common = other.contains(last())
-                    ? this
-                    : AddressSets.range(first(), other.last());
-        } else if (other.contains(last())) {
-            common = AddressSets.range(other.first(), last());
-        } else if (this.contains(other.first())) {
-            common = this.contains(other.last())
-                    ? other
-                    : AddressSets.range(other.last(), first());
-        } else {
-            return Optional.empty();
-        }
-
-        return Optional.of(common);
-    }
-
-    /**
-     * Tests the adjacency of two ranges.
-     *
-     * @param other another block
-     * @return true if two ranges may be combined into one
-     */
-    default boolean adjacent(Range<A> other) {
-        return other.first().prev().equals(first())
-                || other.last().next().equals(last());
     }
 
     /**
@@ -189,23 +133,74 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
     }
 
     /**
-     * Convenience method for obtaining {@link Block}.
-     *
-     * @return as block if valid
-     */
-    default Optional<Block<A>> asBlock() {
-        return this instanceof Block
-                ? Optional.of((Block<A>) this)
-                : Optional.empty();
-    }
-
-    /**
      * Streams arbitrary range as valid CIDR blocks.
      *
      * @return stream
      */
     default Stream<Block<A>> blocks() {
-        return asBlock().map(Stream::of)
-                .orElseGet(() -> StreamSupport.stream(new BlockSpliterator<>(first(), last()), false));
+        if (this instanceof Block) {
+            return Stream.of((Block<A>) this);
+        }
+        return StreamSupport.stream(new BlockSpliterator<>(first(), last()), false);
+    }
+
+    /**
+     * Tests if this range can create a contiguous range with another.
+     * That is, either {@link #intersects(Range)} or {@link #adjacent(Range)} are true.
+     *
+     * @param r another range
+     * @return true if contiguous
+     */
+    default boolean contiguous(Range<A> r) {
+        return intersects(r) || adjacent(r);
+    }
+
+    /**
+     * Tests if there is any overlap in the address ranges.
+     *
+     * @param r another range
+     * @return true on intersection
+     */
+    default boolean intersects(Range<A> r) {
+        A f0 = first();
+        A l0 = last();
+        A f1 = r.first();
+        A l1 = r.last();
+        return contains(f1)
+                || contains(l1)
+                || r.contains(f0)
+                || r.contains(l0);
+    }
+
+    /**
+     * Tests if the last value in either range is one less than the first value of the other.
+     *
+     * @param r another range
+     * @return true if adjacent
+     */
+    default boolean adjacent(Range<A> r) {
+        A f0 = first();
+        A l0 = last();
+        A f1 = r.first();
+        A l1 = r.last();
+        return contains(f1.next())
+                || contains(l1.prev())
+                || r.contains(f0.next())
+                || r.contains(l0.prev());
+    }
+
+    /**
+     * Combines two ranges into a single range using the least and greatest values from each.
+     * The ranges do not have to be contiguous.
+     *
+     * @param other another range
+     * @return new range
+     * @see #contiguous(Range) 
+     */
+    default Range<A> combine(Range<A> other) {
+        A first = Compare.least(first(), other.first());
+        A last = Compare.greatest(last(), other.last());
+        // TODO: efficiency - return supersets
+        return AddressSets.range(first, last);
     }
 }

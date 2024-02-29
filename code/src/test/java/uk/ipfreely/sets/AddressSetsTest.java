@@ -3,10 +3,13 @@ package uk.ipfreely.sets;
 import org.junit.jupiter.api.Test;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
+import uk.ipfreely.testing.AddressSetTester;
 import uk.ipfreely.testing.EqualsTester;
 import uk.ipfreely.testing.GuardTester;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
@@ -48,6 +51,8 @@ class AddressSetsTest {
         Range<V4> zero = AddressSets.address(v4().fromUint(0));
         Range<V4> ten = AddressSets.address(v4().fromUint(10));
         Range<V4> oneToNine = AddressSets.range(zero.first().next(), ten.first().prev());
+        Range<V4> hundred = AddressSets.address(v4().fromUint(100));
+        Range<V4> eleven = AddressSets.address(v4().fromUint(11));
 
         EqualsTester.test(
                 new Object(),
@@ -55,10 +60,15 @@ class AddressSetsTest {
                 AddressSets.of(ten),
                 AddressSets.of(),
                 AddressSets.of(oneToNine),
+                AddressSets.of(oneToNine),
                 AddressSets.of(ten, zero),
                 AddressSets.of(zero, ten),
                 AddressSets.of(zero),
-                AddressSets.of(ten, oneToNine, zero)
+                AddressSets.of(hundred, zero, ten, ten),
+                AddressSets.of(hundred, zero, eleven),
+                AddressSets.of(ten, oneToNine, zero),
+                large(),
+                large()
         );
     }
 
@@ -94,6 +104,48 @@ class AddressSetsTest {
             AddressSet<V6> expected = AddressSets.of(address);
             AddressSet<V6> actual = AddressSets.guarded(expected, v6().max());
             assertSame(expected, actual, "unguarded");
+        }
+    }
+
+    @Test
+    void string() {
+        AddressSet<V4> set = large();
+        String actual = set.toString();
+        assertEquals('{', actual.charAt(0));
+        assertTrue(actual.endsWith(";...}"));
+    }
+
+    private AddressSet<V4> large() {
+        List<Range<V4>> list = new ArrayList<>();
+        Range<V4> r = AddressSets.address(v4().min());
+        for (int i = 0; i < 1000; i++) {
+            list.add(r);
+            r = AddressSets.address(r.first().add(v4().fromUint(10)));
+        }
+        return AddressSets.from(list);
+    }
+
+    @Test
+    void sets() {
+        V6 hundred = v6().fromUint(100);
+        Block<V6> one = AddressSets.address(v6().fromUint(1));
+        Block<V6> fe80 = AddressSets.block(v6().parse("fe80::"), 16);
+        Range<V6> r = AddressSets.range(v6().parse("a::10"), v6().parse("a::110"));
+        AddressSet<V6> array = AddressSets.of(one, fe80, r);
+        AddressSet<?>[] sets = {
+                AddressSets.block(v6().min(), v6().max()),
+                AddressSets.block(v4().min(), v4().max()),
+                one,
+                fe80,
+                r,
+                array,
+                AddressSets.guarded(fe80, hundred),
+                AddressSets.guarded(r, hundred),
+                AddressSets.guarded(array, hundred),
+                AddressSets.of()
+        };
+        for (AddressSet<?> set : sets) {
+            AddressSetTester.test(set);
         }
     }
 }

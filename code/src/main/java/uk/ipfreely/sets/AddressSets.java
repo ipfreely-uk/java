@@ -18,7 +18,11 @@ public final class AddressSets {
     private AddressSets() {}
 
     /**
-     * Factory method for immutable {@link AddressSet}.
+     * <p>Factory method for {@link AddressSet}.</p>
+     * <p>
+     *     If all members form a contiguous range, returns {@link Range}.
+     *     If all members form CIDR block, returns {@link Block}.
+     * </p>
      *
      * @param ranges constituent ranges
      * @return set of addresses
@@ -30,57 +34,32 @@ public final class AddressSets {
     }
 
     /**
-     * Factory method for immutable {@link AddressSet}.
+     * Collection-based version of {@link #of(Range[])}.
      *
      * @param ranges constituent ranges
      * @return set of addresses
      * @param <A> address type
      */
     @SuppressWarnings("unchecked")
-    public static <A extends Address<A>> AddressSet<A> from(Collection<Range<A>> ranges) {
-        if (ranges.isEmpty()) {
+    public static <A extends Address<A>> AddressSet<A> from(Iterable<Range<A>> ranges) {
+        final Range<A>[] data = rationalize(ranges);
+        if (data.length == 0) {
             return (AddressSet<A>) Empty.IMPL;
         }
-        final Range<A>[] data = rationalize(ranges);
         if (data.length == 1) {
             return data[0];
         }
         return new ArraySet<>(data);
     }
 
-    /**
-     * <p>
-     *     Guards {@link AddressSet} against excessive iteration.
-     *     See {@link ExcessiveIterationException} for details.
-     * </p>
-     * <p>
-     *     If {@link AddressSet#size()} is less than the guard's {@link Address#toBigInteger()} value
-     *     the unguarded set is returned.
-     * </p>
-     *
-     * @param set set to guard
-     * @param guard guard value
-     * @return guarded set
-     * @param <A> address type
-     */
-    public static <A extends Address<A>> AddressSet<A> guarded(AddressSet<A> set, A guard) {
-        if (set instanceof GuardedSet) {
-            set = ((GuardedSet<A>) set).delegate;
-        }
-        if (Compare.less(set.size(), guard.toBigInteger())) {
-            return set;
-        }
-        return new GuardedSet<>(set, guard);
-    }
-
     @SuppressWarnings("unchecked")
-    private static <A extends Address<A>> Range<A>[] rationalize(Collection<Range<A>> ranges) {
+    private static <A extends Address<A>> Range<A>[] rationalize(Iterable<Range<A>> ranges) {
         SortedSet<Range<A>> set = new TreeSet<>(AddressSets::compare);
         rationalize(set, ranges);
         return set.toArray(new Range[0]);
     }
 
-    private static <A extends Address<A>> void rationalize(SortedSet<Range<A>> set, Collection<Range<A>> ranges) {
+    private static <A extends Address<A>> void rationalize(SortedSet<Range<A>> set, Iterable<Range<A>> ranges) {
         for (Range<A> range : ranges) {
             Iterator<Range<A>> it = set.iterator();
             while(it.hasNext()) {
@@ -88,10 +67,9 @@ public final class AddressSets {
                 if (cannotCombine(candidate, range)) {
                     break;
                 }
-                Optional<Range<A>> combined = combine(range, candidate);
-                if (combined.isPresent()) {
+                if (range.contiguous(candidate)) {
                     it.remove();
-                    range = combined.get();
+                    range = range.combine(candidate);
                 }
             }
             set.add(range);
@@ -106,7 +84,6 @@ public final class AddressSets {
     private static <A extends Address<A>> int compare(Range<A> r0, Range<A> r1) {
         return r0.first().compareTo(r1.first());
     }
-
 
     /**
      * Single address as {@link Block}.
@@ -284,41 +261,28 @@ public final class AddressSets {
     }
 
     /**
-     * Creates a single {@link Range} from two intersecting or adjacent ranges.
+     * <p>
+     *     Guards {@link AddressSet} against excessive iteration.
+     *     See {@link ExcessiveIterationException} for details.
+     * </p>
+     * <p>
+     *     If {@link AddressSet#size()} is less than the guard's {@link Address#toBigInteger()} value
+     *     the unguarded set is returned.
+     * </p>
      *
-     * @param r0 a range
-     * @param r1 another range
-     * @return combined range if possible
+     * @param set set to guard
+     * @param guard guard value
+     * @return guarded set
      * @param <A> address type
      */
-    public static <A extends Address<A>> Optional<Range<A>> combine(Range<A> r0, Range<A> r1) {
-        A first;
-        A last;
-        if (r0.contains(r1.first()) || r0.contains(r1.last()) || r1.contains(r0.first()) || r1.contains(r0.last())) {
-            first = Compare.least(r0.first(), r1.first());
-            last = Compare.greatest(r0.last(), r1.last());
-        } else if (Compare.less(r0.last(), r1.first()) && adjacent(r0.last(), r1.first())) {
-            first = r0.first();
-            last = r1.last();
-        } else if (adjacent(r1.last(), r0.first())) {
-            first = r1.first();
-            last = r0.last();
-        } else {
-            return Optional.empty();
+    public static <A extends Address<A>> AddressSet<A> guarded(AddressSet<A> set, A guard) {
+        if (set instanceof GuardedSet) {
+            set = ((GuardedSet<A>) set).delegate;
         }
-        if (first.equals(r0.first()) && last.equals(r0.last())) {
-            return Optional.of(r0);
+        if (Compare.less(set.size(), guard.toBigInteger())) {
+            return set;
         }
-        if (first.equals(r1.first()) && last.equals(r1.last())) {
-            return Optional.of(r1);
-        }
-        return Optional.of(range(first, last));
-    }
-
-    private static <A extends Address<A>> boolean adjacent(A a0, A a1) {
-        return Compare.less(a0, a1)
-                ? a0.next().equals(a1)
-                : a1.next().equals(a0);
+        return new GuardedSet<>(set, guard);
     }
 
     /**
@@ -364,7 +328,7 @@ public final class AddressSets {
         if (range instanceof Block) {
             return guarded((Block<A>) range, guard);
         }
-        return new GuardedBlock<>(range.first(), range.last(), guard);
+        return new GuardedRange<>(range.first(), range.last(), guard);
     }
 
     private static class GuardedRange<A extends Address<A>> extends AbstractRange<A> {

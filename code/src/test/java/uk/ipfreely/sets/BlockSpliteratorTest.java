@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
+import uk.ipfreely.testing.SpliteratorTester;
 
 import java.math.BigInteger;
 import java.util.Spliterator;
@@ -53,20 +54,30 @@ class BlockSpliteratorTest {
 
     @Test
     void trySplit() {
-        Range<V4> subnet = AddressSets.parseCidr(Family.v4(), "192.168.0.0/24");
-        AtomicReference<Block<V4>> actual = new AtomicReference<>();
+        {
+            Range<V4> subnet = AddressSets.parseCidr(Family.v4(), "192.168.0.0/24");
+            AtomicReference<Block<V4>> actual = new AtomicReference<>();
 
-        BlockSpliterator<V4> sb = new BlockSpliterator<>(subnet.first(), subnet.last().next());
-        Spliterator<Block<V4>> split = sb.trySplit();
+            BlockSpliterator<V4> sb = new BlockSpliterator<>(subnet.first(), subnet.last().next());
+            Spliterator<Block<V4>> split = sb.trySplit();
 
-        assertNull(split);
+            assertNull(split);
+        }
+        {
+            Range<V6> subnet = AddressSets.parseCidr(Family.v6(), "fe80::/24");
+            AtomicReference<Block<V6>> actual = new AtomicReference<>();
+
+            BlockSpliterator<V6> sb = new BlockSpliterator<>(subnet.first(), subnet.last().next());
+            Spliterator<Block<V6>> split = sb.trySplit();
+
+            assertNull(split);
+        }
     }
 
     @Test
-    void estimateSize() {
-    }
-
-    @Test
-    void characteristics() {
+    void spliterator() {
+        Range<V6> range = AddressSets.block(Family.v6().parse(1, 0), 64);
+        Spliterator<Block<V6>> s = new BlockSpliterator<V6>(range.first(), range.last());
+        SpliteratorTester.test(s);
     }
 }

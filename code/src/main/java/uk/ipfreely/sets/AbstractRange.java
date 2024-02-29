@@ -45,6 +45,6 @@ abstract class AbstractRange<A extends Address<A>> implements Range<A> {
      */
     @Override
     public String toString() {
-        return first() + "-" + last();
+        return "{" + first() + "-" + last() + "}";
     }
 }

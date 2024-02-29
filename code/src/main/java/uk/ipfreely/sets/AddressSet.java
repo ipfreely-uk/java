@@ -15,13 +15,56 @@ import java.util.stream.Stream;
  *     Implementations MUST be immutable.
  *     {@link #iterator()} MUST produce values from least to greatest.
  * </p>
- *
+ * <table border="1">
+ *     <caption>AddressSet Contracts</caption>
+ *     <tr>
+ *         <th>
+ *             Interface
+ *         </th>
+ *         <th>
+ *             Must Be Implemented When Set...
+ *         </th>
+ *     </tr>
+ *     <tr>
+ *         <td>
+ *             {@link uk.ipfreely.sets.Block}
+ *         </td>
+ *         <td>
+ *             ...forms a valid
+ *             <a href="https://tools.ietf.org/html/rfc4632">RFC4632</a>
+ *             CIDR block.
+ *         </td>
+ *     </tr>
+ *     <tr>
+ *         <td>
+ *             {@link uk.ipfreely.sets.Range}
+ *         </td>
+ *         <td>
+ *             ...is contiguous range.
+ *         </td>
+ *     </tr>
+ *     <tr>
+ *         <td>
+ *             {@link uk.ipfreely.sets.AddressSet}
+ *         </td>
+ *         <td>
+ *             ...is made up of non-contiguous ranges or is the empty set.
+ *         </td>
+ *     </tr>
+ * </table>
  * @param <A> address type
  */
 public interface AddressSet<A extends Address<A>> extends Iterable<A> {
 
     /**
-     * Contract: returns true if instance of {@code AddressSet} and all constituent ranges are identical.
+     * <p>
+     *     {@link Range} Contract: other is instance of {@link Range} and {@link Range#first()} &amp; {@link Range#last()} equal.
+     * </p>
+     * <p>
+     *     General {@code AddressSet} Contract:
+     *     returns true if instance of {@code AddressSet} and all constituent
+     *     {@link #ranges()} are identical.
+     * </p>
      *
      * @param o other
      * @return true if equal

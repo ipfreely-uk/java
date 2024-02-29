@@ -17,8 +17,8 @@ import static uk.ipfreely.Family.v6;
 
 public class RangeTest {
 
-  private V6 first = Family.v6().parse("fe80::");
-  private V6 last = Family.v6().parse("fe80::a");
+  private V6 first = v6().parse("fe80::");
+  private V6 last = v6().parse("fe80::a");
 
   @Test
   public void testWrongOrder() {
@@ -50,7 +50,7 @@ public class RangeTest {
 
   @Test
   public void testToString() {
-    assertEquals(first + "-" + last, AddressSets.range(first, last).toString());
+    assertEquals("{" + first + "-" + last + "}", AddressSets.range(first, last).toString());
   }
 
   @Test
@@ -74,60 +74,6 @@ public class RangeTest {
     assertTrue(range.contains(last.prev()));
     assertFalse(range.contains(last.next()));
     assertFalse(range.contains(v4().parse("127.0.0.1")));
-  }
-
-  @Test
-  public void testIntersects() {
-    Range<V6> range = AddressSets.range(first, last);
-    assertTrue(range.intersects(range));
-    assertTrue(range.intersects(AddressSets.range(first.next(), last.next())));
-  }
-
-  @Test
-  void intersection() {
-    Family<V4> v4 = v4();
-    V4 ten = v4.fromUint(10);
-    V4 eleven = v4.fromUint(11);
-    V4 fourteen = v4.fromUint(14);
-    V4 fifteen = v4.fromUint(15);
-
-    {
-      Range<V4> r = AddressSets.range(ten, fifteen);
-      Range<V4> actual = intersect(r, r);
-      assertSame(r, actual);
-    }
-    {
-      Range<V4> superset = AddressSets.range(ten, fifteen);
-      Range<V4> subset = AddressSets.range(eleven, fourteen);
-      Range<V4> actual = intersect(superset, subset);
-      assertSame(subset, actual);
-    }
-    {
-      Range<V4> r1 = AddressSets.range(ten, fourteen);
-      Range<V4> r2 = AddressSets.range(eleven, fifteen);
-      Range<V4> actual = intersect(r1, r2);
-      Range<V4> expected = AddressSets.range(eleven, fourteen);
-      assertEquals(expected, actual);
-    }
-    {
-      Range<V4> r1 = AddressSets.range(ten, eleven);
-      Range<V4> r2 = AddressSets.range(fourteen, fifteen);
-      Range<V4> actual = intersect(r1, r2);
-      assertNull(actual);
-    }
-  }
-
-  private Range<V4> intersect(Range<V4> r1, Range<V4> r2) {
-    Optional<Range<V4>> o1 = r1.intersection(r2);
-    Optional<Range<V4>> o2 = r2.intersection(r1);
-    assertEquals(o1.isPresent(), o2.isPresent());
-    if (o1.isPresent() && o2.isPresent()) {
-      Range<V4> a1 = o1.get();
-      Range<V4> a2 = o2.get();
-      assertEquals(a1, a2);
-      return a1;
-    }
-    return null;
   }
 
   @Test
@@ -184,60 +130,55 @@ public class RangeTest {
     {
       // combined with self
       Range<V4> r = AddressSets.range(zero, zero);
-      Optional<Range<V4>> opt = AddressSets.combine(r, r);
-      assertTrue(opt.isPresent());
-      assertEquals(r, opt.get());
+      Range<V4> actual = r.combine(r);
+      assertEquals(r, actual);
     }
     {
       // combined, adjacent
       Range<V4> r0 = AddressSets.range(zero, zero);
       Range<V4> r1 = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, one);
-      Optional<Range<V4>> opt = AddressSets.combine(r0, r1);
-      assertTrue(opt.isPresent());
-      assertEquals(expected, opt.get());
+      Range<V4> actual = r0.combine(r1);
+      assertEquals(expected, actual);
     }
     {
       // combined, adjacent, reversed
       Range<V4> r0 = AddressSets.range(zero, zero);
       Range<V4> r1 = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, one);
-      Optional<Range<V4>> opt = AddressSets.combine(r1, r0);
-      assertTrue(opt.isPresent());
-      assertEquals(expected, opt.get());
+      Range<V4> actual = r1.combine(r0);
+      assertEquals(expected, actual);
     }
     {
       // combined, superset
       Range<V4> superset = AddressSets.range(zero, ten);
       Range<V4> subset = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, ten);
-      Optional<Range<V4>> opt = AddressSets.combine(subset, superset);
-      assertTrue(opt.isPresent());
-      assertEquals(expected, opt.get());
+      Range<V4> actual = subset.combine(superset);
+      assertEquals(expected, actual);
     }
     {
       // combined, superset, reversed
       Range<V4> superset = AddressSets.range(zero, ten);
       Range<V4> subset = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, ten);
-      Optional<Range<V4>> opt = AddressSets.combine(superset, subset);
-      assertTrue(opt.isPresent());
-      assertEquals(expected, opt.get());
+      Range<V4> actual = superset.combine(subset);
+      assertEquals(expected, actual);
     }
-    {
-      // not adjacent
-      Range<V4> r0 = AddressSets.range(zero, zero);
-      Range<V4> r1 = AddressSets.range(ten, ten);
-      Optional<Range<V4>> opt = AddressSets.combine(r0, r1);
-      assertFalse(opt.isPresent());
-    }
-    {
-      // no overflow
-      V4 max = Family.v4().max();
-      Range<V4> r0 = AddressSets.range(zero, zero);
-      Range<V4> r1 = AddressSets.range(max, max);
-      Optional<Range<V4>> opt = AddressSets.combine(r0, r1);
-      assertFalse(opt.isPresent());
-    }
+  }
+
+  @Test
+  void contiguous() {
+    V6 zero = v6().min();
+    V6 one = v6().fromUint(1);
+    V6 ten = v6().fromUint(10);
+
+    assertTrue(AddressSets.address(zero).contiguous(AddressSets.address(one)));
+    assertTrue(AddressSets.address(one).contiguous(AddressSets.address(zero)));
+    assertTrue(AddressSets.address(zero).contiguous(AddressSets.range(zero, zero)));
+    assertTrue(AddressSets.address(one).contiguous(AddressSets.range(zero, ten)));
+    assertTrue(AddressSets.range(zero, ten).contiguous(AddressSets.address(one)));
+
+    assertFalse(AddressSets.address(zero).contiguous(AddressSets.address(ten)));
   }
 }
