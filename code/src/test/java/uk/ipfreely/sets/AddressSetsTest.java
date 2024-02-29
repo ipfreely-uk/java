@@ -82,28 +82,60 @@ class AddressSetsTest {
 
     @Test
     void guarded() {
-        Range<V6> internet = AddressSets.block(v6().min(), 0);
-        AddressSet<V6> everything = AddressSets.of(internet);
-        V6 zero = v6().min();
-
+        Block<V6> zero = AddressSets.address(v6().min());
+        Block<V6> fe80 = AddressSets.parseCidr(v6(), "fe80::/16");
+        Range<V6> range = AddressSets.range(v6().fromUint(10), v6().fromUint(999));
+        AddressSet<V6> array = AddressSets.of(zero, fe80, range);
         {
-            AddressSet<V6> actual = AddressSets.guarded(everything, zero);
-            actual = AddressSets.guarded(actual, zero);
-
-            assertTrue(actual.getClass().getName().contains("Guarded"));
-
+            AddressSet<V6> actual = AddressSets.guarded((AddressSet<V6>) fe80, v6().min());
+            assertInstanceOf(Block.class, actual, "block");
+            assertSame(actual, AddressSets.guarded(actual, v6().min()), "don't guard guarded");
+            assertNotSame(actual, AddressSets.guarded(actual, v6().min().next()), "different guard");
+            assertFalse(AddressSets.guarded(actual, v6().max()).toString().contains("Guard"), "remove guard");
             GuardTester.test(actual.iterator(), 1);
             GuardTester.test(actual.spliterator(), 1);
-            GuardTester.test(actual.ranges(), 1);
-
-            assertTrue(actual.contains(zero));
-            assertTrue(actual.contains(v6().max()));
         }
         {
-            Range<V6> address = AddressSets.address(v6().fromUint(1));
-            AddressSet<V6> expected = AddressSets.of(address);
-            AddressSet<V6> actual = AddressSets.guarded(expected, v6().max());
-            assertSame(expected, actual, "unguarded");
+            AddressSet<V6> actual = AddressSets.guarded((AddressSet<V6>) range, v6().min());
+            assertInstanceOf(Range.class, actual, "range");
+            assertFalse(actual instanceof Block);
+            assertSame(actual, AddressSets.guarded(actual, v6().min()), "don't guard guarded");
+            assertNotSame(actual, AddressSets.guarded(actual, v6().min().next()), "different guard");
+            assertFalse(AddressSets.guarded(actual, v6().max()).toString().contains("Guard"), "remove guard");
+            GuardTester.test(actual.iterator(), 1);
+            GuardTester.test(actual.spliterator(), 1);
+            GuardTester.test(((Range<V6>) actual).stream(), 1);
+        }
+        {
+            AddressSet<V6> actual = AddressSets.guarded(array, v6().min());
+            assertFalse(actual instanceof Range);
+            assertSame(actual, AddressSets.guarded(actual, v6().min()), "don't guard guarded");
+            assertNotSame(actual, AddressSets.guarded(actual, v6().min().next()), "different guard");
+            assertFalse(AddressSets.guarded(actual, v6().max()).toString().contains("Guard"), "remove guard");
+            GuardTester.test(actual.ranges(), 1);
+            GuardTester.test(actual.iterator(), 1);
+            GuardTester.test(actual.spliterator(), 1);
+        }
+        {
+            AddressSet<V6> actual = AddressSets.guarded((AddressSet<V6>) zero, v6().min());
+            assertSame(zero, actual, "unguarded");
+        }
+        {
+            AddressSet<V6> actual = AddressSets.guarded(zero, v6().max());
+            assertSame(zero, actual, "unguarded");
+        }
+        {
+            AddressSet<V6> internet = AddressSets.range(v6().min(), v6().max());
+            AddressSet<V6> actual = AddressSets.guarded(internet, v6().max());
+            assertSame(internet, actual, "unguarded");
+        }
+        {
+            AddressSet<V6> actual = AddressSets.guarded(range, v6().max());
+            assertSame(range, actual, "unguarded");
+        }
+        {
+            AddressSet<V6> actual = AddressSets.guarded(array, v6().max());
+            assertSame(array, actual, "unguarded");
         }
     }
 

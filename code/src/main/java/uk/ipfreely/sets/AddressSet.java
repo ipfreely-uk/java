@@ -102,7 +102,9 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
      * @param address candidate
      * @return true if the given address is present
      */
-    boolean contains(Address<?> address);
+    default boolean contains(Address<?> address) {
+        return ranges().anyMatch(r -> r.contains(address));
+    }
 
     /**
      * Number of unique {@link Address}es in this set.

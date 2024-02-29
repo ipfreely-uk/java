@@ -276,31 +276,20 @@ public final class AddressSets {
      * @param <A> address type
      */
     public static <A extends Address<A>> AddressSet<A> guarded(AddressSet<A> set, A guard) {
-        if (set instanceof GuardedSet) {
-            set = ((GuardedSet<A>) set).delegate;
+        if (set instanceof Range) {
+            return guarded((Range<A>) set, guard);
         }
-        if (Compare.less(set.size(), guard.toBigInteger())) {
+        if (set instanceof GuardedSet) {
+            GuardedSet<A> gs = (GuardedSet<A>) set;
+            if (gs.guard.equals(guard)) {
+                return set;
+            }
+            set = gs.delegate;
+        }
+        if (Compare.less(set.size(), guard.toBigInteger().add(BigInteger.ONE))) {
             return set;
         }
         return new GuardedSet<>(set, guard);
-    }
-
-    /**
-     * {@link Block} version of {@link #guarded(Range, Address)}.
-     *
-     * @param block block to guard
-     * @param guard guard value
-     * @return guarded block if block exceeds guard
-     * @param <A> address type
-     */
-    public static <A extends Address<A>> Block<A> guarded(Block<A> block, A guard) {
-        if (block instanceof GuardedBlock && ((GuardedBlock<A>) block).guard.equals(guard)) {
-            return block;
-        }
-        if (Compare.lessOrEqual(block.last().subtract(block.first()), guard)) {
-            return block;
-        }
-        return new GuardedBlock<>(block.first(), block.last(), guard);
     }
 
     /**
@@ -319,16 +308,42 @@ public final class AddressSets {
      * @param <A> address type
      */
     public static <A extends Address<A>> Range<A> guarded(Range<A> range, A guard) {
-        if (range instanceof GuardedRange && ((GuardedRange<A>) range).guard.equals(guard)) {
-            return range;
-        }
-        if (Compare.lessOrEqual(range.last().subtract(range.first()), guard)) {
-            return range;
-        }
         if (range instanceof Block) {
             return guarded((Block<A>) range, guard);
         }
+        boolean gr = (range instanceof GuardedRange);
+        if (gr && ((GuardedRange<A>) range).guard.equals(guard)) {
+            return range;
+        }
+        if (Compare.lessOrEqual(range.last().subtract(range.first()), guard)) {
+            if (gr) {
+                return range(range.first(), range.last());
+            }
+            return range;
+        }
         return new GuardedRange<>(range.first(), range.last(), guard);
+    }
+
+    /**
+     * {@link Block} version of {@link #guarded(Range, Address)}.
+     *
+     * @param block block to guard
+     * @param guard guard value
+     * @return guarded block if block exceeds guard
+     * @param <A> address type
+     */
+    public static <A extends Address<A>> Block<A> guarded(Block<A> block, A guard) {
+        boolean gb = block instanceof GuardedBlock;
+        if (gb && ((GuardedBlock<A>) block).guard.equals(guard)) {
+            return block;
+        }
+        if (Compare.lessOrEqual(block.last().subtract(block.first()), guard)) {
+            if (gb) {
+                return block(block.first(), block.last());
+            }
+            return block;
+        }
+        return new GuardedBlock<>(block.first(), block.last(), guard);
     }
 
     private static class GuardedRange<A extends Address<A>> extends AbstractRange<A> {
@@ -458,11 +473,6 @@ public final class AddressSets {
         }
 
         @Override
-        public boolean contains(Address<?> address) {
-            return delegate.contains(address);
-        }
-
-        @Override
         public Iterator<A> iterator() {
             return new GuardedDecoratingIterator<>(delegate.iterator(), guard);
         }
@@ -482,6 +492,11 @@ public final class AddressSets {
 
         private Range<A> range(Range<A> r) {
             return AddressSets.guarded(r, guard);
+        }
+
+        @Override
+        public String toString() {
+            return delegate.toString();
         }
     }
 }
