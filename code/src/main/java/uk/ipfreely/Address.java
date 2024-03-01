@@ -15,11 +15,11 @@ import java.net.InetAddress;
  * <h2>Usage Hints</h2>
  *
  * <table border="1">
- *      <caption>Comparison with {@link java.net.InetAddress}</caption>
+ *      <caption>Comparison with {@link InetAddress}</caption>
  *      <tr>
  *          <th>Feature</th>
  *          <th>{@link Address}</th>
- *          <th>{@link java.net.InetAddress}</th>
+ *          <th>{@link InetAddress}</th>
  *      </tr>
  *      <tr>
  *          <td>IP address</td>
@@ -64,10 +64,19 @@ import java.net.InetAddress;
  *  </table>
  *
  * <p>
- *     For {@link java.net.InetAddress} see the following libraries for overlapping utility methods:
+ *     For {@link InetAddress} see the following libraries for overlapping utility methods:
  *     <a href="https://commons.apache.org/proper/commons-net/">Apache Commons Net</a>;
  *     <a href="https://guava.dev/">Google Guava</a>.
  * </p>
+ *
+ * <p>Conversion to/from {@link InetAddress} can be performed using:</p>
+ * <ul>
+ *         <li>{@link InetAddress#getAddress()}</li>
+ *         <li>{@link InetAddress#getByAddress(byte[])}</li>
+ *         <li>{@link #toBytes()}</li>
+ *         <li>{@link Family#parseUnknown(byte...)}</li>
+ *         <li>{@link Family#parse(byte...)}</li>
+ * </ul>
  *
  * <p>
  *     Inheritance outside the package is not supported.

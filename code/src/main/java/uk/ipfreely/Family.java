@@ -26,6 +26,11 @@ public abstract class Family<A extends Address<A>> {
     /**
      * IPv4.
      *
+     * <pre><code>
+     *     // EXAMPLE
+     *     V4 localhost = Family.v4().parse("127.0.0.1");
+     * </code></pre>
+     *
      * @return IPv4 family of addresses
      */
     public static Family<V4> v4() {
