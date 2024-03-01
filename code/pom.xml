@@ -42,6 +42,18 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <email>ipfreely.uk@proton.me</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/ipfreely-uk/ipfreely-uk.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ipfreely-uk/ipfreely.git</developerConnection>
+        <url>https://github.com/ipfreely-uk/ipfreely/tree/main</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
