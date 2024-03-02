@@ -5,11 +5,15 @@ import java.net.InetAddress;
 
 /**
  * <p>
- *     An IP address value type.
+ *     An IP address value type in the form of an immutable unsigned integer that supports arithmetic and bitwise ops.
  *     Use {@link Family} to create instances.
  * </p>
  * <p>
- *     Implementations are immutable positive integers that support arithmetic and bitwise ops.
+ *     Inheritance outside the package is not supported.
+ *     Future implementations may become
+ *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
+ *     Future implementations may become
+ *     <a href="https://openjdk.org/projects/valhalla/">value objects</a>.
  * </p>
  *
  * <h2>Usage Hints</h2>
@@ -77,14 +81,6 @@ import java.net.InetAddress;
  *         <li>{@link Family#parseUnknown(byte...)}</li>
  *         <li>{@link Family#parse(byte...)}</li>
  * </ul>
- *
- * <p>
- *     Inheritance outside the package is not supported.
- *     Future implementations may become
- *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
- *     Future implementations may become
- *     <a href="https://openjdk.org/projects/valhalla/">value objects</a>.
- * </p>
  *
  * @param <A> the address type
  */

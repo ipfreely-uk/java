@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
 import static uk.ipfreely.Validation.validate;
 
 /**
- * IPv4 address value. Immutable 32-bit unsigned integer.
+ * Immutable IPv4 {@link Address} and 32-bit unsigned integer value.
  * Use {@link Family#v4()} to create values.
  */
 public final class V4 extends Address<V4> {

@@ -7,9 +7,11 @@ import static uk.ipfreely.Validation.validate;
 
 /**
  * <p>
- *  Two instances can be obtained via {@link #v4()} and {@link #v6()}.
- *  These represent <a href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
- *  and <a href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>.
+ *  {@link Address} factory and utility type for
+ *  <a href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
+ *  and
+ *  <a href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>
+ *  obtained via {@link #v4()} and {@link #v6()}.
  * </p>
  * <p>
  *     Inheritance outside the package is not supported.
@@ -177,6 +179,15 @@ public abstract class Family<A extends Address<A>> {
      * <p>
      *     {@code -1} is returned if the arguments do not form a valid block.
      * </p>
+     * <pre><code>
+     *     // EXAMPLE
+     *     V4 first = Family.v4().parse("127.0.0.0");
+     *     V4 last = Family.v4().parse("127.255.255.255");
+     *     // 8
+     *     int maskBits = Family.v4().maskBitsForBlock(first, last);
+     *     // 255.0.0.0
+     *     V4 mask = Family.v4().masks().get(maskBits);
+     * </code></pre>
      *
      * @param first the first element in an IP range
      * @param last  the last element in an IP range
@@ -195,7 +206,25 @@ public abstract class Family<A extends Address<A>> {
     public abstract BigInteger maskAddressCount(int maskBits);
 
     /**
-     * Regular expression for detecting IP addresses.
+     * <p>Regular expression for detecting IP addresses in this family.</p>
+     * <pre><code>
+     *     // EXAMPLE
+     *     String startOfString = "^";
+     *     String endOfString = "$";
+     *     String or = "|";
+     *     String v4r = Family.v4().regex();
+     *     String v6r = Family.v6().regex();
+     *     Pattern addressPattern = Pattern.compile(startOfString + v4r + or + v6r + endOfString);
+     *
+     *     for (String candidate : new String[]{"172.0.0.1", "foo", "::1",}) {
+     *         Matcher m = addressPattern.matcher(candidate);
+     *         if (m.matches()) {
+     *             System.out.println(Family.parseUnknown(candidate).family() + "\t" + candidate);
+     *         } else {
+     *             System.out.println("none\t" + candidate);
+     *         }
+     *     }
+     * </code></pre>
      *
      * @return regular expression for matching address patterns
      * @see java.util.regex.Pattern
