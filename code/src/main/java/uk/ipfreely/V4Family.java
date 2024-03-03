@@ -56,17 +56,17 @@ final class V4Family extends Family<V4> {
     }
 
     @Override
-    public V4 fromUint(int low) {
-        return V4.fromInt(low);
+    public V4 parse(int unsigned) {
+        return V4.fromInt(unsigned);
     }
 
     @Override
-    public int bitWidth() {
+    public int width() {
         return V4Consts.WIDTH;
     }
 
     @Override
-    public Class<V4> ipType() {
+    public Class<V4> type() {
         return V4.class;
     }
 
@@ -82,7 +82,7 @@ final class V4Family extends Family<V4> {
 
     @Override
     public BigInteger maskAddressCount(int maskBits) {
-        validate(maskBits >= 0 && maskBits <= bitWidth(), "Invalid mask size", maskBits, IllegalArgumentException::new);
+        validate(maskBits >= 0 && maskBits <= width(), "Invalid mask size", maskBits, IllegalArgumentException::new);
 
         return InternedMaskSizes.v4(maskBits);
     }

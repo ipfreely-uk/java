@@ -132,28 +132,28 @@ public class V6Test extends IpTests<V6> {
 
   @Test
   public void testLeftShift() {
-    assertEquals(v6().fromUint(0b10), v6().fromUint(1).shift(-1));
-    assertEquals(v6().fromUint(0b100), v6().fromUint(1).shift(-2));
-    assertEquals(v6().fromUint(0), v6().masks().get(1).shift(-1));
+    assertEquals(v6().parse(0b10), v6().parse(1).shift(-1));
+    assertEquals(v6().parse(0b100), v6().parse(1).shift(-2));
+    assertEquals(v6().parse(0), v6().masks().get(1).shift(-1));
     assertEquals(v6().parse(1, 0), v6().parse(0, 0x80_00_00_00_00_00_00_00L).shift(-1));
-    assertEquals(v6().parse(1, 0), v6().fromUint(1).shift(-64));
-    assertEquals(v6().parse(0b10, 0), v6().fromUint(1).shift(-65));
+    assertEquals(v6().parse(1, 0), v6().parse(1).shift(-64));
+    assertEquals(v6().parse(0b10, 0), v6().parse(1).shift(-65));
   }
 
   @Test
   public void testRightShift() {
-    assertEquals(v6().fromUint(0), v6().fromUint(1).shift(1));
-    assertEquals(v6().fromUint(1), v6().fromUint(0b10).shift(1));
-    assertEquals(v6().fromUint(1), v6().parse(1, 0).shift(Long.SIZE));
-    assertEquals(v6().fromUint(2), v6().parse(1, 0).shift(63));
-    assertEquals(v6().fromUint(1), v6().parse(0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L, 0).shift(127));
+    assertEquals(v6().parse(0), v6().parse(1).shift(1));
+    assertEquals(v6().parse(1), v6().parse(0b10).shift(1));
+    assertEquals(v6().parse(1), v6().parse(1, 0).shift(Long.SIZE));
+    assertEquals(v6().parse(2), v6().parse(1, 0).shift(63));
+    assertEquals(v6().parse(1), v6().parse(0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L, 0).shift(127));
     assertEquals(v6().parse(0, 0x80_00_00_00_00_00_00_00L), v6().parse(1, 0).shift(1));
   }
 
   @Test
   public void testNoShift() {
-    V6 zero = v6().fromUint(0);
-    V6 one = v6().fromUint(1);
+    V6 zero = v6().parse(0);
+    V6 one = v6().parse(1);
     assertSame(zero, zero.shift(10));
     assertSame(one, one.shift(0));
   }
@@ -161,7 +161,7 @@ public class V6Test extends IpTests<V6> {
   @Test
   void equals() {
     EqualsTester.test(
-            v6().fromUint(1),
+            v6().parse(1),
             v6().max(),
             v6().min(),
             new Object()

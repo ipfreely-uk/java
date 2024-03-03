@@ -46,7 +46,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
      */
     default int maskBits() {
         A first = first();
-        return first.family().maskBitsForBlock(first, last());
+        return first.family().subnets().maskBits(first, last());
     }
 
     /**
@@ -62,7 +62,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
      * @return the mask IP
      */
     default A mask() {
-        return first().family().masks().get(maskBits());
+        return first().family().subnets().masks().get(maskBits());
     }
 
     /**
@@ -71,7 +71,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
      * @return block size
      */
     default BigInteger size() {
-        return first().family().maskAddressCount(maskBits());
+        return first().family().subnets().count(maskBits());
     }
 
     /**
@@ -84,9 +84,9 @@ public interface Block<A extends Address<A>> extends Range<A> {
         A first = first();
         Family<A> family = first.family();
         validate(maskBits >= maskBits(), "Not enough mask bits", maskBits, IllegalArgumentException::new);
-        validate(maskBits <= family.bitWidth(), "Too many mask bits", maskBits, IllegalArgumentException::new);
+        validate(maskBits <= family.width(), "Too many mask bits", maskBits, IllegalArgumentException::new);
 
-        A size = family.masks().get(maskBits).not();
+        A size = family.subnets().masks().get(maskBits).not();
         return StreamSupport.stream(new SubnetSpliterator<>(first, last(), size), false);
     }
 }

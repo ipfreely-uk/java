@@ -15,11 +15,11 @@ import static uk.ipfreely.Family.v6;
 public class RangeSpliteratorTest {
 
   private final Range<?>[] ranges = {
-          AddressSets.range(v4().fromUint(0), v4().fromUint(0)),
-          AddressSets.range(v4().fromUint(0), v4().fromUint(1)),
-          AddressSets.range(v4().fromUint(0), v4().fromUint(2)),
-          AddressSets.range(v4().fromUint(0), v4().fromUint(100)),
-          AddressSets.range(v6().fromUint(0), v6().fromUint(100)),
+          AddressSets.range(v4().parse(0), v4().parse(0)),
+          AddressSets.range(v4().parse(0), v4().parse(1)),
+          AddressSets.range(v4().parse(0), v4().parse(2)),
+          AddressSets.range(v4().parse(0), v4().parse(100)),
+          AddressSets.range(v6().parse(0), v6().parse(100)),
           AddressSets.range(v4().parse("127.0.0.0"), v4().parse("127.0.0.255")),
   };
 

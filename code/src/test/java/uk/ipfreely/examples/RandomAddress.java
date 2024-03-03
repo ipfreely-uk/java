@@ -24,7 +24,7 @@ public final class RandomAddress {
      */
     public static <A extends Address<A>> A generate(Family<A> family, IntSupplier rng) {
         if (family == Family.v4()) {
-            return family.fromUint(rng.getAsInt());
+            return family.parse(rng.getAsInt());
         }
         return family.parse(randomLong(rng), randomLong(rng));
     }
@@ -90,7 +90,7 @@ public final class RandomAddress {
     }
 
     private static <A extends Address<A>> A fromBlock(Family<A> family, Block<A> block, A random) {
-        A inverseMask = family.masks()
+        A inverseMask = family.subnets().masks()
                 .get(block.maskBits())
                 .not();
         return inverseMask.and(random)

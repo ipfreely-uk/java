@@ -13,7 +13,7 @@ class SubnetSpliteratorTest {
     void spliterator() {
         V4 zero = Family.v4().min();
         V4 one = zero.next();
-        V4 ten = Family.v4().fromUint(10);
+        V4 ten = Family.v4().parse(10);
         Spliterator<Block<V4>> s = new SubnetSpliterator<>(zero, ten, one);
         SpliteratorTester.test(s);
     }

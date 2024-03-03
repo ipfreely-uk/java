@@ -32,7 +32,7 @@ final class RangeSpliterator<A extends Address<A>> implements Spliterator<A> {
         if (current == null || current.equals(last)) {
             return null;
         }
-        A two = current.family().fromUint(2);
+        A two = current.family().parse(2);
         A size = last.subtract(current);
         A mid = size.divide(two).add(current);
         // must return prefix because ORDERED

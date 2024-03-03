@@ -124,9 +124,9 @@ public class RangeTest {
 
   @Test
   void combine() {
-    V4 zero = Family.v4().fromUint(0);
-    V4 one = Family.v4().fromUint(1);
-    V4 ten = Family.v4().fromUint(10);
+    V4 zero = Family.v4().parse(0);
+    V4 one = Family.v4().parse(1);
+    V4 ten = Family.v4().parse(10);
     {
       // combined with self
       Range<V4> r = AddressSets.range(zero, zero);
@@ -170,8 +170,8 @@ public class RangeTest {
   @Test
   void contiguous() {
     V6 zero = v6().min();
-    V6 one = v6().fromUint(1);
-    V6 ten = v6().fromUint(10);
+    V6 one = v6().parse(1);
+    V6 ten = v6().parse(10);
 
     assertTrue(AddressSets.address(zero).contiguous(AddressSets.address(one)));
     assertTrue(AddressSets.address(one).contiguous(AddressSets.address(zero)));

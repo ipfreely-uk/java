@@ -138,7 +138,7 @@ public final class AddressSets {
 
             @Override
             public int maskBits() {
-                return first().family().bitWidth();
+                return first().family().width();
             }
 
             @Override
@@ -154,7 +154,7 @@ public final class AddressSets {
      * <p>
      *     Creates a block from and network address and mask size.
      *     The {@code maskSize} must be greater or equal to zero
-     *     and less than or equal to {@link Family#bitWidth()}
+     *     and less than or equal to {@link Family#width()}
      *     and the mask must cover all the true bits of the address.
      * </p>
      *
@@ -165,7 +165,7 @@ public final class AddressSets {
      */
     public static <A extends Address<A>> Block<A> block(final A first, final int maskSize) {
         final Family<A> family = first.family();
-        int width = family.bitWidth();
+        int width = family.width();
         if (maskSize == width) {
             return address(first);
         }
@@ -175,7 +175,7 @@ public final class AddressSets {
 
         // TODO: mask and first check
 
-        final List<A> masks = family.masks();
+        final List<A> masks = family.subnets().masks();
         final A zero = family.min();
         final A inverseMask = masks.get(maskSize).not();
         final A anded = first.and(inverseMask);
@@ -219,7 +219,7 @@ public final class AddressSets {
         }
 
         Block<A> block = new AddressBlock();
-        validate(first.family().maskBitsForBlock(first, last) >= 0, "Not an IP block", block, IllegalArgumentException::new);
+        validate(first.family().subnets().maskBits(first, last) >= 0, "Not an IP block", block, IllegalArgumentException::new);
         return block;
     }
 
@@ -252,7 +252,7 @@ public final class AddressSets {
 
         validate(first.compareTo(last) <= 0, "First address must be less than or equal to last", first, IllegalArgumentException::new);
 
-        int maskSize = first.family().maskBitsForBlock(first, last);
+        int maskSize = first.family().subnets().maskBits(first, last);
         return maskSize < 0
                 ? new AddressRange()
                 : block(first, last);
@@ -274,7 +274,7 @@ public final class AddressSets {
         final String s1 = cidrBlock.substring(0, stroke);
         final String s2 = cidrBlock.substring(stroke + 1);
 
-        Address address = Family.parseUnknown(s1);
+        Address address = Family.unknown(s1);
         int mask = Integer.parseInt(s2);
         try {
             return block(address, mask);

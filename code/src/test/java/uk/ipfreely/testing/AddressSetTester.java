@@ -1,6 +1,5 @@
 package uk.ipfreely.testing;
 
-import org.junit.jupiter.api.Assertions;
 import uk.ipfreely.Address;
 import uk.ipfreely.Family;
 import uk.ipfreely.sets.AddressSet;
@@ -66,7 +65,7 @@ public final class AddressSetTester {
         assertTrue(i <= 0);
         assertTrue(b.cidrNotation().contains("/"));
         assertTrue(b.maskBits() >= 0);
-        assertTrue(b.maskBits() <= first.family().bitWidth());
+        assertTrue(b.maskBits() <= first.family().width());
         assertEquals(first, b.mask().and(first));
     }
 }

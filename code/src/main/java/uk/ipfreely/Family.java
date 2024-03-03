@@ -23,6 +23,8 @@ import static uk.ipfreely.Validation.validate;
  * @param <A> {@link V4} or {@link V6}
  */
 public abstract class Family<A extends Address<A>> {
+    private final Subnets<A> subnets = new Subnets<>(this);
+
     Family() {}
 
     /**
@@ -108,24 +110,33 @@ public abstract class Family<A extends Address<A>> {
      * Convenience method for simple arithmetic operations.
      * All values of <code>int</code> are valid for this method.
      *
-     * @param low the low bits treated as unsigned integer
+     * @param unsigned low bits treated as unsigned integer
      * @return IP address
      */
-    public abstract A fromUint(int low);
+    public abstract A parse(int unsigned);
 
     /**
      * Width of the IP address type in bits.
      *
      * @return 32 (V4) or 128 (V6)
      */
-    public abstract int bitWidth();
+    public abstract int width();
 
     /**
      * IP address type.
      *
-     * @return either the V4 or V6 IP address class
+     * @return {@link V4}.class or {@link V6}.class
      */
-    public abstract Class<A> ipType();
+    public abstract Class<A> type();
+
+    /**
+     * Subnet utilities.
+     *
+     * @return subnet methods for this type
+     */
+    public Subnets<A> subnets() {
+        return subnets;
+    }
 
     /**
      * <p>
@@ -143,7 +154,7 @@ public abstract class Family<A extends Address<A>> {
      *
      * @return all possible network address masks
      */
-    public abstract List<A> masks();
+    abstract List<A> masks();
 
     /**
      * Zero.
@@ -174,7 +185,7 @@ public abstract class Family<A extends Address<A>> {
      * </p>
      * <p>
      *     The return value can be used as the mask index for {@link #masks()}.
-     *     Valid mask sizes are from zero to {@link #bitWidth()} inclusive.
+     *     Valid mask sizes are from zero to {@link #width()} inclusive.
      * </p>
      * <p>
      *     {@code -1} is returned if the arguments do not form a valid block.
@@ -193,7 +204,7 @@ public abstract class Family<A extends Address<A>> {
      * @param last  the last element in an IP range
      * @return mask size in bits or -1 if this is not a valid CIDR block range
      */
-    public abstract int maskBitsForBlock(A first, A last);
+    abstract int maskBitsForBlock(A first, A last);
 
     /**
      * The number of addresses for the number of bits in a CIDR notation mask.
@@ -201,9 +212,9 @@ public abstract class Family<A extends Address<A>> {
      *
      * @param maskBits between 0 and the family width in bits (inclusive)
      * @return the count of addresses for a given subnet size
-     * @see #bitWidth()
+     * @see #width()
      */
-    public abstract BigInteger maskAddressCount(int maskBits);
+    abstract BigInteger maskAddressCount(int maskBits);
 
     /**
      * <p>Regular expression for detecting IP addresses in this family.</p>
@@ -232,14 +243,14 @@ public abstract class Family<A extends Address<A>> {
     public abstract String regex();
 
     /**
-     * Use when IP address family is not known.
+     * Uses heuristics to detect IP address family and calls {@link #parse(CharSequence)}.
      *
      * @param candidate IP address
      * @return instance of {@link V4} or {@link V6}
      * @throws ParseException on invalid address
      * @see #parse(CharSequence)
      */
-    public static Address<?> parseUnknown(CharSequence candidate) {
+    public static Address<?> unknown(CharSequence candidate) {
         return detect(candidate)
                 .parse(candidate);
     }
@@ -267,13 +278,13 @@ public abstract class Family<A extends Address<A>> {
     }
 
     /**
-     * If the family is known use {@link Family#parse(byte...)} instead.
+     * Uses array length to detect IP address family and calls {@link #parse(byte...)}.
      *
      * @param address an IPv4 or IPv6 address in byte form
      * @return parsed address
      * @throws ParseException if array is not 4 (V4) or 16 (V6) bytes in length
      */
-    public static Address<?> parseUnknown(byte... address) {
+    public static Address<?> unknown(byte... address) {
         int v4len = V4Consts.WIDTH / Byte.SIZE;
         int v6len = V6Consts.WIDTH / Byte.SIZE;
         boolean v4 = v4len == address.length;

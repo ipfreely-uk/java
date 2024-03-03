@@ -13,7 +13,7 @@ class GuardedIteratorTest {
     @Test
     void guard() {
         Family<V6> v6 = Family.v6();
-        V6 guard = v6.fromUint(10);
+        V6 guard = v6.parse(10);
         GuardedIterator<V6> iterator = new GuardedIterator<>(v6.min(), v6.max(), guard);
 
         List<V6> actual = new ArrayList<>();

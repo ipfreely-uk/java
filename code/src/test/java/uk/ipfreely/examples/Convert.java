@@ -23,6 +23,6 @@ public final class Convert {
     }
 
     public static Address<?> toAddress(InetAddress address) {
-        return Family.parseUnknown(address.getAddress());
+        return Family.unknown(address.getAddress());
     }
 }

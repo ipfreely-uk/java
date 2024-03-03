@@ -32,7 +32,7 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
         int maxSize = maxMask(start);
         A size = end.subtract(start).next();
         double x = log(size) / LOG_2;
-        final int width = start.family().bitWidth();
+        final int width = start.family().width();
         int maxDiff = (int) (width - Math.floor(x));
         if (maxSize < maxDiff) {
             maxSize = maxDiff;
@@ -83,7 +83,7 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
     }
 
     private int maxMask(A ip) {
-        final int width = ip.family().bitWidth();
+        final int width = ip.family().width();
         int n = 0;
         long low = ip.lowBits();
         for(int bits = Math.min(width, 64); n < bits; n++) {

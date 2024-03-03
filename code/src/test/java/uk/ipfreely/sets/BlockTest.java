@@ -79,7 +79,7 @@ public class BlockTest {
   @Test
   void subnetToIndividualAddresses() {
     Block<V4> internet = AddressSets.block(v4().parse("192.168.0.0"), v4().parse("192.168.0.255"));
-    long actual = internet.subnets(v4().bitWidth()).count();
+    long actual = internet.subnets(v4().width()).count();
     assertEquals(256, actual);
   }
 

@@ -78,7 +78,7 @@ import java.net.InetAddress;
  *         <li>{@link InetAddress#getAddress()}</li>
  *         <li>{@link InetAddress#getByAddress(byte[])}</li>
  *         <li>{@link #toBytes()}</li>
- *         <li>{@link Family#parseUnknown(byte...)}</li>
+ *         <li>{@link Family#unknown(byte...)}</li>
  *         <li>{@link Family#parse(byte...)}</li>
  * </ul>
  *
@@ -126,7 +126,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     public abstract BigInteger toBigInteger();
 
     /**
-     * The address as bytes of length {@link Family#bitWidth()} / {@link Byte#SIZE}.
+     * The address as bytes of length {@link Family#width()} / {@link Byte#SIZE}.
      *
      * @return the address as a byte sequence, most significant bits first
      * @see InetAddress#getByAddress(byte[])
@@ -195,7 +195,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
      * @return the next IP address
      */
     public A next() {
-        return add(family().fromUint(1));
+        return add(family().parse(1));
     }
 
     /**
@@ -204,7 +204,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
      * @return the previous IP address
      */
     public A prev() {
-        return subtract(family().fromUint(1));
+        return subtract(family().parse(1));
     }
 
     /**
@@ -240,8 +240,8 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
 
     /**
      * Bitwise shift.
-     * Negative numbers more than {@link Family#bitWidth()} shift left.
-     * Positive numbers less than {@link Family#bitWidth()} shift right.
+     * Negative numbers more than {@link Family#width()} shift left.
+     * Positive numbers less than {@link Family#width()} shift right.
      *
      * @param bits number of bits to shift
      * @return shifted value
