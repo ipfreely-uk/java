@@ -85,4 +85,10 @@ public class FamilyTest {
       assertFalse(m.matches());
     }
   }
+
+  @Test
+  void subnets() {
+    assertEquals(Family.v4().subnets().toString(), Family.v4().subnets().toString());
+    assertSame(Family.v4().subnets().family(), Family.v4().subnets().family());
+  }
 }
