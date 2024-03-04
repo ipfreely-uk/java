@@ -7,9 +7,9 @@ import java.util.List;
  * Utility instances for working with
  * <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a>
  * blocks of IP addresses.
+ * Obtain instances from {@link Family#subnets()}.
  *
  * @param <A> address type
- * @see Family#subnets()
  */
 public final class Subnets<A extends Address<A>> {
     private final Family<A> family;
@@ -102,6 +102,11 @@ public final class Subnets<A extends Address<A>> {
         return family.maskAddressCount(maskBits);
     }
 
+    /**
+     * Informational.
+     *
+     * @return IP family version
+     */
     @Override
     public String toString() {
         return family.toString();

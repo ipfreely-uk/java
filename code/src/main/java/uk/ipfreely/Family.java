@@ -5,6 +5,8 @@ import java.util.List;
 
 import static uk.ipfreely.Validation.validate;
 
+// TODO: should Family be enum?
+
 /**
  * <p>
  *  {@link Address} factory and utility type for
