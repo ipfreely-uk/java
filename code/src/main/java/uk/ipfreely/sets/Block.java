@@ -11,7 +11,9 @@ import static uk.ipfreely.sets.Validation.validate;
 
 /**
  * <p>
- *     <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of IP addresses.
+ *     {@link Range} that forms
+ *     <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of
+ *     IP {@link Address}es.
  * </p>
  * <p>Example: {@code "192.168.0.0/24"}.</p>
  * <ul>
@@ -24,6 +26,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <p>See {@link AddressSet} for implementation contract.</p>
  *
  * @param <A> the type for the IP version
+ * @see Family#subnets()
  */
 public interface Block<A extends Address<A>> extends Range<A> {
 

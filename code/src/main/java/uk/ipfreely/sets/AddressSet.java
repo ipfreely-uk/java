@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  *     Set of zero to {@link Family#max()} {@link Address}es.
  * </p>
  * <p>
- *     Contiguous ranges MUST implement {@link Range}.
+ *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
  *     Implementations MUST be immutable.
  *     {@link #iterator()} MUST produce values from least to greatest.
  * </p>

@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 import static uk.ipfreely.sets.Validation.validate;
 
 /**
- * Utility type for creating {@link AddressSet} instances.
+ * Factory methods for creating {@link AddressSet}s.
  */
 public final class AddressSets {
     private AddressSets() {}

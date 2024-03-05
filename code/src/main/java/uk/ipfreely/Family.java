@@ -107,10 +107,11 @@ public abstract class Family<A extends Address<A>> {
     public abstract A parse(BigInteger address);
 
     /**
-     * Convenience method for simple arithmetic operations.
+     * Convenience method for creating {@link Address} from number.
      * All values of <code>int</code> are valid for this method.
+     * Every value in the IPv4 range can be created with this method.
      *
-     * @param unsigned low bits treated as unsigned integer
+     * @param unsigned integer treated as unsigned value
      * @return IP address
      */
     public abstract A parse(int unsigned);
@@ -132,7 +133,7 @@ public abstract class Family<A extends Address<A>> {
     /**
      * Subnet utilities.
      *
-     * @return subnet methods for this type
+     * @return subnet methods for this family
      */
     public Subnets<A> subnets() {
         return subnets;
@@ -230,7 +231,7 @@ public abstract class Family<A extends Address<A>> {
      *     for (String candidate : new String[]{"172.0.0.1", "foo", "::1",}) {
      *         Matcher m = addressPattern.matcher(candidate);
      *         if (m.matches()) {
-     *             System.out.println(Family.parseUnknown(candidate).family() + "\t" + candidate);
+     *             System.out.println(Family.unknown(candidate).family() + "\t" + candidate);
      *         } else {
      *             System.out.println("none\t" + candidate);
      *         }
@@ -248,7 +249,7 @@ public abstract class Family<A extends Address<A>> {
      * @param candidate IP address
      * @return instance of {@link V4} or {@link V6}
      * @throws ParseException on invalid address
-     * @see #parse(CharSequence)
+     * @see Address#toString()
      */
     public static Address<?> unknown(CharSequence candidate) {
         return detect(candidate)
@@ -283,6 +284,7 @@ public abstract class Family<A extends Address<A>> {
      * @param address an IPv4 or IPv6 address in byte form
      * @return parsed address
      * @throws ParseException if array is not 4 (V4) or 16 (V6) bytes in length
+     * @see Address#toBytes()
      */
     public static Address<?> unknown(byte... address) {
         int v4len = V4Consts.WIDTH / Byte.SIZE;
