@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,8 @@ class RangeArrayIteratorTest {
 
     @Test
     void next() {
-        V4 one = v4().fromUint(1);
-        V4 three = v4().fromUint(3);
+        V4 one = v4().parse(1);
+        V4 three = v4().parse(3);
         {
             Range<V4> range = AddressSets.range(one, three);
             List<V4> actual = new ArrayList<>();

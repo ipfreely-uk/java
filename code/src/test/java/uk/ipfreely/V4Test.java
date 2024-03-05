@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import org.junit.jupiter.api.Test;
@@ -29,11 +31,11 @@ public class V4Test extends IpTests<V4> {
 
   @Test
   public void testArithmetic() {
-    testArithmetic(v4(), v4().fromUint(1),
-      v4().fromUint(0xFFFFFFFF),
-      v4().fromUint(0xFFFF),
-      v4().fromUint(0x1FFFF),
-      v4().fromUint(0));
+    testArithmetic(v4(), v4().parse(1),
+      v4().parse(0xFFFFFFFF),
+      v4().parse(0xFFFF),
+      v4().parse(0x1FFFF),
+      v4().parse(0));
   }
 
   @Test
@@ -119,21 +121,21 @@ public class V4Test extends IpTests<V4> {
 
   @Test
   public void testLeftShift() {
-    assertEquals(v4().fromUint(0b10), v4().fromUint(1).shift(-1));
-    assertEquals(v4().fromUint(0b100), v4().fromUint(1).shift(-2));
-    assertEquals(v4().fromUint(0), v4().fromUint(0b10000000_00000000_00000000_00000000).shift(-1));
+    assertEquals(v4().parse(0b10), v4().parse(1).shift(-1));
+    assertEquals(v4().parse(0b100), v4().parse(1).shift(-2));
+    assertEquals(v4().parse(0), v4().parse(0b10000000_00000000_00000000_00000000).shift(-1));
   }
 
   @Test
   public void testRightShift() {
-    assertEquals(v4().fromUint(0), v4().fromUint(1).shift(1));
-    assertEquals(v4().fromUint(1), v4().fromUint(0b10).shift(1));
+    assertEquals(v4().parse(0), v4().parse(1).shift(1));
+    assertEquals(v4().parse(1), v4().parse(0b10).shift(1));
   }
 
   @Test
   public void testNoShift() {
-    V4 zero = v4().fromUint(0);
-    V4 one = v4().fromUint(1);
+    V4 zero = v4().parse(0);
+    V4 one = v4().parse(1);
     assertSame(zero, zero.shift(10));
     assertSame(one, one.shift(0));
   }
@@ -141,7 +143,7 @@ public class V4Test extends IpTests<V4> {
   @Test
   public void testBits() {
     int expected = 0xFFFFFFFF;
-    V4 ip = v4().fromUint(expected);
+    V4 ip = v4().parse(expected);
     assertEquals(expected, (int) ip.lowBits());
     assertEquals(0L, ip.highBits());
   }
@@ -149,7 +151,7 @@ public class V4Test extends IpTests<V4> {
   @Test
   void equals() {
     EqualsTester.test(
-            v4().fromUint(1),
+            v4().parse(1),
             v4().max(),
             v4().min(),
             new Object()

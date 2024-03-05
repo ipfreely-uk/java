@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import java.math.BigInteger;
@@ -10,7 +12,7 @@ import static java.util.Arrays.asList;
 import static uk.ipfreely.Validation.validate;
 
 /**
- * IPv6 address value. Immutable 128-bit unsigned integer.
+ * Immutable IPv6 {@link Address} and 128-bit unsigned integer value.
  * Use {@link Family#v6()} to create values.
  */
 public final class V6 extends Address<V6> {

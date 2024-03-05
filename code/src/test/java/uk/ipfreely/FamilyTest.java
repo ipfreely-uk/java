@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import org.junit.jupiter.api.Test;
@@ -14,25 +16,25 @@ public class FamilyTest {
 
   @Test
   public void testFamilies() {
-    assertEquals(V4.class, Family.v4().ipType());
-    assertEquals(V6.class, Family.v6().ipType());
+    assertEquals(V4.class, Family.v4().type());
+    assertEquals(V6.class, Family.v6().type());
   }
 
   @Test
   public void testParsing() {
-    assertSame(V4.class, Family.parseUnknown("127.0.0.1").getClass());
-    assertSame(V6.class, Family.parseUnknown("::").getClass());
-    assertSame(V6.class, Family.parseUnknown("A::").getClass());
-    assertSame(V6.class, Family.parseUnknown("a::").getClass());
+    assertSame(V4.class, Family.unknown("127.0.0.1").getClass());
+    assertSame(V6.class, Family.unknown("::").getClass());
+    assertSame(V6.class, Family.unknown("A::").getClass());
+    assertSame(V6.class, Family.unknown("a::").getClass());
 
-    IpTests.expect("Not an IP address test", ParseException.class, () -> Family.parseUnknown("foobar"));
-    IpTests.expect("Not an IP address test", ParseException.class, () -> Family.parseUnknown("z"));
+    IpTests.expect("Not an IP address test", ParseException.class, () -> Family.unknown("foobar"));
+    IpTests.expect("Not an IP address test", ParseException.class, () -> Family.unknown("z"));
 
     for(String addr : Addresses.valid(Family.v4())) {
-      assertSame(V4.class, Family.parseUnknown(addr).getClass());
+      assertSame(V4.class, Family.unknown(addr).getClass());
     }
     for(String addr : Addresses.valid(Family.v6())) {
-      assertSame(V6.class, Family.parseUnknown(addr).getClass());
+      assertSame(V6.class, Family.unknown(addr).getClass());
     }
 
     for(String addr : Addresses.invalid(Family.v4())) {
@@ -46,9 +48,9 @@ public class FamilyTest {
   @Test
   public void testFromBytes() {
     V4 ip4 = Family.v4().parse("127.1.2.3");
-    assertEquals(ip4, Family.parseUnknown(ip4.toBytes()));
+    assertEquals(ip4, Family.unknown(ip4.toBytes()));
     V6 ip6 = v6().parse("fe80::dead:1");
-    assertEquals(ip6, Family.parseUnknown(ip6.toBytes()));
+    assertEquals(ip6, Family.unknown(ip6.toBytes()));
   }
 
   @Test
@@ -84,5 +86,11 @@ public class FamilyTest {
       Matcher m = p.matcher(candidate);
       assertFalse(m.matches());
     }
+  }
+
+  @Test
+  void subnets() {
+    assertEquals(Family.v4().subnets().toString(), Family.v4().subnets().toString());
+    assertSame(Family.v4().subnets().family(), Family.v4().subnets().family());
   }
 }

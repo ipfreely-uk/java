@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.examples;
 
 import uk.ipfreely.Address;
@@ -46,7 +48,7 @@ public final class Subnets {
         }
         Family<A> family = pick.family();
         int bits = maskBitsFor(family, desiredSize);
-        A mask = family.masks().get(bits);
+        A mask = family.subnets().masks().get(bits);
         A first = mask.or(pick);
         return Optional.of(AddressSets.block(first, bits));
     }
@@ -94,7 +96,7 @@ public final class Subnets {
      * @return mask bits
      */
     public static <A extends Address<A>> int maskBitsFor(Family<A> family, A size) {
-        List<A> masks = family.masks();
+        List<A> masks = family.subnets().masks();
         for (int i = masks.size() - 1; i >= 0; i--) {
             if (size.compareTo(masks.get(i).not()) <= 0) {
                 return i;

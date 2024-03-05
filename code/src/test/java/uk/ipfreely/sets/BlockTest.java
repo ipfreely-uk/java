@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
@@ -79,7 +81,7 @@ public class BlockTest {
   @Test
   void subnetToIndividualAddresses() {
     Block<V4> internet = AddressSets.block(v4().parse("192.168.0.0"), v4().parse("192.168.0.255"));
-    long actual = internet.subnets(v4().bitWidth()).count();
+    long actual = internet.subnets(v4().width()).count();
     assertEquals(256, actual);
   }
 

@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import java.math.BigInteger;
@@ -5,11 +7,15 @@ import java.net.InetAddress;
 
 /**
  * <p>
- *     An IP address value type.
+ *     Abstract IP address value type and immutable unsigned integer that supports arithmetic and bitwise operations.
  *     Use {@link Family} to create instances.
  * </p>
  * <p>
- *     Implementations are immutable positive integers that support arithmetic and bitwise ops.
+ *     Inheritance outside the package is not supported.
+ *     Future implementations may become
+ *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
+ *     Future implementations may become
+ *     <a href="https://openjdk.org/projects/valhalla/">value objects</a>.
  * </p>
  *
  * <h2>Usage Hints</h2>
@@ -74,17 +80,9 @@ import java.net.InetAddress;
  *         <li>{@link InetAddress#getAddress()}</li>
  *         <li>{@link InetAddress#getByAddress(byte[])}</li>
  *         <li>{@link #toBytes()}</li>
- *         <li>{@link Family#parseUnknown(byte...)}</li>
+ *         <li>{@link Family#unknown(byte...)}</li>
  *         <li>{@link Family#parse(byte...)}</li>
  * </ul>
- *
- * <p>
- *     Inheritance outside the package is not supported.
- *     Future implementations may become
- *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
- *     Future implementations may become
- *     <a href="https://openjdk.org/projects/valhalla/">value objects</a>.
- * </p>
  *
  * @param <A> the address type
  */
@@ -130,7 +128,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     public abstract BigInteger toBigInteger();
 
     /**
-     * The address as bytes of length {@link Family#bitWidth()} / {@link Byte#SIZE}.
+     * The address as bytes of length {@link Family#width()} / {@link Byte#SIZE}.
      *
      * @return the address as a byte sequence, most significant bits first
      * @see InetAddress#getByAddress(byte[])
@@ -199,7 +197,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
      * @return the next IP address
      */
     public A next() {
-        return add(family().fromUint(1));
+        return add(family().parse(1));
     }
 
     /**
@@ -208,7 +206,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
      * @return the previous IP address
      */
     public A prev() {
-        return subtract(family().fromUint(1));
+        return subtract(family().parse(1));
     }
 
     /**
@@ -244,8 +242,8 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
 
     /**
      * Bitwise shift.
-     * Negative numbers more than {@link Family#bitWidth()} shift left.
-     * Positive numbers less than {@link Family#bitWidth()} shift right.
+     * Negative numbers more than {@link Family#width()} shift left.
+     * Positive numbers less than {@link Family#width()} shift right.
      *
      * @param bits number of bits to shift
      * @return shifted value

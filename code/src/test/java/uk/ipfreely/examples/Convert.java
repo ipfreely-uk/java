@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.examples;
 
 import uk.ipfreely.Address;
@@ -23,6 +25,6 @@ public final class Convert {
     }
 
     public static Address<?> toAddress(InetAddress address) {
-        return Family.parseUnknown(address.getAddress());
+        return Family.unknown(address.getAddress());
     }
 }

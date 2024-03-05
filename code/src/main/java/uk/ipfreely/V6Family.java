@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import java.math.BigInteger;
@@ -26,8 +28,8 @@ final class V6Family extends Family<V6> {
     }
 
     @Override
-    public V6 fromUint(int low) {
-        return V6.fromLongs(0, low & IpMath.INT_MASK);
+    public V6 parse(int unsigned) {
+        return V6.fromLongs(0, unsigned & IpMath.INT_MASK);
     }
 
     @Override
@@ -110,7 +112,7 @@ final class V6Family extends Family<V6> {
 
     @Override
     public BigInteger maskAddressCount(int maskBits) {
-        validate(maskBits >= 0 && maskBits <= bitWidth(), "Invalid mask size", maskBits, IllegalArgumentException::new);
+        validate(maskBits >= 0 && maskBits <= width(), "Invalid mask size", maskBits, IllegalArgumentException::new);
 
         return InternedMaskSizes.v6(maskBits);
     }
@@ -136,12 +138,12 @@ final class V6Family extends Family<V6> {
     }
 
     @Override
-    public int bitWidth() {
+    public int width() {
         return V6Consts.WIDTH;
     }
 
     @Override
-    public Class<V6> ipType() {
+    public Class<V6> type() {
         return V6.class;
     }
 

@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import java.math.BigInteger;
@@ -7,9 +9,11 @@ import static uk.ipfreely.Validation.validate;
 
 /**
  * <p>
- *  Two instances can be obtained via {@link #v4()} and {@link #v6()}.
- *  These represent <a href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
- *  and <a href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>.
+ *  {@link Address} factory and utility type for
+ *  <a href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
+ *  and
+ *  <a href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>
+ *  obtained via {@link #v4()} and {@link #v6()}.
  * </p>
  * <p>
  *     Inheritance outside the package is not supported.
@@ -21,6 +25,8 @@ import static uk.ipfreely.Validation.validate;
  * @param <A> {@link V4} or {@link V6}
  */
 public abstract class Family<A extends Address<A>> {
+    private final Subnets<A> subnets = new Subnets<>(this);
+
     Family() {}
 
     /**
@@ -103,27 +109,37 @@ public abstract class Family<A extends Address<A>> {
     public abstract A parse(BigInteger address);
 
     /**
-     * Convenience method for simple arithmetic operations.
+     * Convenience method for creating {@link Address} from number.
      * All values of <code>int</code> are valid for this method.
+     * Every value in the IPv4 range can be created with this method.
      *
-     * @param low the low bits treated as unsigned integer
+     * @param unsigned integer treated as unsigned value
      * @return IP address
      */
-    public abstract A fromUint(int low);
+    public abstract A parse(int unsigned);
 
     /**
      * Width of the IP address type in bits.
      *
      * @return 32 (V4) or 128 (V6)
      */
-    public abstract int bitWidth();
+    public abstract int width();
 
     /**
      * IP address type.
      *
-     * @return either the V4 or V6 IP address class
+     * @return {@link V4}.class or {@link V6}.class
      */
-    public abstract Class<A> ipType();
+    public abstract Class<A> type();
+
+    /**
+     * Subnet utilities.
+     *
+     * @return subnet methods for this family
+     */
+    public Subnets<A> subnets() {
+        return subnets;
+    }
 
     /**
      * <p>
@@ -141,7 +157,7 @@ public abstract class Family<A extends Address<A>> {
      *
      * @return all possible network address masks
      */
-    public abstract List<A> masks();
+    abstract List<A> masks();
 
     /**
      * Zero.
@@ -172,17 +188,26 @@ public abstract class Family<A extends Address<A>> {
      * </p>
      * <p>
      *     The return value can be used as the mask index for {@link #masks()}.
-     *     Valid mask sizes are from zero to {@link #bitWidth()} inclusive.
+     *     Valid mask sizes are from zero to {@link #width()} inclusive.
      * </p>
      * <p>
      *     {@code -1} is returned if the arguments do not form a valid block.
      * </p>
+     * <pre><code>
+     *     // EXAMPLE
+     *     V4 first = Family.v4().parse("127.0.0.0");
+     *     V4 last = Family.v4().parse("127.255.255.255");
+     *     // 8
+     *     int maskBits = Family.v4().maskBitsForBlock(first, last);
+     *     // 255.0.0.0
+     *     V4 mask = Family.v4().masks().get(maskBits);
+     * </code></pre>
      *
      * @param first the first element in an IP range
      * @param last  the last element in an IP range
      * @return mask size in bits or -1 if this is not a valid CIDR block range
      */
-    public abstract int maskBitsForBlock(A first, A last);
+    abstract int maskBitsForBlock(A first, A last);
 
     /**
      * The number of addresses for the number of bits in a CIDR notation mask.
@@ -190,12 +215,30 @@ public abstract class Family<A extends Address<A>> {
      *
      * @param maskBits between 0 and the family width in bits (inclusive)
      * @return the count of addresses for a given subnet size
-     * @see #bitWidth()
+     * @see #width()
      */
-    public abstract BigInteger maskAddressCount(int maskBits);
+    abstract BigInteger maskAddressCount(int maskBits);
 
     /**
-     * Regular expression for detecting IP addresses.
+     * <p>Regular expression for detecting IP addresses in this family.</p>
+     * <pre><code>
+     *     // EXAMPLE
+     *     String startOfString = "^";
+     *     String endOfString = "$";
+     *     String or = "|";
+     *     String v4r = Family.v4().regex();
+     *     String v6r = Family.v6().regex();
+     *     Pattern addressPattern = Pattern.compile(startOfString + v4r + or + v6r + endOfString);
+     *
+     *     for (String candidate : new String[]{"172.0.0.1", "foo", "::1",}) {
+     *         Matcher m = addressPattern.matcher(candidate);
+     *         if (m.matches()) {
+     *             System.out.println(Family.unknown(candidate).family() + "\t" + candidate);
+     *         } else {
+     *             System.out.println("none\t" + candidate);
+     *         }
+     *     }
+     * </code></pre>
      *
      * @return regular expression for matching address patterns
      * @see java.util.regex.Pattern
@@ -203,14 +246,14 @@ public abstract class Family<A extends Address<A>> {
     public abstract String regex();
 
     /**
-     * Use when IP address family is not known.
+     * Uses heuristics to detect IP address family and calls {@link #parse(CharSequence)}.
      *
      * @param candidate IP address
      * @return instance of {@link V4} or {@link V6}
      * @throws ParseException on invalid address
-     * @see #parse(CharSequence)
+     * @see Address#toString()
      */
-    public static Address<?> parseUnknown(CharSequence candidate) {
+    public static Address<?> unknown(CharSequence candidate) {
         return detect(candidate)
                 .parse(candidate);
     }
@@ -238,13 +281,14 @@ public abstract class Family<A extends Address<A>> {
     }
 
     /**
-     * If the family is known use {@link Family#parse(byte...)} instead.
+     * Uses array length to detect IP address family and calls {@link #parse(byte...)}.
      *
      * @param address an IPv4 or IPv6 address in byte form
      * @return parsed address
      * @throws ParseException if array is not 4 (V4) or 16 (V6) bytes in length
+     * @see Address#toBytes()
      */
-    public static Address<?> parseUnknown(byte... address) {
+    public static Address<?> unknown(byte... address) {
         int v4len = V4Consts.WIDTH / Byte.SIZE;
         int v6len = V6Consts.WIDTH / Byte.SIZE;
         boolean v4 = v4len == address.length;

@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Address;
@@ -11,7 +13,7 @@ import java.util.stream.Stream;
  *     Set of zero to {@link Family#max()} {@link Address}es.
  * </p>
  * <p>
- *     Contiguous ranges MUST implement {@link Range}.
+ *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
  *     Implementations MUST be immutable.
  *     {@link #iterator()} MUST produce values from least to greatest.
  * </p>

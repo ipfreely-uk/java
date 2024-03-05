@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
@@ -19,8 +21,8 @@ class AddressSetsTest {
 
     @Test
     void of() {
-        Range<V4> zero = AddressSets.address(v4().fromUint(0));
-        Range<V4> ten = AddressSets.address(v4().fromUint(10));
+        Range<V4> zero = AddressSets.address(v4().parse(0));
+        Range<V4> ten = AddressSets.address(v4().parse(10));
         Range<V4> oneToNine = AddressSets.range(zero.first().next(), ten.first().prev());
 
         {
@@ -39,7 +41,7 @@ class AddressSetsTest {
             assertEquals(reverse, actual);
         }
         {
-            AddressSet<V4> actual = AddressSets.of(zero, AddressSets.address(v4().fromUint(0)));
+            AddressSet<V4> actual = AddressSets.of(zero, AddressSets.address(v4().parse(0)));
 
             assertEquals(1, actual.ranges().count());
             assertEquals(BigInteger.ONE, actual.size());
@@ -48,11 +50,11 @@ class AddressSetsTest {
 
     @Test
     void equality() {
-        Range<V4> zero = AddressSets.address(v4().fromUint(0));
-        Range<V4> ten = AddressSets.address(v4().fromUint(10));
+        Range<V4> zero = AddressSets.address(v4().parse(0));
+        Range<V4> ten = AddressSets.address(v4().parse(10));
         Range<V4> oneToNine = AddressSets.range(zero.first().next(), ten.first().prev());
-        Range<V4> hundred = AddressSets.address(v4().fromUint(100));
-        Range<V4> eleven = AddressSets.address(v4().fromUint(11));
+        Range<V4> hundred = AddressSets.address(v4().parse(100));
+        Range<V4> eleven = AddressSets.address(v4().parse(11));
 
         EqualsTester.test(
                 new Object(),
@@ -84,7 +86,7 @@ class AddressSetsTest {
     void guarded() {
         Block<V6> zero = AddressSets.address(v6().min());
         Block<V6> fe80 = AddressSets.parseCidr(v6(), "fe80::/16");
-        Range<V6> range = AddressSets.range(v6().fromUint(10), v6().fromUint(999));
+        Range<V6> range = AddressSets.range(v6().parse(10), v6().parse(999));
         AddressSet<V6> array = AddressSets.of(zero, fe80, range);
         {
             AddressSet<V6> actual = AddressSets.guarded((AddressSet<V6>) fe80, v6().min());
@@ -152,15 +154,15 @@ class AddressSetsTest {
         Range<V4> r = AddressSets.address(v4().min());
         for (int i = 0; i < 1000; i++) {
             list.add(r);
-            r = AddressSets.address(r.first().add(v4().fromUint(10)));
+            r = AddressSets.address(r.first().add(v4().parse(10)));
         }
         return AddressSets.from(list);
     }
 
     @Test
     void sets() {
-        V6 hundred = v6().fromUint(100);
-        Block<V6> one = AddressSets.address(v6().fromUint(1));
+        V6 hundred = v6().parse(100);
+        Block<V6> one = AddressSets.address(v6().parse(1));
         Block<V6> fe80 = AddressSets.block(v6().parse("fe80::"), 16);
         Range<V6> r = AddressSets.range(v6().parse("a::10"), v6().parse("a::110"));
         AddressSet<V6> array = AddressSets.of(one, fe80, r);

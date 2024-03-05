@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Address;
@@ -32,7 +34,7 @@ final class RangeSpliterator<A extends Address<A>> implements Spliterator<A> {
         if (current == null || current.equals(last)) {
             return null;
         }
-        A two = current.family().fromUint(2);
+        A two = current.family().parse(2);
         A size = last.subtract(current);
         A mid = size.divide(two).add(current);
         // must return prefix because ORDERED

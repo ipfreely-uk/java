@@ -1,3 +1,5 @@
+// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Address;
@@ -11,7 +13,9 @@ import static uk.ipfreely.sets.Validation.validate;
 
 /**
  * <p>
- *     <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of IP addresses.
+ *     {@link Range} that forms
+ *     <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of
+ *     IP {@link Address}es.
  * </p>
  * <p>Example: {@code "192.168.0.0/24"}.</p>
  * <ul>
@@ -24,6 +28,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <p>See {@link AddressSet} for implementation contract.</p>
  *
  * @param <A> the type for the IP version
+ * @see Family#subnets()
  */
 public interface Block<A extends Address<A>> extends Range<A> {
 
@@ -46,7 +51,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
      */
     default int maskBits() {
         A first = first();
-        return first.family().maskBitsForBlock(first, last());
+        return first.family().subnets().maskBits(first, last());
     }
 
     /**
@@ -62,7 +67,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
      * @return the mask IP
      */
     default A mask() {
-        return first().family().masks().get(maskBits());
+        return first().family().subnets().masks().get(maskBits());
     }
 
     /**
@@ -71,7 +76,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
      * @return block size
      */
     default BigInteger size() {
-        return first().family().maskAddressCount(maskBits());
+        return first().family().subnets().count(maskBits());
     }
 
     /**
@@ -84,9 +89,9 @@ public interface Block<A extends Address<A>> extends Range<A> {
         A first = first();
         Family<A> family = first.family();
         validate(maskBits >= maskBits(), "Not enough mask bits", maskBits, IllegalArgumentException::new);
-        validate(maskBits <= family.bitWidth(), "Too many mask bits", maskBits, IllegalArgumentException::new);
+        validate(maskBits <= family.width(), "Too many mask bits", maskBits, IllegalArgumentException::new);
 
-        A size = family.masks().get(maskBits).not();
+        A size = family.subnets().masks().get(maskBits).not();
         return StreamSupport.stream(new SubnetSpliterator<>(first, last(), size), false);
     }
 }
