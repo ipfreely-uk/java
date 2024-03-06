@@ -9,7 +9,6 @@ import uk.ipfreely.ParseException;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static uk.ipfreely.sets.Validation.validate;
 
@@ -301,148 +300,186 @@ public final class AddressSets {
         return (Block<A>) actual;
     }
 
-    /**
-     * <p>
-     *     Guards {@link AddressSet} against excessive iteration.
-     *     See {@link ExcessiveIterationException} for details.
-     * </p>
-     * <p>
-     *     If {@link AddressSet#size()} is less than the guard's {@link Address#toBigInteger()} value
-     *     the unguarded set is returned.
-     * </p>
-     *
-     * @param set set to guard
-     * @param guard guard value
-     * @return guarded set
-     * @param <A> address type
-     */
-    public static <A extends Address<A>> AddressSet<A> guarded(AddressSet<A> set, A guard) {
-        if (set instanceof Range) {
-            return guarded((Range<A>) set, guard);
-        }
-        if (set instanceof GuardedSet) {
-            GuardedSet<A> gs = (GuardedSet<A>) set;
-            if (gs.guard.equals(guard)) {
-                return set;
-            }
-            set = gs.delegate;
-        }
-        if (Compare.less(set.size(), guard.toBigInteger().add(BigInteger.ONE))) {
-            return set;
-        }
-        return new GuardedSet<>(set, guard);
-    }
+//    /**
+//     * <p>
+//     *     Guards {@link AddressSet} against excessive iteration.
+//     *     See {@link ExcessiveIterationException} for details.
+//     * </p>
+//     * <p>
+//     *     If {@link AddressSet#size()} is less than the guard's {@link Address#toBigInteger()} value
+//     *     the unguarded set is returned.
+//     * </p>
+//     *
+//     * @param set set to guard
+//     * @param guard guard value
+//     * @return guarded set
+//     * @param <A> address type
+//     */
+//    public static <A extends Address<A>> AddressSet<A> guarded(AddressSet<A> set, A guard) {
+//        if (set instanceof Range) {
+//            return guarded((Range<A>) set, guard);
+//        }
+//        if (set instanceof GuardedSet) {
+//            GuardedSet<A> gs = (GuardedSet<A>) set;
+//            if (gs.guard.equals(guard)) {
+//                return set;
+//            }
+//            set = gs.delegate;
+//        }
+//        if (Compare.less(set.size(), guard.toBigInteger().add(BigInteger.ONE))) {
+//            return set;
+//        }
+//        return new GuardedSet<>(set, guard);
+//    }
 
-    /**
-     * <p>
-     *     {@link Range} version of {@link #guarded(AddressSet, Address)}.
-     * </p>
-     * <p>
-     *     If {@code range.last().subtract(range.first())} is less than or equal to the guard the range
-     *     returned unguarded.
-     * </p>
-     *
-     * @param range range to guard
-     * @param guard guard value
-     * @return guarded range if block exceeds range
-     * @param <A> address type
-     */
-    public static <A extends Address<A>> Range<A> guarded(Range<A> range, A guard) {
-        if (range instanceof Block) {
-            return guarded((Block<A>) range, guard);
-        }
-        if (range instanceof GuardedRange && ((GuardedRange<A>) range).guard.equals(guard)) {
-            return range;
-        }
-        if (Compare.lessOrEqual(range.last().subtract(range.first()), guard)) {
-            if (range instanceof GuardedRange) {
-                return range(range.first(), range.last());
-            }
-            return range;
-        }
-        return new GuardedRange<>(range.first(), range.last(), guard);
-    }
+//    /**
+//     * <p>
+//     *     {@link Range} version of {@link #guarded(AddressSet, Address)}.
+//     * </p>
+//     * <p>
+//     *     If {@code range.last().subtract(range.first())} is less than or equal to the guard the range
+//     *     returned unguarded.
+//     * </p>
+//     *
+//     * @param range range to guard
+//     * @param guard guard value
+//     * @return guarded range if block exceeds range
+//     * @param <A> address type
+//     */
+//    public static <A extends Address<A>> Range<A> guarded(Range<A> range, A guard) {
+//        if (range instanceof Block) {
+//            return guarded((Block<A>) range, guard);
+//        }
+//        if (range instanceof GuardedRange && ((GuardedRange<A>) range).guard.equals(guard)) {
+//            return range;
+//        }
+//        if (Compare.lessOrEqual(range.last().subtract(range.first()), guard)) {
+//            if (range instanceof GuardedRange) {
+//                return range(range.first(), range.last());
+//            }
+//            return range;
+//        }
+//        return new GuardedRange<>(range.first(), range.last(), guard);
+//    }
 
-    /**
-     * {@link Block} version of {@link #guarded(Range, Address)}.
-     *
-     * @param block block to guard
-     * @param guard guard value
-     * @return guarded block if block exceeds guard
-     * @param <A> address type
-     */
-    public static <A extends Address<A>> Block<A> guarded(Block<A> block, A guard) {
-        if (block instanceof GuardedBlock && ((GuardedBlock<A>) block).guard.equals(guard)) {
-            return block;
-        }
-        if (Compare.lessOrEqual(block.last().subtract(block.first()), guard)) {
-            if (block instanceof GuardedBlock) {
-                return block(block.first(), block.last());
-            }
-            return block;
-        }
-        return new GuardedBlock<>(block.first(), block.last(), guard);
-    }
+//    /**
+//     * {@link Block} version of {@link #guarded(Range, Address)}.
+//     *
+//     * @param block block to guard
+//     * @param guard guard value
+//     * @return guarded block if block exceeds guard
+//     * @param <A> address type
+//     */
+//    public static <A extends Address<A>> Block<A> guarded(Block<A> block, A guard) {
+//        if (block instanceof GuardedBlock && ((GuardedBlock<A>) block).guard.equals(guard)) {
+//            return block;
+//        }
+//        if (Compare.lessOrEqual(block.last().subtract(block.first()), guard)) {
+//            if (block instanceof GuardedBlock) {
+//                return block(block.first(), block.last());
+//            }
+//            return block;
+//        }
+//        return new GuardedBlock<>(block.first(), block.last(), guard);
+//    }
 
-    private static class GuardedRange<A extends Address<A>> extends AbstractRange<A> {
-        private final A first;
-        private final A last;
-        final A guard;
+//    private static class GuardedRange<A extends Address<A>> extends AbstractRange<A> {
+//        private final A first;
+//        private final A last;
+//        final A guard;
+//
+//        GuardedRange(A first, A last, A guard) {
+//            this.first = first;
+//            this.last = last;
+//            this.guard = guard;
+//        }
+//
+//        @Override
+//        public A first() {
+//            return first;
+//        }
+//
+//        @Override
+//        public A last() {
+//            return last;
+//        }
+//
+//        @Override
+//        public Iterator<A> iterator() {
+//            return new GuardedIterator<>(first, last, guard);
+//        }
+//
+//        @Override
+//        public Spliterator<A> spliterator() {
+//            return new GuardedSpliterator<>(first, last, guard);
+//        }
+//
+//        @Override
+//        public Stream<A> stream() {
+//            return StreamSupport.stream(spliterator(), false);
+//        }
+//
+//        @Override
+//        public Stream<Block<A>> blocks() {
+//            Spliterator<Block<A>> s = new BlockSpliterator<>(first, last);
+//            Spliterator<Block<A>> gs = new GuardedGeneralSpliterator<>(s, this.guard, this::guardedBlock);
+//            return StreamSupport.stream(gs, false);
+//        }
+//
+//        private Block<A> guardedBlock(Block<A> b) {
+//            return new GuardedBlock<>(b.first(), b.last(), guard);
+//        }
+//    }
 
-        GuardedRange(A first, A last, A guard) {
-            this.first = first;
-            this.last = last;
-            this.guard = guard;
-        }
+//    private static final class GuardedBlock<A extends Address<A>> extends GuardedRange<A> implements Block<A> {
+//
+//        GuardedBlock(A first, A last, A guard) {
+//            super(first, last, guard);
+//        }
+//
+//        @Override
+//        public Stream<Block<A>> blocks() {
+//            return Stream.of(this);
+//        }
+//    }
 
-        @Override
-        public A first() {
-            return first;
-        }
+//    private static final class GuardedSet<A extends Address<A>> extends AbstractAddressSet<A> {
+//        private final AddressSet<A> delegate;
+//        private final A guard;
+//
+//        private GuardedSet(AddressSet<A> delegate, A guard) {
+//            this.delegate = delegate;
+//            this.guard = guard;
+//        }
+//
+//        @Override
+//        public Iterator<A> iterator() {
+//            return new GuardedDecoratingIterator<>(delegate.iterator(), guard);
+//        }
+//
+//        @Override
+//        public Spliterator<A> spliterator() {
+//            Spliterator<A> s = delegate.spliterator();
+//            return new GuardedGeneralSpliterator<>(s, guard, a -> a);
+//        }
+//
+//        @Override
+//        public Stream<Range<A>> ranges() {
+//            Spliterator<Range<A>> s = delegate.ranges().spliterator();
+//            Spliterator<Range<A>> guarded = new GuardedGeneralSpliterator<>(s, guard, this::range);
+//            return StreamSupport.stream(guarded, false);
+//        }
+//
+//        private Range<A> range(Range<A> r) {
+//            return AddressSets.guarded(r, guard);
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return delegate.toString();
+//        }
+//    }
 
-        @Override
-        public A last() {
-            return last;
-        }
-
-        @Override
-        public Iterator<A> iterator() {
-            return new GuardedIterator<>(first, last, guard);
-        }
-
-        @Override
-        public Spliterator<A> spliterator() {
-            return new GuardedSpliterator<>(first, last, guard);
-        }
-
-        @Override
-        public Stream<A> stream() {
-            return StreamSupport.stream(spliterator(), false);
-        }
-
-        @Override
-        public Stream<Block<A>> blocks() {
-            Spliterator<Block<A>> s = new BlockSpliterator<>(first, last);
-            Spliterator<Block<A>> gs = new GuardedGeneralSpliterator<>(s, this.guard, this::guardedBlock);
-            return StreamSupport.stream(gs, false);
-        }
-
-        private Block<A> guardedBlock(Block<A> b) {
-            return new GuardedBlock<>(b.first(), b.last(), guard);
-        }
-    }
-
-    private static final class GuardedBlock<A extends Address<A>> extends GuardedRange<A> implements Block<A> {
-
-        GuardedBlock(A first, A last, A guard) {
-            super(first, last, guard);
-        }
-
-        @Override
-        public Stream<Block<A>> blocks() {
-            return Stream.of(this);
-        }
-    }
 
     private static final class Empty<A extends Address<A>> extends AbstractAddressSet<A> {
         static final AddressSet<?> IMPL = new Empty<>();
@@ -501,40 +538,4 @@ public final class AddressSets {
         }
     }
 
-    private static final class GuardedSet<A extends Address<A>> extends AbstractAddressSet<A> {
-        private final AddressSet<A> delegate;
-        private final A guard;
-
-        private GuardedSet(AddressSet<A> delegate, A guard) {
-            this.delegate = delegate;
-            this.guard = guard;
-        }
-
-        @Override
-        public Iterator<A> iterator() {
-            return new GuardedDecoratingIterator<>(delegate.iterator(), guard);
-        }
-
-        @Override
-        public Spliterator<A> spliterator() {
-            Spliterator<A> s = delegate.spliterator();
-            return new GuardedGeneralSpliterator<>(s, guard, a -> a);
-        }
-
-        @Override
-        public Stream<Range<A>> ranges() {
-            Spliterator<Range<A>> s = delegate.ranges().spliterator();
-            Spliterator<Range<A>> guarded = new GuardedGeneralSpliterator<>(s, guard, this::range);
-            return StreamSupport.stream(guarded, false);
-        }
-
-        private Range<A> range(Range<A> r) {
-            return AddressSets.guarded(r, guard);
-        }
-
-        @Override
-        public String toString() {
-            return delegate.toString();
-        }
-    }
 }
