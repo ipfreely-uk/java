@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  * <p>
  *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
  *     Implementations MUST be immutable.
- *     {@link #iterator()} MUST produce values from least to greatest.
+ *     {@link AddressSet#iterator()} MUST produce values from least to greatest.
  * </p>
  * <table border="1">
  *     <caption>AddressSet Contracts</caption>
@@ -61,7 +61,8 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
 
     /**
      * <p>
-     *     {@link Range} Contract: other is instance of {@link Range} and {@link Range#first()} &amp; {@link Range#last()} equal.
+     *     {@link Range} Contract: other is {@link Range} instance and {@link Range#first()} &amp; {@link Range#last()}
+     *     are equal.
      * </p>
      * <p>
      *     General {@code AddressSet} Contract:
@@ -69,10 +70,10 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
      *     {@link #ranges()} are identical.
      * </p>
      *
-     * @param o other
+     * @param other other
      * @return true if equal
      */
-    boolean equals(Object o);
+    boolean equals(Object other);
 
     /**
      * <p>{@link Range} Contract: {@code first().hashCode() * 31 + last().hashCode()}</p>
