@@ -101,7 +101,7 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
     Stream<Range<A>> ranges();
 
     /**
-     * Checks for {@link Address} membership.
+     * Tests if {@link Range#contains(Address)} is true for any of the constituent {@link #ranges()}.
      *
      * @param address candidate
      * @return true if the given address is present

@@ -90,7 +90,7 @@ public class BlockTest {
   @Test
   void subnetItself() {
     Block<V4> internet = AddressSets.block(v4().min(), v4().max());
-    Optional<Block<V4>> actual = internet.subnets(internet.maskBits()).findAny();
+    Optional<Block<V4>> actual = internet.subnets(internet.maskSize()).findAny();
     assertTrue(actual.isPresent());
     assertEquals(internet, actual.get());
   }
@@ -99,7 +99,7 @@ public class BlockTest {
     String cidr = ip + "/" + mask;
     Block<?> block = AddressSets.parseCidr(cidr);
     assertEquals(parser.apply(ip), block.first());
-    assertEquals(mask, block.maskBits());
+    assertEquals(mask, block.maskSize());
   }
 
   @Test

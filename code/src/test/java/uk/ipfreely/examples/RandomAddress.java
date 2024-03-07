@@ -93,7 +93,7 @@ public final class RandomAddress {
 
     private static <A extends Address<A>> A fromBlock(Family<A> family, Block<A> block, A random) {
         A inverseMask = family.subnets().masks()
-                .get(block.maskBits())
+                .get(block.maskSize())
                 .not();
         return inverseMask.and(random)
                 .or(block.first());

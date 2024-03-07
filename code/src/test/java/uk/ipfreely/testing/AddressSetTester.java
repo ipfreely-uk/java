@@ -66,8 +66,8 @@ public final class AddressSetTester {
         int i = first.compareTo(b.last());
         assertTrue(i <= 0);
         assertTrue(b.cidrNotation().contains("/"));
-        assertTrue(b.maskBits() >= 0);
-        assertTrue(b.maskBits() <= first.family().width());
+        assertTrue(b.maskSize() >= 0);
+        assertTrue(b.maskSize() <= first.family().width());
         assertEquals(first, b.mask().and(first));
     }
 }

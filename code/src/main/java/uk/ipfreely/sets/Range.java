@@ -42,7 +42,7 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
     }
 
     /**
-     * The range size as a {@link BigInteger}.
+     * Number of {@link Address}es in range.
      *
      * @return number of addresses including {@link #first()} and {@link #last()}
      */

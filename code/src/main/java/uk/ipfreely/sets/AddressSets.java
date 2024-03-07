@@ -138,7 +138,7 @@ public final class AddressSets {
             }
 
             @Override
-            public int maskBits() {
+            public int maskSize() {
                 return first().family().width();
             }
 
