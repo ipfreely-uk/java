@@ -172,33 +172,33 @@ public final class V6 extends Address<V6> {
     }
 
     @Override
-    public V6 and(V6 mask) {
-        if (high == mask.high && low == mask.low) {
+    public V6 and(V6 operand) {
+        if (high == operand.high && low == operand.low) {
             return this;
         }
-        return fromLongs(mask.high & high, mask.low & low);
+        return fromLongs(operand.high & high, operand.low & low);
     }
 
     @Override
-    public V6 or(V6 mask) {
+    public V6 or(V6 operand) {
         if (isZero(this)) {
-            return mask;
+            return operand;
         }
-        if (equals(mask) || isZero(mask)) {
+        if (equals(operand) || isZero(operand)) {
             return this;
         }
-        return fromLongs(mask.high | high, mask.low | low);
+        return fromLongs(operand.high | high, operand.low | low);
     }
 
     @Override
-    public V6 xor(V6 mask) {
+    public V6 xor(V6 operand) {
         if (isZero(this)) {
-            return mask;
+            return operand;
         }
-        if (isZero(mask)) {
+        if (isZero(operand)) {
             return this;
         }
-        return fromLongs(mask.high ^ high, mask.low ^ low);
+        return fromLongs(operand.high ^ high, operand.low ^ low);
     }
 
     @Override

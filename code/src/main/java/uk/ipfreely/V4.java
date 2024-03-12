@@ -165,33 +165,33 @@ public final class V4 extends Address<V4> {
     }
 
     @Override
-    public V4 and(V4 mask) {
-        if (value == mask.value) {
+    public V4 and(V4 operand) {
+        if (value == operand.value) {
             return this;
         }
-        return fromInt(mask.value & value);
+        return fromInt(operand.value & value);
     }
 
     @Override
-    public V4 or(V4 mask) {
-        if (value == mask.value || mask.value == 0) {
+    public V4 or(V4 operand) {
+        if (value == operand.value || operand.value == 0) {
             return this;
         }
         if (value == 0) {
-            return mask;
+            return operand;
         }
-        return fromInt(mask.value | value);
+        return fromInt(operand.value | value);
     }
 
     @Override
-    public V4 xor(V4 mask) {
+    public V4 xor(V4 operand) {
         if (value == 0) {
-            return mask;
+            return operand;
         }
-        if (mask.value == 0) {
+        if (operand.value == 0) {
             return this;
         }
-        return fromInt(mask.value ^ value);
+        return fromInt(operand.value ^ value);
     }
 
     @Override

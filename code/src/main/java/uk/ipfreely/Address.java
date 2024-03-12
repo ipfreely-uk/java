@@ -212,26 +212,26 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     /**
      * Bitwise AND.
      *
-     * @param mask the mask address
+     * @param operand the mask address
      * @return the AND'd address
      */
-    public abstract A and(A mask);
+    public abstract A and(A operand);
 
     /**
      * Bitwise OR.
      *
-     * @param mask the mask address
+     * @param operand the mask address
      * @return the OR'd address
      */
-    public abstract A or(A mask);
+    public abstract A or(A operand);
 
     /**
      * Bitwise exclusive OR.
      *
-     * @param mask the mask address
+     * @param operand the mask address
      * @return the XOR'd address
      */
-    public abstract A xor(A mask);
+    public abstract A xor(A operand);
 
     /**
      * Bitwise NOT.
