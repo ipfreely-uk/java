@@ -39,7 +39,8 @@ public class V6Test extends IpTests<V6> {
       Family.v6().parse(0, 0xFFFFFFFFFFFFFFFFL),
       Family.v6().parse(1, 0xFFFFFFFFFFFFFFFFL),
       Family.v6().parse(0xFFFFFFFFFFFFFFFFL, 1),
-      Family.v6().parse(0, 0));
+      Family.v6().parse(0, 0),
+      Family.v6().parse(0, 2));
   }
 
   @Test

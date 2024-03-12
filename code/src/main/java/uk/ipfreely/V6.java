@@ -135,6 +135,12 @@ public final class V6 extends Address<V6> {
         if (isZero(this) || isZero(multiplicand)) {
             return fromLongs(0, 0);
         }
+        if (isTwo(this)) {
+            return multiplicand.add(multiplicand);
+        }
+        if (isTwo(multiplicand)) {
+            return this.add(this);
+        }
         // TODO: efficiency
         BigInteger val = toBigInteger().multiply(multiplicand.toBigInteger()).mod(SIZE);
         return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
@@ -252,6 +258,10 @@ public final class V6 extends Address<V6> {
 
     private static boolean isOne(V6 ip) {
         return ip.high == 0 && ip.low == 1;
+    }
+
+    private static boolean isTwo(V6 ip) {
+        return ip.high == 0 && ip.low == 2;
     }
 
     static V6 fromLongs(final long highBits, final long lowBits) {
