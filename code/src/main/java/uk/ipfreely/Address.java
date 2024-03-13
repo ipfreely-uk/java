@@ -211,6 +211,16 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
 
     /**
      * Bitwise AND.
+     * <pre><code>
+     *     // EXAMPLE
+     *     // LinkLocal is fe80::/10
+     *     private static V6 LL = Family.v6().parse("fe80::");
+     *     private static V6 MASK = Family.v6().subnets().masks().get(10);
+     *
+     *     public static boolean isLinkLocal(V6 candidate) {
+     *         return MASK.and(candidate).equals(LL);
+     *     }
+     * </code></pre>
      *
      * @param operand the mask address
      * @return the AND'd address
@@ -235,6 +245,18 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
 
     /**
      * Bitwise NOT.
+     * <pre><code>
+     *     // EXAMPLE
+     *     // Define 192.168.0.0/24
+     *     int maskBits = 24;
+     *     V4 networkAddress = Family.v4().parse("192.168.0.0");
+     *     // 255.255.255.0
+     *     V4 mask = Family.v4().subnets().masks().get(maskBits);
+     *     // 0.0.0.255
+     *     V4 inverseMask = mask.not()
+     *     // 192.168.0.255
+     *     V4 lastAddress = inverseMask.or(networkAddress);
+     * </code></pre>
      *
      * @return the inverse address
      */
