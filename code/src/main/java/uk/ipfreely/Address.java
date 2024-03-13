@@ -242,12 +242,21 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
 
     /**
      * Bitwise shift.
-     * Negative numbers more than {@link Family#width()} shift left.
-     * Positive numbers less than {@link Family#width()} shift right.
+     * Negative operands shift left.
+     * Positive operands shift right.
+     * Values exceeding {@link Family#width()} overflow as described
+     * in The Java Language Specification Java SE 21 Edition
+     * <a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.19">15.19. Shift Operators</a>.
+     * <pre><code>
+     *     // EXAMPLE
+     *     // 0.0.0.1
+     *     V4 one = Family.v4().parse(1);
+     *     // 0.0.0.2
+     *     V4 two = one.shift(-1);
+     * </code></pre>
      *
      * @param bits number of bits to shift
      * @return shifted value
-     * @throws IllegalArgumentException if bits outside range
      */
     public abstract A shift(int bits);
 }

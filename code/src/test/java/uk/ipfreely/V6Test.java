@@ -151,6 +151,10 @@ public class V6Test extends IpTests<V6> {
     assertEquals(v6().parse(2), v6().parse(1, 0).shift(63));
     assertEquals(v6().parse(1), v6().parse(0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L, 0).shift(127));
     assertEquals(v6().parse(0, 0x80_00_00_00_00_00_00_00L), v6().parse(1, 0).shift(1));
+    assertEquals(v6().parse(1, 0), v6().parse(0, 0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L).shift(-1));
+    assertEquals(v6().parse(0, 0b10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L), v6().parse(1, 0).shift(1));
+    assertEquals(v6().parse(1), v6().parse(1).shift(128));
+    assertEquals(v6().parse(1).shift(-1), v6().parse(1).shift(-129));
   }
 
   @Test

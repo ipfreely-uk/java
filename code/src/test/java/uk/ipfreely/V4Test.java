@@ -124,6 +124,9 @@ public class V4Test extends IpTests<V4> {
     assertEquals(v4().parse(0b10), v4().parse(1).shift(-1));
     assertEquals(v4().parse(0b100), v4().parse(1).shift(-2));
     assertEquals(v4().parse(0), v4().parse(0b10000000_00000000_00000000_00000000).shift(-1));
+    assertEquals(v4().parse(1), v4().parse(1).shift(32));
+    assertEquals(v4().parse(1), v4().parse(0b10).shift(33));
+    assertEquals(v4().parse(1), v4().parse(1).shift(-32));
   }
 
   @Test

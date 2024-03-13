@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
-import static uk.ipfreely.Validation.validate;
 
 /**
  * Immutable IPv6 {@link Address} and 128-bit unsigned integer value.
@@ -218,8 +217,6 @@ public final class V6 extends Address<V6> {
      */
     @Override
     public V6 shift(int bits) {
-        validate(bits > V6Consts.WIDTH * -1, "n must be > -128", bits, IllegalArgumentException::new);
-        validate(bits < V6Consts.WIDTH, "bits must be < 128", bits, IllegalArgumentException::new);
         if (bits == 0 || isZero(this)) {
             return this;
         }
@@ -236,7 +233,7 @@ public final class V6 extends Address<V6> {
         if (n > Long.SIZE) {
             return fromLongs(0, high >>> (n - Long.SIZE));
         }
-        long x = high << (V6Consts.WIDTH - n);
+        long x = high << (Long.SIZE - n);
         return fromLongs(high >>> n, (low >>> n) | x);
     }
 
@@ -248,7 +245,7 @@ public final class V6 extends Address<V6> {
         if (n > Long.SIZE) {
             return fromLongs(low << (n - Long.SIZE), 0);
         }
-        long x = low >>> (V6Consts.WIDTH - n);
+        long x = low >>> (Long.SIZE - n);
         return fromLongs((high << n) | x, low << n);
     }
 

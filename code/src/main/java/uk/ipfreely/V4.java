@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
-import static uk.ipfreely.Validation.validate;
 
 /**
  * Immutable IPv4 {@link Address} and 32-bit unsigned integer value.
@@ -208,8 +207,6 @@ public final class V4 extends Address<V4> {
         if (bits == 0 || value == 0) {
             return this;
         }
-        validate(bits > V4Consts.WIDTH * -1, "bits must be > -32", bits, IllegalArgumentException::new);
-        validate(bits < V4Consts.WIDTH, "bits must be < 32", bits, IllegalArgumentException::new);
         int shifted = bits < 0
                 ? value << -1 * bits
                 : value >>> bits;
