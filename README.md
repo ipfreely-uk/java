@@ -8,3 +8,7 @@ IP address manipulation library.
 ## Documentation
 
 [Latest JavaDoc](https://ipfreely-uk.github.io/java/)
+
+## Releases
+
+Libraries are published to [Maven Central](https://central.sonatype.com/artifact/uk.ipfreely/addresses/overview)
