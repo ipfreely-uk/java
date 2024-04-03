@@ -12,6 +12,7 @@ import static uk.ipfreely.sets.Validation.validate;
 
 final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<A>> {
 
+    // TODO: can replace with constant
     private static final double LOG_2 = Math.log(2.0);
 
     private A start;
