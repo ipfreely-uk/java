@@ -37,10 +37,8 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
         double x = log(size) / LOG_2;
         final int width = start.family().width();
         int maxDiff = (int) (width - Math.floor(x));
-        if (maxSize < maxDiff) {
-            maxSize = maxDiff;
-        }
-        Block<A> block = AddressSets.block(start, maxSize);
+        int maskSize = Math.max(maxSize, maxDiff);
+        Block<A> block = AddressSets.block(start, maskSize);
         A last = block.last();
         start = last.equals(end) ? null : last.next();
         action.accept(block);
@@ -77,7 +75,7 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
         long high = ip.highBits();
         return high == 0L
                 ? Long.bitCount(ip.lowBits())
-                : Long.bitCount(high) + 128;
+                : Long.bitCount(high) + 64;
     }
 
     private double toDouble(A ip) {
@@ -103,7 +101,7 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
             if ((high & 1) == 1) {
                 return width - n;
             }
-            low >>>= 1;
+            high >>>= 1;
         }
         return 0;
 

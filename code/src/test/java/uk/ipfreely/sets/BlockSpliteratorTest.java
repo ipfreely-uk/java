@@ -52,13 +52,63 @@ class BlockSpliteratorTest {
             acquired = sb.tryAdvance(actual::set);
             assertFalse(acquired);
         }
+        {
+            Range<V6> big = AddressSets.parseCidr(Family.v6(), "fe80::/64");
+            AtomicReference<Block<V6>> actual = new AtomicReference<>();
+
+            BlockSpliterator<V6> sb = new BlockSpliterator<>(big.first(), big.last().next());
+            boolean acquired = sb.tryAdvance(actual::set);
+            assertTrue(acquired);
+            assertEquals(big, actual.get());
+
+            acquired = sb.tryAdvance(actual::set);
+            assertTrue(acquired);
+            assertEquals(BigInteger.ONE, actual.get().size());
+            assertEquals(big.last().next(), actual.get().first());
+
+            acquired = sb.tryAdvance(actual::set);
+            assertFalse(acquired);
+        }
+        {
+            V6 one = Family.v6().parse(1);
+            V6 two = Family.v6().parse(2);
+            AtomicReference<Block<V6>> actual = new AtomicReference<>();
+
+            BlockSpliterator<V6> sb = new BlockSpliterator<>(one, two);
+            boolean acquired = sb.tryAdvance(actual::set);
+            assertTrue(acquired);
+            assertEquals(AddressSets.address(one), actual.get());
+
+            acquired = sb.tryAdvance(actual::set);
+            assertTrue(acquired);
+            assertEquals(AddressSets.address(two), actual.get());
+
+            acquired = sb.tryAdvance(actual::set);
+            assertFalse(acquired);
+        }
+        {
+            V4 one = Family.v4().parse(1);
+            V4 two = Family.v4().parse(2);
+            AtomicReference<Block<V4>> actual = new AtomicReference<>();
+
+            BlockSpliterator<V4> sb = new BlockSpliterator<>(one, two);
+            boolean acquired = sb.tryAdvance(actual::set);
+            assertTrue(acquired);
+            assertEquals(AddressSets.address(one), actual.get());
+
+            acquired = sb.tryAdvance(actual::set);
+            assertTrue(acquired);
+            assertEquals(AddressSets.address(two), actual.get());
+
+            acquired = sb.tryAdvance(actual::set);
+            assertFalse(acquired);
+        }
     }
 
     @Test
     void trySplit() {
         {
             Range<V4> subnet = AddressSets.parseCidr(Family.v4(), "192.168.0.0/24");
-            AtomicReference<Block<V4>> actual = new AtomicReference<>();
 
             BlockSpliterator<V4> sb = new BlockSpliterator<>(subnet.first(), subnet.last().next());
             Spliterator<Block<V4>> split = sb.trySplit();
@@ -67,7 +117,6 @@ class BlockSpliteratorTest {
         }
         {
             Range<V6> subnet = AddressSets.parseCidr(Family.v6(), "fe80::/24");
-            AtomicReference<Block<V6>> actual = new AtomicReference<>();
 
             BlockSpliterator<V6> sb = new BlockSpliterator<>(subnet.first(), subnet.last().next());
             Spliterator<Block<V6>> split = sb.trySplit();
