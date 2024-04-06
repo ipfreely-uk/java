@@ -156,9 +156,7 @@ public final class V6 extends Address<V6> {
         if (isTwo(multiplicand)) {
             return this.add(this);
         }
-        // TODO: efficiency
-        BigInteger val = toBigInteger().multiply(multiplicand.toBigInteger()).mod(SIZE);
-        return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
+        return V6Arithmetic.multiply(V6::fromLongs, high, low, multiplicand.high, multiplicand.low);
     }
 
     @Override
