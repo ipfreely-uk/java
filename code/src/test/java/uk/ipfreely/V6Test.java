@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;
 
 public class V6Test extends IpTests<V6> {
@@ -173,5 +174,35 @@ public class V6Test extends IpTests<V6> {
             v6().min(),
             new Object()
     );
+  }
+
+  @Test
+  void leadingZeros() {
+    assertEquals(128, v6().min().leadingZeros());
+    assertEquals(127, v6().parse(1).leadingZeros());
+    assertEquals(126, v6().parse(2).leadingZeros());
+    assertEquals(126, v6().parse(3).leadingZeros());
+    assertEquals(0, v6().max().leadingZeros());
+    byte[] addr = {0b01000000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(1, v6().parse(addr).leadingZeros());
+    byte[] addr2 = {0, 0, 0, 0, 0, 0, 0, 0, (byte) 0b10000000, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(64, v6().parse(addr2).leadingZeros());
+    byte[] addr3 = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(63, v6().parse(addr3).leadingZeros());
+  }
+
+  @Test
+  void trailingZeros() {
+    assertEquals(128, v6().min().trailingZeros());
+    assertEquals(0, v6().parse(1).trailingZeros());
+    assertEquals(1, v6().parse(2).trailingZeros());
+    assertEquals(0, v6().parse(3).trailingZeros());
+    assertEquals(0, v6().max().trailingZeros());
+    byte[] addr = {0b01000000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(126, v6().parse(addr).trailingZeros());
+    byte[] addr2 = {0, 0, 0, 0, 0, 0, 0, 0, (byte) 0b10000000, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(63, v6().parse(addr2).trailingZeros());
+    byte[] addr3 = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(64, v6().parse(addr3).trailingZeros());
   }
 }

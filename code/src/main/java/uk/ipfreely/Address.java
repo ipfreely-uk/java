@@ -150,6 +150,20 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     public abstract long lowBits();
 
     /**
+     * Similar to {@link Integer#numberOfLeadingZeros(int)}.
+     *
+     * @return number of zero bits preceding the highest-order ("leftmost") one-bit
+     */
+    public abstract int leadingZeros();
+
+    /**
+     * Similar to {@link Integer#numberOfTrailingZeros(int)}.
+     *
+     * @return number of zero bits following the lowest-order ("rightmost") one-bit
+     */
+    public abstract int trailingZeros();
+
+    /**
      * Addition with overflow.
      *
      * @param addend the summand

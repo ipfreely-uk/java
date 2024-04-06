@@ -105,6 +105,22 @@ public final class V6 extends Address<V6> {
     }
 
     @Override
+    public int leadingZeros() {
+        if (high == 0) {
+            return Long.numberOfLeadingZeros(low) + Long.SIZE;
+        }
+        return Long.numberOfLeadingZeros(high);
+    }
+
+    @Override
+    public int trailingZeros() {
+        if (low == 0) {
+            return Long.numberOfTrailingZeros(high) + Long.SIZE;
+        }
+        return Long.numberOfTrailingZeros(low);
+    }
+
+    @Override
     public V6 add(V6 addend) {
         if (isZero(this)) {
             return addend;

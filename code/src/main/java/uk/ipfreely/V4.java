@@ -124,6 +124,16 @@ public final class V4 extends Address<V4> {
     }
 
     @Override
+    public int leadingZeros() {
+        return Integer.numberOfLeadingZeros(value);
+    }
+
+    @Override
+    public int trailingZeros() {
+        return Integer.numberOfTrailingZeros(value);
+    }
+
+    @Override
     public V4 add(V4 addend) {
         if (value == 0) {
             return addend;

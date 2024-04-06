@@ -160,4 +160,24 @@ public class V4Test extends IpTests<V4> {
             new Object()
     );
   }
+
+  @Test
+  void leadingZeros() {
+    assertEquals(32, v4().min().leadingZeros());
+    assertEquals(31, v4().parse(1).leadingZeros());
+    assertEquals(30, v4().parse(2).leadingZeros());
+    assertEquals(30, v4().parse(3).leadingZeros());
+    assertEquals(0, v4().max().leadingZeros());
+    assertEquals(1, v4().parse(0b01000000_00000000_00000000_00000000).leadingZeros());
+  }
+
+  @Test
+  void TrailingZeros() {
+    assertEquals(32, v4().min().trailingZeros());
+    assertEquals(0, v4().parse(1).trailingZeros());
+    assertEquals(1, v4().parse(2).trailingZeros());
+    assertEquals(0, v4().parse(3).trailingZeros());
+    assertEquals(0, v4().max().trailingZeros());
+    assertEquals(6, v4().parse(0b01000000).trailingZeros());
+  }
 }
