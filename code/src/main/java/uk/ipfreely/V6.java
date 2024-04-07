@@ -169,6 +169,10 @@ public final class V6 extends Address<V6> {
         if (isOne(denominator)) {
             return this;
         }
+        if (high == 0 && denominator.high == 0) {
+            long newLow = Long.divideUnsigned(low, denominator.low);
+            return fromLongs(0, newLow);
+        }
         final boolean denominatorNotZero = !isZero(denominator);
         final int compare = compareTo(denominator);
         if (compare == 0 && denominatorNotZero) {
