@@ -182,7 +182,7 @@ public final class V6 extends Address<V6> {
             return fromLongs(0, 0);
         }
         // TODO: efficiency
-        BigInteger val = toBigInteger().divide(denominator.toBigInteger()).mod(SIZE);
+        BigInteger val = toBigInteger().divide(denominator.toBigInteger());
         return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
     }
 
