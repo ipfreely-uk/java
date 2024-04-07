@@ -134,6 +134,12 @@ public final class V4 extends Address<V4> {
     }
 
     @Override
+    public double doubleValue() {
+        final long MASK = 0xFFFFFFFFL;
+        return value & MASK;
+    }
+
+    @Override
     public V4 add(V4 addend) {
         if (value == 0) {
             return addend;

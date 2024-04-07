@@ -81,6 +81,12 @@ public abstract class IpTests<A extends Address<A>> {
     BigInteger size = max.add(BigInteger.ONE);
 
     for (A a : ips) {
+      {
+        double expected = a.toBigInteger().doubleValue();
+        double actual = a.doubleValue();
+        assertEquals(expected, actual, a.toString());
+      }
+
       for (A b : ips) {
         BigInteger ba = a.toBigInteger();
         BigInteger bb = b.toBigInteger();

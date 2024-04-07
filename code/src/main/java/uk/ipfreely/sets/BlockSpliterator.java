@@ -69,13 +69,7 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
         int blex = bitLen - MAX_DIGITS_2; // any value in 60..1023 works here
         if (blex > 0)
             ip = ip.shift(blex);
-        double res = Math.log(toDouble(ip));
+        double res = Math.log(ip.doubleValue());
         return blex > 0 ? res + blex * LOG_2 : res;
     }
-
-    private double toDouble(A ip) {
-        // TODO: something better
-        return ip.toBigInteger().doubleValue();
-    }
 }
-

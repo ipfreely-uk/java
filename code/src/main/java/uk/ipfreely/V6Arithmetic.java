@@ -23,67 +23,6 @@ final class V6Arithmetic {
         return factory.apply(high, low);
     }
 
-//    static <T> T multiply(final V6Function<T> factory, final long h1, final long l1, final long h2, final long l2) {
-//        long LONG_MASK = 0xFFFFFFFFL;
-//        int[] a1 = {i(h1, 32), i(h1, 0), i(l1, 32), i(l1, 0)};
-//        int[] a2 = {i(h2, 32), i(h2, 0), i(l2, 32), i(l2, 0)};
-//        int[] result = multiplyToLen(a1, a1.length, a2, a2.length, null);
-//        long high = ((result[result.length - 4] & LONG_MASK) << 32) + (result[result.length - 3] & LONG_MASK);
-//        long low = ((result[result.length - 2] & LONG_MASK) << 32) + (result[result.length - 1] & LONG_MASK);
-//        return factory.apply(high, low);
-//    }
-//
-//
-//    private static int[] multiplyToLen(int[] x, int xlen, int[] y, int ylen, int[] z) {
-//        long LONG_MASK = 0xFFFFFFFFL;
-//
-//        int xstart = xlen - 1;
-//        int ystart = ylen - 1;
-//
-//        if (z == null || z.length < (xlen+ ylen))
-//            z = new int[xlen+ylen];
-//
-//        long carry = 0;
-//        for (int j=ystart, k=ystart+1+xstart; j >= 0; j--, k--) {
-//            long product = (y[j] & LONG_MASK) *
-//                    (x[xstart] & LONG_MASK) + carry;
-//            z[k] = (int)product;
-//            carry = product >>> 32;
-//            print(z, k, "product", "y", j, "x", xstart, "+carry");
-//            print(z, k, "set", k, "product");
-//            print(z, k, "set carry product >>> 32");
-//        }
-//        print(z, xstart, "set", xstart, "carry");
-//        z[xstart] = (int)carry;
-//
-//        for (int i = xstart-1; i >= 0; i--) {
-//            System.out.println("carry=0");
-//            print(z, i, "set", "carry=0");
-//            carry = 0;
-//            for (int j=ystart, k=ystart+1+i; j >= 0; j--, k--) {
-//                long product = (y[j] & LONG_MASK) *
-//                        (x[i] & LONG_MASK) +
-//                        (z[k] & LONG_MASK) + carry;
-//                print(z, k, "product", "y", j, "x", i, "+carry", "+", "z", k);
-//                print(z, k, "set", k, "product");
-//                z[k] = (int)product;
-//                print(z, k, "set carry product >>> 32");
-//                carry = product >>> 32;
-//            }
-//            print(z, i, "set", i, "carry");
-//            z[i] = (int)carry;
-//        }
-//        return z;
-//    }
-//
-//    private static void print(int[] z, int idx, Object... msg) {
-//        int min = z.length - 4;
-//        if (idx >= min) {
-//            String s = Stream.of(msg).map(Objects::toString).collect(Collectors.joining(" "));
-//            System.out.println(idx + ">>" + s);
-//        }
-//    }
-
     static <T> T multiply(final V6Function<T> factory, final long h1, final long l1, final long h2, final long l2) {
         int x0 = i(h1, 32);
         int x1 = i(h1, 0);
@@ -154,5 +93,78 @@ final class V6Arithmetic {
 
     private static int i(long l, int shift) {
         return (int) (l >>> shift);
+    }
+
+    static double doubleValue(long high, long low) {
+        if (high == 0 && low >= 0) {
+            return (double) low;
+        }
+
+        final long LONG_MASK = 0xFFFFFFFFL;
+        final int SIGNIFICAND_WIDTH = 53;
+        final long SIGNIF_BIT_MASK = 0x000FFFFFFFFFFFFFL;
+        final int EXP_BIAS = 1023;
+
+        int mag0;
+        int mag1;
+        int mag2;
+
+        int magLen;
+        if (high == 0) {
+            magLen = 2;
+            mag0 = i(low, Integer.SIZE);
+            mag1 = i(low, 0);
+            mag2 = 0;
+        } else if ((high & 0xFFFFFFFF_00000000L) != 0) {
+            magLen = 4;
+            mag0 = i(high, Integer.SIZE);
+            mag1 = i(high, 0);
+            mag2 = i(low, Integer.SIZE);
+        } else {
+            magLen = 3;
+            mag0 = i(high, 0);
+            mag1 = i(low, Integer.SIZE);
+            mag2 = i(low, 0);
+        }
+
+        int lowestSetBit;
+        if (low == 0) {
+            lowestSetBit = Long.SIZE - Long.numberOfTrailingZeros(high) + Long.SIZE;
+        } else {
+            lowestSetBit = Long.SIZE - Long.numberOfTrailingZeros(low);
+        }
+
+        int bitLengthForInt = Integer.SIZE - Integer.numberOfLeadingZeros(mag0);
+        int exponent = ((magLen - 1) << 5) + bitLengthForInt - 1;
+
+        int shift = exponent - SIGNIFICAND_WIDTH;
+
+        int nBits = shift & 0x1f;
+        int nBits2 = 32 - nBits;
+
+        int highBits;
+        int lowBits;
+        if (nBits == 0) {
+            highBits = mag0;
+            lowBits = mag0;
+        } else {
+            highBits = mag0 >>> nBits;
+            lowBits = (mag0 << nBits2) | (mag1 >>> nBits);
+            if (highBits == 0) {
+                highBits = lowBits;
+                lowBits = (mag1 << nBits2) | (mag2 >>> nBits);
+            }
+        }
+
+        long twiceSignifFloor = ((highBits & LONG_MASK) << 32) | (lowBits & LONG_MASK);
+
+        long signifFloor = twiceSignifFloor >> 1;
+        signifFloor &= SIGNIF_BIT_MASK;
+
+        boolean increment = (twiceSignifFloor & 1) != 0 && ((signifFloor & 1) != 0 || lowestSetBit < shift);
+        long signifRounded = increment ? signifFloor + 1 : signifFloor;
+        long bits = (long) ((exponent + EXP_BIAS)) << (SIGNIFICAND_WIDTH - 1);
+        bits += signifRounded;
+        return Double.longBitsToDouble(bits);
     }
 }

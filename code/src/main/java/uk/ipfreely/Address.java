@@ -164,6 +164,13 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     public abstract int trailingZeros();
 
     /**
+     * As {@link Number#doubleValue()}.
+     *
+     * @return approximate value as double
+     */
+    public abstract double doubleValue();
+
+    /**
      * Addition with overflow.
      *
      * @param addend the summand

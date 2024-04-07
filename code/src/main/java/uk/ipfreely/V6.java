@@ -121,6 +121,11 @@ public final class V6 extends Address<V6> {
     }
 
     @Override
+    public double doubleValue() {
+        return V6Arithmetic.doubleValue(high, low);
+    }
+
+    @Override
     public V6 add(V6 addend) {
         if (isZero(this)) {
             return addend;
