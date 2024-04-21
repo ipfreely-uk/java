@@ -35,7 +35,8 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
         final int width = start.family().width();
         int maxSize = width - start.trailingZeros();
         A size = end.subtract(start).next();
-        double x = log(size) / LOG_2;
+        double l = Math.log(size.doubleValue());
+        double x = l / LOG_2;
         int maxDiff = (int) (width - Math.floor(x));
         int maskSize = Math.max(maxSize, maxDiff);
         Block<A> block = AddressSets.block(start, maskSize);
@@ -58,18 +59,5 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
     @Override
     public int characteristics() {
         return Spliterator.IMMUTABLE | Spliterator.DISTINCT | Spliterator.NONNULL;
-    }
-
-    private double log(A ip) {
-        // https://stackoverflow.com/a/7982137
-        int MAX_DIGITS_2 = 977;
-
-        int width = ip.family().width();
-        int bitLen = width - ip.leadingZeros();
-        int blex = bitLen - MAX_DIGITS_2; // any value in 60..1023 works here
-        if (blex > 0)
-            ip = ip.shift(blex);
-        double res = Math.log(ip.doubleValue());
-        return blex > 0 ? res + blex * LOG_2 : res;
     }
 }
