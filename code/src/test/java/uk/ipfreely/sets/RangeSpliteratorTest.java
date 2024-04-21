@@ -23,12 +23,18 @@ public class RangeSpliteratorTest {
           AddressSets.range(v4().parse(0), v4().parse(100)),
           AddressSets.range(v6().parse(0), v6().parse(100)),
           AddressSets.range(v4().parse("127.0.0.0"), v4().parse("127.0.0.255")),
+          AddressSets.range(v6().min(), v6().max()),
+          AddressSets.range(v6().min(), v6().max().divide(v6().parse(2))),
   };
 
   @Test
   public void testTryAdvance() {
     for (Range<?> range : ranges) {
-      List<?> ips = toList(range.spliterator());
+      Spliterator<?> spliterator = range.spliterator();
+      if (spliterator.estimateSize() > 10_000) {
+        continue;
+      }
+      List<?> ips = toList(spliterator);
       verify(range, ips);
     }
   }
@@ -37,6 +43,9 @@ public class RangeSpliteratorTest {
   void trySplit() {
     for (Range<?> range : ranges) {
       Spliterator<?> init = range.spliterator();
+      if (init.estimateSize() > 10_000) {
+        continue;
+      }
       Spliterator<?> prefix = init.trySplit();
       if (range.first().equals(range.last())) {
         assertNull(prefix);
