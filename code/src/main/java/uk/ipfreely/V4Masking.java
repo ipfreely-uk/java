@@ -12,8 +12,6 @@ final class V4Masking {
      * @return the mask size if this range can be a CIDR block or -1
      */
     static int maskSizeIfBlock(final int first, final int last) {
-        assert Integer.compareUnsigned(first, last) <= 0;
-
         int xor = first ^ last;
 
         if ((xor & first) != 0) {
