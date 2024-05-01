@@ -30,17 +30,8 @@ final class V4Family extends Family<V4> {
 
     @Override
     public V4 parse(CharSequence ip) {
-        // TODO: efficiency
-        final CharSequence[] arr = Chars.split(ip, '.');
-        validate(arr.length == 4, "Invalid address; Ip4 addresses are 0.0.0.0 to 255.255.255.255", ip, ParseException::new);
-        final byte[] bytes = new byte[4];
-        for (int i = 0; i < 4; i++) {
-            validate(arr[i].length() <= 3, "Invalid segment;  Ip4 addresses are 0.0.0.0 to 255.255.255.255", ip, ParseException::new);
-            final int n = parseUintSafe(arr[i].toString(), 10);
-            validate(n >= 0 && n <= IpMath.BYTE_MASK, "Invalid digit; Ip4 addresses are 0.0.0.0 to 255.255.255.255", ip, ParseException::new);
-            bytes[i] = (byte) n;
-        }
-        return parse(bytes);
+        int n = V4Strings.from(ip);
+        return V4.fromInt(n);
     }
 
     @Override
@@ -94,13 +85,5 @@ final class V4Family extends Family<V4> {
         // https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
         String v4seg = "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])";
         return  "(" + v4seg + "\\.){3,3}" + v4seg;
-    }
-
-    private static int parseUintSafe(final String i, int radix) {
-        try {
-            return Integer.parseInt(i, radix);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
     }
 }

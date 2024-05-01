@@ -60,7 +60,7 @@ final class V6Family extends Family<V6> {
             segments += arr.length;
             for (int i = 0; i < arr.length; i++) {
                 String segment = arr[i];
-                validate(!segment.isEmpty() && segment.length() <= 4, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
+                validateSegmentSize(segment, ip);
                 final int n = parseUintSafe(segment, 16);
                 validate(n >= 0 && n <= IpMath.SHORT_MASK, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
                 bytes[i * 2] = (byte) (n >> 8);
@@ -73,7 +73,7 @@ final class V6Family extends Family<V6> {
             final int offset = bytes.length - (arr.length * 2);
             for (int i = 0; i < arr.length; i++) {
                 String segment = arr[i];
-                validate(!segment.isEmpty() && segment.length() <= 4, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
+                validateSegmentSize(segment, ip);
                 final int n = parseUintSafe(segment, 16);
                 validate(n >= 0 && n <= IpMath.SHORT_MASK, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
                 bytes[offset + (i * 2)] = (byte) (n >> 8);
@@ -85,6 +85,11 @@ final class V6Family extends Family<V6> {
         validate(shortener >= 0 || segments == 8, "Invalid address; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
 
         return parse(bytes);
+    }
+
+    private static void validateSegmentSize(CharSequence segment, CharSequence ip) {
+        int len = segment.length();
+        validate(len != 0 && len <= 4, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
     }
 
     @Override

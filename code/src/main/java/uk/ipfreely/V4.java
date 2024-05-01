@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
-import static uk.ipfreely.Validation.validate;
 
 /**
  * Immutable IPv4 {@link Address} and 32-bit unsigned integer value.
@@ -125,6 +124,22 @@ public final class V4 extends Address<V4> {
     }
 
     @Override
+    public int leadingZeros() {
+        return Integer.numberOfLeadingZeros(value);
+    }
+
+    @Override
+    public int trailingZeros() {
+        return Integer.numberOfTrailingZeros(value);
+    }
+
+    @Override
+    public double doubleValue() {
+        final long MASK = 0xFFFFFFFFL;
+        return value & MASK;
+    }
+
+    @Override
     public V4 add(V4 addend) {
         if (value == 0) {
             return addend;
@@ -165,33 +180,33 @@ public final class V4 extends Address<V4> {
     }
 
     @Override
-    public V4 and(V4 mask) {
-        if (value == mask.value) {
+    public V4 and(V4 operand) {
+        if (value == operand.value) {
             return this;
         }
-        return fromInt(mask.value & value);
+        return fromInt(operand.value & value);
     }
 
     @Override
-    public V4 or(V4 mask) {
-        if (value == mask.value || mask.value == 0) {
+    public V4 or(V4 operand) {
+        if (value == operand.value || operand.value == 0) {
             return this;
         }
         if (value == 0) {
-            return mask;
+            return operand;
         }
-        return fromInt(mask.value | value);
+        return fromInt(operand.value | value);
     }
 
     @Override
-    public V4 xor(V4 mask) {
+    public V4 xor(V4 operand) {
         if (value == 0) {
-            return mask;
+            return operand;
         }
-        if (mask.value == 0) {
+        if (operand.value == 0) {
             return this;
         }
-        return fromInt(mask.value ^ value);
+        return fromInt(operand.value ^ value);
     }
 
     @Override
@@ -208,8 +223,6 @@ public final class V4 extends Address<V4> {
         if (bits == 0 || value == 0) {
             return this;
         }
-        validate(bits > V4Consts.WIDTH * -1, "bits must be > -32", bits, IllegalArgumentException::new);
-        validate(bits < V4Consts.WIDTH, "bits must be < 32", bits, IllegalArgumentException::new);
         int shifted = bits < 0
                 ? value << -1 * bits
                 : value >>> bits;

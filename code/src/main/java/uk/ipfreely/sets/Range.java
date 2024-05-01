@@ -11,7 +11,6 @@ import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static java.math.BigInteger.ONE;
 import static uk.ipfreely.sets.Validation.validate;
 
 /**
@@ -43,12 +42,13 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
     }
 
     /**
-     * The range size as a {@link BigInteger}.
+     * Number of {@link Address}es in range.
      *
-     * @return the number of addresses including first and last
+     * @return number of addresses including {@link #first()} and {@link #last()}
      */
     default BigInteger size() {
-        return last().subtract(first()).toBigInteger().add(ONE);
+        // can't overflow because internet must be Block
+        return last().subtract(first()).next().toBigInteger();
     }
 
     /**

@@ -7,6 +7,8 @@ import uk.ipfreely.Address;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static uk.ipfreely.sets.Validation.validate;
+
 final class RangeArrayIterator<A extends Address<A>> implements Iterator<A> {
 
     private final Range<A>[] ranges;
@@ -36,9 +38,7 @@ final class RangeArrayIterator<A extends Address<A>> implements Iterator<A> {
 
     @Override
     public A next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
+        validate(hasNext(), "Iterator exhausted", null, NoSuchElementException::new);
         return delegate.next();
     }
 }

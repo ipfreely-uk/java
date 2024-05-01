@@ -63,6 +63,8 @@ public class BlockTest {
     assertInstanceOf(Block.class, fe80_1);
     Block<V6> localhost = AddressSets.block(v6().parse("::1"), 128);
     assertInstanceOf(Block.class, localhost);
+
+    IpTests.expect("bad cidr", ParseException.class, () -> AddressSets.parseCidr(v6(), "168.0.0.1/32"));
   }
 
   @Test
@@ -88,7 +90,7 @@ public class BlockTest {
   @Test
   void subnetItself() {
     Block<V4> internet = AddressSets.block(v4().min(), v4().max());
-    Optional<Block<V4>> actual = internet.subnets(internet.maskBits()).findAny();
+    Optional<Block<V4>> actual = internet.subnets(internet.maskSize()).findAny();
     assertTrue(actual.isPresent());
     assertEquals(internet, actual.get());
   }
@@ -97,6 +99,14 @@ public class BlockTest {
     String cidr = ip + "/" + mask;
     Block<?> block = AddressSets.parseCidr(cidr);
     assertEquals(parser.apply(ip), block.first());
-    assertEquals(mask, block.maskBits());
+    assertEquals(mask, block.maskSize());
+  }
+
+  @Test
+  void badMask() {
+    assertThrowsExactly(IllegalArgumentException.class, () -> AddressSets.block(v6().min(), -1));
+    assertThrowsExactly(IllegalArgumentException.class, () -> AddressSets.block(v6().min(), 129));
+    assertThrowsExactly(IllegalArgumentException.class, () -> AddressSets.block(v4().min(), 33));
+    assertThrowsExactly(IllegalArgumentException.class, () -> AddressSets.block(v4().max(), 0));
   }
 }

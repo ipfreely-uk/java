@@ -6,7 +6,7 @@
 
     <groupId>uk.ipfreely</groupId>
     <artifactId>addresses</artifactId>
-    <version>8.0.1-alpha</version>
+    <version>8.0.3-alpha</version>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
@@ -243,6 +243,21 @@
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

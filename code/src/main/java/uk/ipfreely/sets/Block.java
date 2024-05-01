@@ -29,27 +29,27 @@ import static uk.ipfreely.sets.Validation.validate;
  *
  * @param <A> the type for the IP version
  * @see Family#subnets()
+ * @see uk.ipfreely.Subnets
  */
 public interface Block<A extends Address<A>> extends Range<A> {
 
     /**
      * The block in CIDR notation like {@code 192.168.100.0/24}.
-     * See <a href="https://tools.ietf.org/html/rfc4632">RFC4632</a>.
      *
      * @return canonical form that can be parsed
-     * @see #maskBits()
+     * @see #maskSize()
      */
     default String cidrNotation() {
-        return first().toString() + '/' + maskBits();
+        return first().toString() + '/' + maskSize();
     }
 
     /**
-     * The mask size of the block as defined by CIDR notation.
+     * Mask size in bits as defined by CIDR notation.
      * For {@code 172.26.0.0/16} this returns {@code 16}.
      *
      * @return mask size in bits
      */
-    default int maskBits() {
+    default int maskSize() {
         A first = first();
         return first.family().subnets().maskBits(first, last());
     }
@@ -67,31 +67,31 @@ public interface Block<A extends Address<A>> extends Range<A> {
      * @return the mask IP
      */
     default A mask() {
-        return first().family().subnets().masks().get(maskBits());
+        return first().family().subnets().masks().get(maskSize());
     }
 
     /**
-     * Size of the CIDR block.
+     * Number of {@link Address}es in block.
      *
      * @return block size
      */
     default BigInteger size() {
-        return first().family().subnets().count(maskBits());
+        return first().family().subnets().count(maskSize());
     }
 
     /**
-     * Divides the block into CIDR subnets.
+     * Divides the block into smaller subnets of given bit mask size.
      *
-     * @param maskBits CIDR mask size of the subnets
+     * @param size between {@link #maskSize()} and {@link Family#width()} inclusive
      * @return stream of subnet blocks
      */
-    default Stream<Block<A>> subnets(int maskBits) {
+    default Stream<Block<A>> subnets(int size) {
         A first = first();
         Family<A> family = first.family();
-        validate(maskBits >= maskBits(), "Not enough mask bits", maskBits, IllegalArgumentException::new);
-        validate(maskBits <= family.width(), "Too many mask bits", maskBits, IllegalArgumentException::new);
+        validate(size >= maskSize(), "Not enough mask bits", size, IllegalArgumentException::new);
+        validate(size <= family.width(), "Too many mask bits", size, IllegalArgumentException::new);
 
-        A size = family.subnets().masks().get(maskBits).not();
-        return StreamSupport.stream(new SubnetSpliterator<>(first, last(), size), false);
+        A s = family.subnets().masks().get(size).not();
+        return StreamSupport.stream(new SubnetSpliterator<>(first, last(), s), false);
     }
 }

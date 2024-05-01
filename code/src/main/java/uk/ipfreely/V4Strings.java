@@ -59,9 +59,10 @@ final class V4Strings {
         validate(address.charAt(0) != '.', "Leading dot", address, ParseException::new);
         validate(address.charAt(len - 1) != '.', "Trailing dot", address, ParseException::new);
 
-        // these two for validation
+        // these for validation
         char last = '-';
         int dots = 0;
+        int digits = 0;
         // values
         int result = 0;
         int quad = 0;
@@ -77,9 +78,13 @@ final class V4Strings {
                 result <<= Byte.SIZE;
                 result |= quad;
                 quad = 0;
+                digits = 0;
             } else {
+                digits++;
                 quad = quad * 10 + ch - '0';
             }
+            validate(digits < 4, "Too many digits", address, ParseException::new);
+            validate(quad <= 255, "Invalid segment", address, ParseException::new);
 
             last = ch;
         }

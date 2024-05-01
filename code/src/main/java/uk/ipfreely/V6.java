@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
-import static uk.ipfreely.Validation.validate;
 
 /**
  * Immutable IPv6 {@link Address} and 128-bit unsigned integer value.
@@ -106,6 +105,27 @@ public final class V6 extends Address<V6> {
     }
 
     @Override
+    public int leadingZeros() {
+        if (high == 0) {
+            return Long.numberOfLeadingZeros(low) + Long.SIZE;
+        }
+        return Long.numberOfLeadingZeros(high);
+    }
+
+    @Override
+    public int trailingZeros() {
+        if (low == 0) {
+            return Long.numberOfTrailingZeros(high) + Long.SIZE;
+        }
+        return Long.numberOfTrailingZeros(low);
+    }
+
+    @Override
+    public double doubleValue() {
+        return V6Arithmetic.doubleValue(high, low);
+    }
+
+    @Override
     public V6 add(V6 addend) {
         if (isZero(this)) {
             return addend;
@@ -135,15 +155,23 @@ public final class V6 extends Address<V6> {
         if (isZero(this) || isZero(multiplicand)) {
             return fromLongs(0, 0);
         }
-        // TODO: efficiency
-        BigInteger val = toBigInteger().multiply(multiplicand.toBigInteger()).mod(SIZE);
-        return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
+        if (isTwo(this)) {
+            return multiplicand.add(multiplicand);
+        }
+        if (isTwo(multiplicand)) {
+            return this.add(this);
+        }
+        return V6Arithmetic.multiply(V6::fromLongs, high, low, multiplicand.high, multiplicand.low);
     }
 
     @Override
     public V6 divide(V6 denominator) {
         if (isOne(denominator)) {
             return this;
+        }
+        if (high == 0 && denominator.high == 0) {
+            long newLow = Long.divideUnsigned(low, denominator.low);
+            return fromLongs(0, newLow);
         }
         final boolean denominatorNotZero = !isZero(denominator);
         final int compare = compareTo(denominator);
@@ -154,7 +182,7 @@ public final class V6 extends Address<V6> {
             return fromLongs(0, 0);
         }
         // TODO: efficiency
-        BigInteger val = toBigInteger().divide(denominator.toBigInteger()).mod(SIZE);
+        BigInteger val = toBigInteger().divide(denominator.toBigInteger());
         return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
     }
 
@@ -172,33 +200,33 @@ public final class V6 extends Address<V6> {
     }
 
     @Override
-    public V6 and(V6 mask) {
-        if (high == mask.high && low == mask.low) {
+    public V6 and(V6 operand) {
+        if (high == operand.high && low == operand.low) {
             return this;
         }
-        return fromLongs(mask.high & high, mask.low & low);
+        return fromLongs(operand.high & high, operand.low & low);
     }
 
     @Override
-    public V6 or(V6 mask) {
+    public V6 or(V6 operand) {
         if (isZero(this)) {
-            return mask;
+            return operand;
         }
-        if (equals(mask) || isZero(mask)) {
+        if (equals(operand) || isZero(operand)) {
             return this;
         }
-        return fromLongs(mask.high | high, mask.low | low);
+        return fromLongs(operand.high | high, operand.low | low);
     }
 
     @Override
-    public V6 xor(V6 mask) {
+    public V6 xor(V6 operand) {
         if (isZero(this)) {
-            return mask;
+            return operand;
         }
-        if (isZero(mask)) {
+        if (isZero(operand)) {
             return this;
         }
-        return fromLongs(mask.high ^ high, mask.low ^ low);
+        return fromLongs(operand.high ^ high, operand.low ^ low);
     }
 
     @Override
@@ -212,8 +240,6 @@ public final class V6 extends Address<V6> {
      */
     @Override
     public V6 shift(int bits) {
-        validate(bits > V6Consts.WIDTH * -1, "n must be > -128", bits, IllegalArgumentException::new);
-        validate(bits < V6Consts.WIDTH, "bits must be < 128", bits, IllegalArgumentException::new);
         if (bits == 0 || isZero(this)) {
             return this;
         }
@@ -230,7 +256,7 @@ public final class V6 extends Address<V6> {
         if (n > Long.SIZE) {
             return fromLongs(0, high >>> (n - Long.SIZE));
         }
-        long x = high << (V6Consts.WIDTH - n);
+        long x = high << (Long.SIZE - n);
         return fromLongs(high >>> n, (low >>> n) | x);
     }
 
@@ -242,7 +268,7 @@ public final class V6 extends Address<V6> {
         if (n > Long.SIZE) {
             return fromLongs(low << (n - Long.SIZE), 0);
         }
-        long x = low >>> (V6Consts.WIDTH - n);
+        long x = low >>> (Long.SIZE - n);
         return fromLongs((high << n) | x, low << n);
     }
 
@@ -252,6 +278,10 @@ public final class V6 extends Address<V6> {
 
     private static boolean isOne(V6 ip) {
         return ip.high == 0 && ip.low == 1;
+    }
+
+    private static boolean isTwo(V6 ip) {
+        return ip.high == 0 && ip.low == 2;
     }
 
     static V6 fromLongs(final long highBits, final long lowBits) {

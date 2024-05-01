@@ -14,16 +14,16 @@ abstract class AbstractRange<A extends Address<A>> implements Range<A> {
     /**
      * Contract implementation.
      *
-     * @param obj the value to test
+     * @param other the value to test
      * @return true when argument is a range and first and last are equal
      */
     @Override
-    public final boolean equals(Object obj) {
-        if (obj == this) {
+    public final boolean equals(Object other) {
+        if (other == this) {
             return true;
         }
-        if (obj instanceof Range) {
-            Range<?> r = (Range<?>) obj;
+        if (other instanceof Range) {
+            Range<?> r = (Range<?>) other;
             return r.first().equals(first())
                     && r.last().equals(last());
         }

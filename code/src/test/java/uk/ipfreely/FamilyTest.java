@@ -62,6 +62,8 @@ public class FamilyTest {
     assertEquals(0xabc, ip6.highBits());
     assertEquals(0xdef, ip6.lowBits());
     assertThrowsExactly(ParseException.class, () -> v4().parse(1, 0));
+    assertThrowsExactly(ParseException.class, () -> v4().parse(0, 0xFFFFFFFFL + 1));
+    assertThrowsExactly(ParseException.class, () -> v4().parse(0, -1));
   }
 
   @Test
