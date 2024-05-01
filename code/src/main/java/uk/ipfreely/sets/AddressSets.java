@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static uk.ipfreely.sets.Validation.validate;
 
 /**
- * Factory methods for creating {@link AddressSet}s.
+ * Static factory methods for creating {@link AddressSet}s, {@link Range}s and {@link Block}s.
  */
 public final class AddressSets {
     private AddressSets() {}

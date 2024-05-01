@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- *     Set of zero to {@link Family#max()} {@link Address}es.
+ *     Set interface of zero to {@link Family#max()} {@link Address}es.
  * </p>
  * <p>
  *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
