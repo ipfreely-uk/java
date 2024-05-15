@@ -78,6 +78,7 @@ public class BlockTest {
     assertEquals(last, actual.get(actual.size() - 1));
 
     assertThrowsExactly(IllegalArgumentException.class, () -> first.subnets(0));
+    assertThrowsExactly(IllegalArgumentException.class, () -> first.subnets(100));
   }
 
   @Test

@@ -54,6 +54,8 @@ public final class Addresses {
                     ".1.2.3",
                     "1.2.3.",
                     "1.2.3.4.5",
+                    "z",
+                    "a",
             };
             return v4;
         }
@@ -69,6 +71,7 @@ public final class Addresses {
                 "1:2:3::6:7::9",
                 "1:2:3:4:5:6:7",
                 ":1:2:3:4:5:6:7",
+                "z",
         };
         return v6;
     }

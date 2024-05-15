@@ -60,11 +60,14 @@ public class RangeTest {
     assertEquals(AddressSets.range(first, last), AddressSets.range(first, last));
     assertEquals(AddressSets.range(first, last).hashCode(), AddressSets.range(first, last).hashCode());
 
-    Range<?> r = AddressSets.range(first, last);
-    assertEquals(first.hashCode() * 31 + last.hashCode(), r.hashCode());
-    assertTrue(Objects.equals(r, r));
-    assertFalse(r.equals(null));
-    assertFalse(r.equals(new Object()));
+    Object[] ranges = {
+            AddressSets.range(first, last),
+            AddressSets.range(first, last),
+            AddressSets.range(first.next(), last),
+            AddressSets.range(first, last.prev()),
+            new Object(),
+    };
+    EqualsTester.test(ranges);
   }
 
   @Test
@@ -182,5 +185,6 @@ public class RangeTest {
     assertTrue(AddressSets.range(zero, ten).contiguous(AddressSets.address(one)));
 
     assertFalse(AddressSets.address(zero).contiguous(AddressSets.address(ten)));
+    assertFalse(AddressSets.address(ten).contiguous(AddressSets.address(zero)));
   }
 }

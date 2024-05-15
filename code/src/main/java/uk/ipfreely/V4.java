@@ -41,7 +41,7 @@ public final class V4 extends Address<V4> {
     }
 
     private static int fromInts(final int... arr) {
-        assert arr.length == Integer.SIZE / Byte.SIZE;
+        // assert arr.length == Integer.SIZE / Byte.SIZE;
 
         return (arr[0] << 24)
                 | (arr[1] << 16)

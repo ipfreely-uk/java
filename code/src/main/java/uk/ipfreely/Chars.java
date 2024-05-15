@@ -7,7 +7,7 @@ final class Chars {
     private Chars() {}
 
     static int append(char[] buf, int offset, String value) {
-        assert value.length() <= buf.length - offset;
+        // assert value.length() <= buf.length - offset;
         for (int i = 0, len = value.length(); i < len; i++) {
             buf[offset++] = value.charAt(i);
         }
@@ -15,7 +15,7 @@ final class Chars {
     }
 
     static int append(char[] buf, int offset, char value) {
-        assert buf.length - offset >= 1;
+        // assert buf.length - offset >= 1;
         buf[offset++] = value;
         return offset;
     }

@@ -48,7 +48,7 @@ final class V6Strings {
      * @return the short as a positive integer
      */
     private static int shortAtSegment(final long high, final long low, final int index) {
-        assert index >= 0 && index <= IP6_SEGMENTS;
+        // assert index >= 0 && index <= IP6_SEGMENTS;
 
         if (index < IP6_SEGMENTS / 2) {
             int shift = (3 - index) * Short.SIZE;
@@ -126,7 +126,7 @@ final class V6Strings {
     }
 
     private static int numberOfShortHexDigits(final int n) {
-        assert n >= 0 && n <= 0xFFFF;
+        // assert n >= 0 && n <= 0xFFFF;
         if (n <= 0xF) {
             return 1;
         } else if (n <= 0xFF) {

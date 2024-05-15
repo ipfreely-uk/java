@@ -33,8 +33,6 @@ public final class V6 extends Address<V6> {
         return set.toArray(new V6[0]);
     }
 
-    private static final BigInteger SIZE = BigInteger.valueOf(2).pow(V6Consts.WIDTH);
-
     private final long high;
     private final long low;
 
