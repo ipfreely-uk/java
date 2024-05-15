@@ -153,10 +153,10 @@ public final class AddressSets {
 
     /**
      * <p>
-     *     Creates a block from and network address and mask size.
+     *     Creates {@link Block} from network address and mask size.
      *     The {@code maskSize} must be greater or equal to zero
-     *     and less than or equal to {@link Family#width()}
-     *     and the mask must cover all the true bits of the address.
+     *     and less than or equal to {@link Family#width()}.
+     *     The mask must cover all the true bits of the address.
      * </p>
      *
      * @param first    the first IP in the block
