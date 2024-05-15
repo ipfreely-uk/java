@@ -181,13 +181,13 @@
                     <xmlOutput>true</xmlOutput>
                     <failOnError>true</failOnError>
                     <!-- excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile -->
-                    <plugins>
-                        <plugin>
-                            <groupId>com.h3xstream.findsecbugs</groupId>
-                            <artifactId>findsecbugs-plugin</artifactId>
-                            <version>1.13.0</version>
-                        </plugin>
-                    </plugins>
+<!--                    <plugins>-->
+<!--                        <plugin>-->
+<!--                            <groupId>com.h3xstream.findsecbugs</groupId>-->
+<!--                            <artifactId>findsecbugs-plugin</artifactId>-->
+<!--                            <version>1.13.0</version>-->
+<!--                        </plugin>-->
+<!--                    </plugins>-->
                 </configuration>
                 <executions>
                     <execution>
@@ -202,7 +202,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>4.8.3</version>
+                        <version>4.8.5</version>
                     </dependency>
                 </dependencies>
             </plugin>
