@@ -29,7 +29,7 @@ public final class V6 extends Address<V6> {
         set.add(new V6(0xfe80000000000000L, 0));
         // documentation
         set.add(new V6(0x20010db800000000L, 0));
-        set.removeAll(asList(LOWS));
+        asList(LOWS).forEach(set::remove);
         return set.toArray(new V6[0]);
     }
 
