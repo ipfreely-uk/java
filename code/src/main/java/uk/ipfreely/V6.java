@@ -173,13 +173,14 @@ public final class V6 extends Address<V6> {
             long newLow = Long.divideUnsigned(low, denominator.low);
             return fromLongs(0, newLow);
         }
-        final boolean denominatorNotZero = !isZero(denominator);
-        final int compare = compareTo(denominator);
-        if (compare == 0 && denominatorNotZero) {
-            return fromLongs(0, 1);
-        }
-        if (compare < 0 && denominatorNotZero) {
-            return fromLongs(0, 0);
+        if (!isZero(denominator)) {
+            final int compare = compareTo(denominator);
+            if (compare == 0) {
+                return fromLongs(0, 1);
+            }
+            if (compare < 0) {
+                return fromLongs(0, 0);
+            }
         }
         // TODO: efficiency
         BigInteger val = toBigInteger().divide(denominator.toBigInteger());
@@ -191,8 +192,19 @@ public final class V6 extends Address<V6> {
         if (isOne(denominator)) {
             return fromLongs(0, 0);
         }
-        if (equals(denominator) && !isZero(denominator)) {
-            return fromLongs(0, 0);
+        if (high == 0 && denominator.high == 0) {
+            long div = Long.divideUnsigned(low, denominator.low);
+            long newLow = low - (div * denominator.low);
+            return fromLongs(0, newLow);
+        }
+        if(!isZero(denominator)) {
+            final int compare = compareTo(denominator);
+            if (compare == 0) {
+                return fromLongs(0, 0);
+            }
+            if (compare < 0) {
+                return this;
+            }
         }
         // TODO: efficiency
         BigInteger val = toBigInteger().mod(denominator.toBigInteger()).mod(SIZE);
