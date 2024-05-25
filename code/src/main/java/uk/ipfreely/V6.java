@@ -120,7 +120,7 @@ public final class V6 extends Address<V6> {
 
     @Override
     public double doubleValue() {
-        return V6Arithmetic.doubleValue(high, low);
+        return toBigInteger().doubleValue();
     }
 
     @Override
@@ -164,6 +164,9 @@ public final class V6 extends Address<V6> {
 
     @Override
     public V6 divide(V6 denominator) {
+        if (isZero(denominator)) {
+            throw new ArithmeticException("divide by zero");
+        }
         if (isOne(denominator)) {
             return this;
         }
@@ -171,14 +174,12 @@ public final class V6 extends Address<V6> {
             long newLow = Long.divideUnsigned(low, denominator.low);
             return fromLongs(0, newLow);
         }
-        if (!isZero(denominator)) {
-            final int compare = compareTo(denominator);
-            if (compare == 0) {
-                return fromLongs(0, 1);
-            }
-            if (compare < 0) {
-                return fromLongs(0, 0);
-            }
+        final int compare = compareTo(denominator);
+        if (compare == 0) {
+            return fromLongs(0, 1);
+        }
+        if (compare < 0) {
+            return fromLongs(0, 0);
         }
         // TODO: efficiency
         BigInteger val = toBigInteger().divide(denominator.toBigInteger());

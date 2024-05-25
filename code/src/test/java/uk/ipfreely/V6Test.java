@@ -11,6 +11,10 @@ import java.math.BigInteger;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
@@ -33,17 +37,29 @@ public class V6Test extends IpTests<V6> {
 
   @Test
   public void testArithmetic() {
-    testArithmetic(v6(), Family.v6().parse(0, 1),
-      Family.v6().parse(0xFL, 0xFL),
-      Family.v6().parse(0xFFFFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL),
-      Family.v6().parse(0xEFFFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL),
-      Family.v6().parse(0xFFFFFFFFFFFFFFFFL, 0),
-      Family.v6().parse(0, 0xFFFFFFFFFFFFFFFFL),
-      Family.v6().parse(0, 0xEFFFFFFFFFFFFFFFL),
-      Family.v6().parse(1, 0xFFFFFFFFFFFFFFFFL),
-      Family.v6().parse(0xFFFFFFFFFFFFFFFFL, 1),
-      Family.v6().parse(0, 0),
-      Family.v6().parse(0, 2));
+    List<V6> tests = Arrays.asList(
+            v6().parse(0, 1),
+            v6().parse(0xFL, 0xFL),
+            v6().parse(0xFFFFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL),
+            v6().parse(0xEFFFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL),
+            v6().parse(0xFFFFFFFFFFFFFFFFL, 0),
+            v6().parse(0, 0xFFFFFFFFFFFFFFFFL),
+            v6().parse(0, 0xEFFFFFFFFFFFFFFFL),
+            v6().parse(1, 0xFFFFFFFFFFFFFFFFL),
+            v6().parse(0xFFFFFFFFFFFFFFFFL, 1),
+            v6().parse(0, 0),
+            v6().parse(0, 2),
+            v6().parse(0xcafebabedeadd00dL, 0xfee1cafecafecafeL),
+            v6().parse(0x6e1813e6cb672L, 0x35ff227a8e0557acL)
+    );
+    List<V6> copy = new ArrayList<>(tests);
+    Random ran = new Random(0);
+    for (int i = 0; i < 100; i++) {
+      V6 r = v6().parse(ran.nextLong(), ran.nextLong());
+      copy.add(r);
+    }
+
+    testArithmetic(v6(), copy.toArray(new V6[0]));
   }
 
   @Test
