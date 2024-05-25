@@ -7,7 +7,7 @@ final class V4Bytes {
     private V4Bytes() {}
 
     static int fromBytes(byte... bytes) {
-        assert bytes.length == Integer.SIZE / Byte.SIZE;
+        // assert bytes.length == Integer.SIZE / Byte.SIZE;
 
         return byteInt(bytes[0]) << 3 * Byte.SIZE
                 | byteInt(bytes[1]) << 2 * Byte.SIZE

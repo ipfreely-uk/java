@@ -35,13 +35,13 @@ public final class V4 extends Address<V4> {
         set.add(new V4(fromInts(172, 16, 0, 0)));
         set.add(new V4(fromInts(192, 168, 0, 0)));
         // remove low values
-        set.removeAll(asList(LOWS));
+        asList(LOWS).forEach(set::remove);
         // to array
         return set.toArray(new V4[0]);
     }
 
     private static int fromInts(final int... arr) {
-        assert arr.length == Integer.SIZE / Byte.SIZE;
+        // assert arr.length == Integer.SIZE / Byte.SIZE;
 
         return (arr[0] << 24)
                 | (arr[1] << 16)

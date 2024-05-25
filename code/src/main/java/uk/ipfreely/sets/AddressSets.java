@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static uk.ipfreely.sets.Validation.validate;
 
 /**
- * Factory methods for creating {@link AddressSet}s.
+ * Static factory methods for creating {@link AddressSet}s, {@link Range}s and {@link Block}s.
  */
 public final class AddressSets {
     private AddressSets() {}
@@ -153,10 +153,10 @@ public final class AddressSets {
 
     /**
      * <p>
-     *     Creates a block from and network address and mask size.
+     *     Creates {@link Block} from network address and mask size.
      *     The {@code maskSize} must be greater or equal to zero
-     *     and less than or equal to {@link Family#width()}
-     *     and the mask must cover all the true bits of the address.
+     *     and less than or equal to {@link Family#width()}.
+     *     The mask must cover all the true bits of the address.
      * </p>
      *
      * @param first    the first IP in the block

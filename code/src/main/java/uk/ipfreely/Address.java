@@ -7,7 +7,7 @@ import java.net.InetAddress;
 
 /**
  * <p>
- *     Abstract IP address value type and immutable unsigned integer that supports arithmetic and bitwise operations.
+ *     Abstract IP address type implemented by {@link V4} and {@link V6}.
  *     Use {@link Family} to create instances.
  * </p>
  * <p>

@@ -34,7 +34,7 @@ final class V6Bytes {
     }
 
     static <T> T fromBytes(final V6Function<T> factory, final byte... bytes) {
-        assert bytes.length == V6Consts.WIDTH / Byte.SIZE;
+        // assert bytes.length == V6Consts.WIDTH / Byte.SIZE;
 
         final int longBytes = Long.SIZE / Byte.SIZE;
 

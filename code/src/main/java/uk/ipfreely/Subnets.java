@@ -43,7 +43,7 @@ public final class Subnets<A extends Address<A>> {
      * and index 128 is <em>/128</em> {@code "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"}.
      * </p>
      *
-     * @return all possible network address masks
+     * @return immutable list of possible network address masks
      */
     public List<A> masks() {
         return family.masks();

@@ -15,7 +15,7 @@ import static uk.ipfreely.sets.Validation.validate;
 
 /**
  * <p>
- *     {@link AddressSet} that forms contiguous range of one or more {@link Address}es.
+ *     {@link AddressSet} interface that forms contiguous range of one or more {@link Address}es.
  * </p>
  * <p>See {@link AddressSet} for implementation contract.</p>
  *

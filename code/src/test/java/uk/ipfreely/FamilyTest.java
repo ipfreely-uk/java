@@ -29,6 +29,7 @@ public class FamilyTest {
 
     IpTests.expect("Not an IP address test", ParseException.class, () -> Family.unknown("foobar"));
     IpTests.expect("Not an IP address test", ParseException.class, () -> Family.unknown("z"));
+    IpTests.expect("Not an IP address test", ParseException.class, () -> Family.unknown(" "));
 
     for(String addr : Addresses.valid(Family.v4())) {
       assertSame(V4.class, Family.unknown(addr).getClass());

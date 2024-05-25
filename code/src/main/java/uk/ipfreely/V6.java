@@ -29,11 +29,9 @@ public final class V6 extends Address<V6> {
         set.add(new V6(0xfe80000000000000L, 0));
         // documentation
         set.add(new V6(0x20010db800000000L, 0));
-        set.removeAll(asList(LOWS));
+        asList(LOWS).forEach(set::remove);
         return set.toArray(new V6[0]);
     }
-
-    private static final BigInteger SIZE = BigInteger.valueOf(2).pow(V6Consts.WIDTH);
 
     private final long high;
     private final long low;
@@ -122,7 +120,7 @@ public final class V6 extends Address<V6> {
 
     @Override
     public double doubleValue() {
-        return V6Arithmetic.doubleValue(high, low);
+        return toBigInteger().doubleValue();
     }
 
     @Override
@@ -166,6 +164,9 @@ public final class V6 extends Address<V6> {
 
     @Override
     public V6 divide(V6 denominator) {
+        if (isZero(denominator)) {
+            throw new ArithmeticException("divide by zero");
+        }
         if (isOne(denominator)) {
             return this;
         }
@@ -173,12 +174,11 @@ public final class V6 extends Address<V6> {
             long newLow = Long.divideUnsigned(low, denominator.low);
             return fromLongs(0, newLow);
         }
-        final boolean denominatorNotZero = !isZero(denominator);
         final int compare = compareTo(denominator);
-        if (compare == 0 && denominatorNotZero) {
+        if (compare == 0) {
             return fromLongs(0, 1);
         }
-        if (compare < 0 && denominatorNotZero) {
+        if (compare < 0) {
             return fromLongs(0, 0);
         }
         // TODO: efficiency
@@ -191,11 +191,22 @@ public final class V6 extends Address<V6> {
         if (isOne(denominator)) {
             return fromLongs(0, 0);
         }
-        if (equals(denominator) && !isZero(denominator)) {
-            return fromLongs(0, 0);
+        if (high == 0 && denominator.high == 0) {
+            long div = Long.divideUnsigned(low, denominator.low);
+            long newLow = low - (div * denominator.low);
+            return fromLongs(0, newLow);
+        }
+        if(!isZero(denominator)) {
+            final int compare = compareTo(denominator);
+            if (compare == 0) {
+                return fromLongs(0, 0);
+            }
+            if (compare < 0) {
+                return this;
+            }
         }
         // TODO: efficiency
-        BigInteger val = toBigInteger().mod(denominator.toBigInteger()).mod(SIZE);
+        BigInteger val = toBigInteger().mod(denominator.toBigInteger());
         return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
     }
 
