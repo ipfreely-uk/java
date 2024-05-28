@@ -260,7 +260,7 @@ public final class V6 extends Address<V6> {
     }
 
     private V6 shiftRight(final int bits) {
-        int n = bits % V6Consts.WIDTH;
+        int n = bits % Consts.V6_WIDTH;
         if (n == Long.SIZE) {
             return fromLongs(0, high);
         }
@@ -272,7 +272,7 @@ public final class V6 extends Address<V6> {
     }
 
     private V6 shiftLeft(final int bits) {
-        int n = bits % V6Consts.WIDTH;
+        int n = bits % Consts.V6_WIDTH;
         if (n == Long.SIZE) {
             return fromLongs(low, 0);
         }

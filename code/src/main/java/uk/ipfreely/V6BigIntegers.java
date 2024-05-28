@@ -14,7 +14,7 @@ class V6BigIntegers {
     }
 
     static <T> T fromBigInteger(final V6Function<T> factory, final BigInteger ip) {
-        final int bytes = V6Consts.WIDTH / Byte.SIZE;
+        final int bytes = Consts.V6_WIDTH / Byte.SIZE;
         final int half = bytes / 2;
 
         final long high;

@@ -27,7 +27,7 @@ final class V4Masking {
             index++;
         }
         return xor == 0
-                ? V4Consts.WIDTH - index
+                ? Consts.V4_WIDTH - index
                 : -1;
     }
 }

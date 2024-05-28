@@ -9,7 +9,7 @@ import static uk.ipfreely.Validation.validate;
 
 final class V6Family extends Family<V6> {
 
-    private static final BigInteger SIZE = BigInteger.valueOf(2).pow(V6Consts.WIDTH);
+    private static final BigInteger SIZE = BigInteger.valueOf(2).pow(Consts.V6_WIDTH);
     private static final BigInteger MAX_VALUE = SIZE.subtract(BigInteger.ONE);
     private static final String MAX_ASSERTION = "Maximum value is " + MAX_VALUE;
 
@@ -144,7 +144,7 @@ final class V6Family extends Family<V6> {
 
     @Override
     public int width() {
-        return V6Consts.WIDTH;
+        return Consts.V6_WIDTH;
     }
 
     @Override

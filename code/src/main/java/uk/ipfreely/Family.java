@@ -289,8 +289,8 @@ public abstract class Family<A extends Address<A>> {
      * @see Address#toBytes()
      */
     public static Address<?> unknown(byte... address) {
-        int v4len = V4Consts.WIDTH / Byte.SIZE;
-        int v6len = V6Consts.WIDTH / Byte.SIZE;
+        int v4len = Consts.V4_WIDTH / Byte.SIZE;
+        int v6len = Consts.V6_WIDTH / Byte.SIZE;
         boolean v4 = v4len == address.length;
         boolean v6 = v6len == address.length;
         validate(v4 || v6, "IP addresses must be " + v4len + " or " + v6len + " bytes in length", address, ParseException::new);
