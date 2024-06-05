@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class StrictAddressMathTest {
-    private V6 one = Family.v6().parse(1);
-    private V6 two = Family.v6().parse(2);
+    private final V6 one = Family.v6().parse(1);
+    private final V6 two = Family.v6().parse(2);
 
     @Test
     void testAdd() {
