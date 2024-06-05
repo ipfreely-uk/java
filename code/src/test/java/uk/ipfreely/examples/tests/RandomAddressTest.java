@@ -1,12 +1,13 @@
 // Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
 // SPDX-License-Identifier: Apache-2.0
-package uk.ipfreely.examples;
+package uk.ipfreely.examples.tests;
 
 import org.junit.jupiter.api.Test;
 import uk.ipfreely.Address;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
+import uk.ipfreely.examples.RandomAddress;
 import uk.ipfreely.sets.AddressSets;
 import uk.ipfreely.sets.Range;
 

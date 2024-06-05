@@ -4,7 +4,6 @@ package uk.ipfreely.testing;
 
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 public final class SpliteratorTester {
     private SpliteratorTester() {}
