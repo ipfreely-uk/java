@@ -88,6 +88,12 @@ public final class V4 extends Address<V4> {
         return V4Strings.to(value);
     }
 
+    /**
+     * Useful for sorting.
+     *
+     * @param o another address
+     * @return negative, zero, or positive integer as this is less than, equal to, or greater than other address
+     */
     @Override
     public int compareTo(V4 o) {
         return Integer.compareUnsigned(value, o.value);

@@ -121,17 +121,6 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
     public abstract String toString();
 
     /**
-     * Useful for sorting.
-     *
-     * @param o another address
-     * @return negative, zero, or positive integer as this is less than, equal to, or greater than other address
-     */
-    @Override
-    public int compareTo(A o) {
-        return 0;
-    }
-
-    /**
      * The address as a {@link BigInteger}.
      *
      * @return the address as a positive integer
