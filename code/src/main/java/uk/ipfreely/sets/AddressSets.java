@@ -33,18 +33,18 @@ public final class AddressSets {
      *     AddressSet&lt;V4&gt; privateRanges = AddressSets.of(classA, classB, classC);
      * </code></pre>
      *
-     * @param ranges constituent ranges
-     * @return set of addresses
+     * @param sets source sets
+     * @return union of given sets
      * @param <A> address type
-     * @param <R> range type
+     * @param <S> range type
      */
     @SafeVarargs
-    public static <A extends Address<A>, R extends Range<A>> AddressSet<A> of(R... ranges) {
-        return from(Arrays.asList(ranges));
+    public static <A extends Address<A>, S extends AddressSet<A>> AddressSet<A> of(S... sets) {
+        return from(Arrays.asList(sets));
     }
 
     /**
-     * <p>Version of {@link #of(Range[])} intended for standard collections.</p>
+     * <p>Version of {@link #of(AddressSet[])} intended for standard collections.</p>
      * <pre><code>
      *     // EXAMPLE
      *     AddressSet&lt;V4&gt; empty = AddressSets.from(Collections.emptySet());
@@ -63,14 +63,18 @@ public final class AddressSets {
      *                 .collect(Collectors.toSet());
      * </code></pre>
      *
-     * @param ranges constituent ranges
-     * @return set of addresses
+     * @param sets source sets
+     * @return union of given sets
      * @param <A> address type
-     * @param <R> range type
+     * @param <S> set type
      */
     @SuppressWarnings("unchecked")
-    public static <A extends Address<A>, R extends Range<A>> AddressSet<A> from(Iterable<R> ranges) {
-        final Range<A>[] data = rationalize(ranges);
+    public static <A extends Address<A>, S extends AddressSet<A>> AddressSet<A> from(Iterable<S> sets) {
+        List<Range<A>> list = new ArrayList<>();
+        for (S set : sets) {
+            set.ranges().forEach(list::add);
+        }
+        final Range<A>[] data = rationalize(list);
         if (data.length == 0) {
             return (AddressSet<A>) Empty.IMPL;
         }
