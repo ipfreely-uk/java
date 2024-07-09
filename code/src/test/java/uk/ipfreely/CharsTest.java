@@ -34,24 +34,6 @@ class CharsTest {
         assertEquals('A', one[0]);
     }
 
-
-    @Test
-    void splitNothing() {
-        CharSequence[] actual = Chars.split("foo", ':');
-        assertEquals(1, actual.length);
-        assertEquals("foo", actual[0]);
-    }
-
-    @Test
-    void splitN() {
-        CharSequence[] actual = Chars.split("foo::bar:baz", ':');
-        assertEquals(4, actual.length);
-        assertEquals("foo", actual[0]);
-        assertEquals("", actual[1]);
-        assertEquals("bar", actual[2]);
-        assertEquals("baz", actual[3]);
-    }
-
     @Test
     void indexOf() {
         assertEquals(4, Chars.indexOf("bar foo", "foo"));

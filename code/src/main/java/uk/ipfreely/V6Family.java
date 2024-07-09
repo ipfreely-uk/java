@@ -37,11 +37,6 @@ final class V6Family extends Family<V6> {
         return V6Strings.parse(candidate, V6::fromLongs);
     }
 
-    private static void validateSegmentSize(CharSequence segment, CharSequence ip) {
-        int len = segment.length();
-        validate(len != 0 && len <= 4, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-    }
-
     @Override
     public V6 parse(byte... ip) {
         validate(ip.length == 16, "Ip6 128 bit addresses are 16 bytes", ip, ParseException::new);
@@ -100,13 +95,5 @@ final class V6Family extends Family<V6> {
     @Override
     public Class<V6> type() {
         return V6.class;
-    }
-
-    private static int parseUintSafe(final String i, int radix) {
-        try {
-            return Integer.parseInt(i, radix);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
     }
 }
