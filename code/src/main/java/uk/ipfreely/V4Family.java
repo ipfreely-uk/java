@@ -29,8 +29,8 @@ final class V4Family extends Family<V4> {
     }
 
     @Override
-    public V4 parse(CharSequence ip) {
-        int n = V4Strings.from(ip);
+    public V4 parse(CharSequence candidate) {
+        int n = V4Strings.from(candidate);
         return V4.fromInt(n);
     }
 

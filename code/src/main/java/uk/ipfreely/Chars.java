@@ -41,4 +41,20 @@ final class Chars {
 
         return result;
     }
+
+    static int indexOf(CharSequence cs, CharSequence find) {
+        final int len = find.length();
+        outer: for (int i = 0, limit = cs.length() - len + 1; i < limit; i++) {
+            for (int j = 0; j < len; j++) {
+                char l = cs.charAt(i + j);
+                char r = find.charAt(j);
+                if (l != r) {
+                    continue outer;
+                }
+            }
+            return i;
+        }
+        return -1;
+    }
+
 }

@@ -33,58 +33,8 @@ final class V6Family extends Family<V6> {
     }
 
     @Override
-    public V6 parse(CharSequence ip) {
-        // TODO: IPv4 embedded https://www.rfc-editor.org/rfc/rfc6052#section-2
-        // TODO: just use CharSequence
-
-        final String str = ip.toString();
-        validate(!str.contains(":::"), "Invalid IPv6 address", str, ParseException::new);
-
-        final int shortener = str.indexOf("::");
-        final String head;
-        final String tail;
-        if (shortener < 0) {
-            head = str;
-            tail = "";
-        } else {
-            head = str.substring(0, shortener);
-            tail = str.substring(shortener + 2);
-        }
-
-        int segments = 0;
-
-        final byte[] bytes = new byte[16];
-        if (!"".equals(head)) {
-            final String[] arr = head.split(":");
-            validate(arr.length <= IpMath.IP6_SEGMENTS, "Invalid number of IPv6 segments; max " + IpMath.IP6_SEGMENTS, ip, ParseException::new);
-            segments += arr.length;
-            for (int i = 0; i < arr.length; i++) {
-                String segment = arr[i];
-                validateSegmentSize(segment, ip);
-                final int n = parseUintSafe(segment, 16);
-                validate(n >= 0 && n <= IpMath.SHORT_MASK, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-                bytes[i * 2] = (byte) (n >> 8);
-                bytes[i * 2 + 1] = (byte) n;
-            }
-        }
-        if (!"".equals(tail)) {
-            final String[] arr = tail.split(":");
-            segments += arr.length;
-            final int offset = bytes.length - (arr.length * 2);
-            for (int i = 0; i < arr.length; i++) {
-                String segment = arr[i];
-                validateSegmentSize(segment, ip);
-                final int n = parseUintSafe(segment, 16);
-                validate(n >= 0 && n <= IpMath.SHORT_MASK, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-                bytes[offset + (i * 2)] = (byte) (n >> 8);
-                bytes[offset + (i * 2) + 1] = (byte) n;
-            }
-        }
-
-        validate(segments <= 8, "Invalid address; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-        validate(shortener >= 0 || segments == 8, "Invalid address; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-
-        return parse(bytes);
+    public V6 parse(CharSequence candidate) {
+        return V6Strings.parse(candidate, V6::fromLongs);
     }
 
     private static void validateSegmentSize(CharSequence segment, CharSequence ip) {

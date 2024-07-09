@@ -82,11 +82,11 @@ public abstract class Family<A extends Address<A>> {
      * Parses an IP address string.
      * TODO: supported string forms.
      *
-     * @param address valid IP address in this family
+     * @param candidate valid IP address in this family
      * @return parsed address
      * @throws ParseException on invalid address
      */
-    public abstract A parse(CharSequence address);
+    public abstract A parse(CharSequence candidate);
 
     /**
      * Argument must be {@code bitWidth() / 8} bytes in length.

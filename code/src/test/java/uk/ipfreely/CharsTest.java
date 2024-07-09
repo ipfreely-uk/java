@@ -51,4 +51,13 @@ class CharsTest {
         assertEquals("bar", actual[2]);
         assertEquals("baz", actual[3]);
     }
+
+    @Test
+    void indexOf() {
+        assertEquals(4, Chars.indexOf("bar foo", "foo"));
+        assertEquals(-1, Chars.indexOf("bar baz", "foo"));
+        assertEquals(-1, Chars.indexOf("", "foo"));
+        assertEquals(0, Chars.indexOf("foo bar", "foo"));
+        assertEquals(0, Chars.indexOf("foo bar foo", "foo"));
+    }
 }

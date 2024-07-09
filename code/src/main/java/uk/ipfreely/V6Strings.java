@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
+import static uk.ipfreely.Validation.validate;
+
 final class V6Strings {
 
     static final int IP6_SEGMENTS = 8;
@@ -139,5 +141,81 @@ final class V6Strings {
 
     private static int toShortInt(final long l) {
         return (int) (l & 0xFFFF);
+    }
+
+    static <T> T parse(CharSequence cs, V6Function<T> factory) {
+        final int len = cs.length();
+        validate(len >= 2, "Invalid string length", cs, ParseException::new);
+        int split = Chars.indexOf(cs, "::");
+        V6Segments.Iter head;
+        V6Segments.Iter tail;
+        if (split < 0) {
+            head = V6Segments.forwards(cs, 0, cs.length());
+            tail = V6Segments.forwards("", 0, 0);
+        } else {
+            head = V6Segments.forwards(cs, 0, split);
+            tail = V6Segments.backwards(cs, split + 2, cs.length());
+        }
+
+        long highHead = 0;
+        long lowHead = 0;
+        int headSegs = 0;
+        int shift = Short.SIZE * 3;
+        while (headSegs < IP6_SEGMENTS / 2) {
+            if (!head.hasNext()) {
+                break;
+            }
+            headSegs++;
+            long n = head.next() << shift;
+            shift -= Short.SIZE;
+            highHead |= n;
+        }
+        shift = Short.SIZE * 3;
+        while (headSegs < IP6_SEGMENTS) {
+            if (!head.hasNext()) {
+                break;
+            }
+            headSegs++;
+            long n = head.next() << shift;
+            shift -= Short.SIZE;
+            lowHead |= n;
+        }
+
+        long highTail = 0;
+        long lowTail = 0;
+        int tailSegs = 0;
+        shift = 0;
+        while (tailSegs < IP6_SEGMENTS / 2) {
+            if (!tail.hasNext()) {
+                break;
+            }
+            tailSegs++;
+            long n = tail.next() << shift;
+            shift += Short.SIZE;
+            lowTail |= n;
+        }
+        shift = 0;
+        while (tailSegs < IP6_SEGMENTS) {
+            if (!tail.hasNext()) {
+                break;
+            }
+            tailSegs++;
+            long n = tail.next() << shift;
+            shift += Short.SIZE;
+            highTail |= n;
+        }
+
+        int segments = headSegs + tailSegs;
+        if (split < 0) {
+            validate(segments == IP6_SEGMENTS, "Invalid number of segments", cs, ParseException::new);
+        } else {
+            validate(segments < IP6_SEGMENTS, "Invalid number of segments", cs, ParseException::new);
+        }
+        validate(!head.hasNext(), "Invalid number of segments", cs, ParseException::new);
+        validate(!tail.hasNext(), "Invalid number of segments", cs, ParseException::new);
+
+        long high = highHead | highTail;
+        long low = lowHead | lowTail;
+        return factory.apply(high, low);
     }
 }
