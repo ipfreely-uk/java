@@ -165,6 +165,7 @@ public final class V6 extends Address<V6> {
         if (isTwo(multiplicand)) {
             return this.add(this);
         }
+        // TODO: use Math.unsignedMultiplyHigh when Java 8 deprecated
         return V6Arithmetic.multiply(V6::fromLongs, high, low, multiplicand.high, multiplicand.low);
     }
 
