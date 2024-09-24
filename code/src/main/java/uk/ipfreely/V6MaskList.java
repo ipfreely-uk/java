@@ -11,7 +11,7 @@ import static uk.ipfreely.Validation.validate;
 /**
  * A list of all possible Ip6 masks including 0
  */
-class V6MaskList extends AbstractList<V6> implements RandomAccess {
+final class V6MaskList extends AbstractList<V6> implements RandomAccess {
 
     private static final int SIZE = Long.SIZE * 2 + 1;
     private static final int FIRST_LOW_IDX = SIZE / 2;

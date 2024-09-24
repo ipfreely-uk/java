@@ -12,7 +12,7 @@ import static uk.ipfreely.Validation.validate;
 /**
  * A list of all possible Ip4 masks including 0
  */
-class V4MaskList extends AbstractList<V4> implements RandomAccess {
+final class V4MaskList extends AbstractList<V4> implements RandomAccess {
 
     private static final int SIZE = Integer.SIZE + 1;
 

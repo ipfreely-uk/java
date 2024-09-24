@@ -279,7 +279,7 @@ public abstract class Address<A extends Address<A>> implements Comparable<A> {
      *     V4 lastAddress = inverseMask.or(networkAddress);
      * </code></pre>
      *
-     * @return the inverse address
+     * @return the complement
      */
     public abstract A not();
 
