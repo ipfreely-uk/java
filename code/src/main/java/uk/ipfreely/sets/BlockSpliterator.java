@@ -58,6 +58,6 @@ final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<
 
     @Override
     public int characteristics() {
-        return Spliterator.IMMUTABLE | Spliterator.DISTINCT | Spliterator.NONNULL;
+        return IMMUTABLE | DISTINCT | NONNULL;
     }
 }

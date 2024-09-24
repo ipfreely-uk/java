@@ -59,7 +59,7 @@ final class RangeSpliterator<A extends Address<A>> implements Spliterator<A> {
 
     @Override
     public int characteristics() {
-        return Spliterator.IMMUTABLE | Spliterator.DISTINCT | Spliterator.ORDERED | Spliterator.SORTED | Spliterator.NONNULL;
+        return IMMUTABLE | DISTINCT | ORDERED | SORTED | NONNULL;
     }
 
     @Override
