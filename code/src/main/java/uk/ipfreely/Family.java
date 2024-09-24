@@ -16,6 +16,7 @@ import static uk.ipfreely.Validation.validate;
  *  obtained via {@link #v4()} and {@link #v6()}.
  * </p>
  * <p>
+ *     There are only two instances of this type.
  *     Inheritance outside the package is not supported.
  *     Instances have identity equality.
  *     Future implementations may become
