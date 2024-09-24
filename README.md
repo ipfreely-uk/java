@@ -7,7 +7,7 @@ IP address manipulation library.
 
 ## Documentation
 
-[Javaoc](https://ipfreely-uk.github.io/java/)/[![javadoc](https://javadoc.io/badge2/uk.ipfreely/addresses/javadoc.svg)](https://javadoc.io/doc/uk.ipfreely/addresses) 
+[Javadoc](https://ipfreely-uk.github.io/java/)/[![javadoc](https://javadoc.io/badge2/uk.ipfreely/addresses/javadoc.svg)](https://javadoc.io/doc/uk.ipfreely/addresses) 
 
 ## Releases
 
