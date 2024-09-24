@@ -1,5 +1,3 @@
-ALL CODE IN ALPHA STATE
-
 [![Java CI with Maven](https://github.com/ipfreely-uk/java/actions/workflows/maven.yml/badge.svg)](https://github.com/ipfreely-uk/java/actions/workflows/maven.yml)
 [![JavaDoc](https://github.com/ipfreely-uk/java/actions/workflows/javadoc.yml/badge.svg)](https://github.com/ipfreely-uk/java/actions/workflows/javadoc.yml)
 
@@ -9,7 +7,7 @@ IP address manipulation library.
 
 ## Documentation
 
-[Latest JavaDoc](https://ipfreely-uk.github.io/java/)
+[Javaoc](https://ipfreely-uk.github.io/java/)/[![javadoc](https://javadoc.io/badge2/uk.ipfreely/addresses/javadoc.svg)](https://javadoc.io/doc/uk.ipfreely/addresses) 
 
 ## Releases
 

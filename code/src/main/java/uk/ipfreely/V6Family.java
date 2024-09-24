@@ -9,7 +9,7 @@ import static uk.ipfreely.Validation.validate;
 
 final class V6Family extends Family<V6> {
 
-    private static final BigInteger SIZE = BigInteger.valueOf(2).pow(V6Consts.WIDTH);
+    private static final BigInteger SIZE = BigInteger.valueOf(2).pow(Consts.V6_WIDTH);
     private static final BigInteger MAX_VALUE = SIZE.subtract(BigInteger.ONE);
     private static final String MAX_ASSERTION = "Maximum value is " + MAX_VALUE;
 
@@ -33,63 +33,8 @@ final class V6Family extends Family<V6> {
     }
 
     @Override
-    public V6 parse(CharSequence ip) {
-        // TODO: IPv4 embedded https://www.rfc-editor.org/rfc/rfc6052#section-2
-        // TODO: just use CharSequence
-
-        final String str = ip.toString();
-        validate(!str.contains(":::"), "Invalid IPv6 address", str, ParseException::new);
-
-        final int shortener = str.indexOf("::");
-        final String head;
-        final String tail;
-        if (shortener < 0) {
-            head = str;
-            tail = "";
-        } else {
-            head = str.substring(0, shortener);
-            tail = str.substring(shortener + 2);
-        }
-
-        int segments = 0;
-
-        final byte[] bytes = new byte[16];
-        if (!"".equals(head)) {
-            final String[] arr = head.split(":");
-            validate(arr.length <= IpMath.IP6_SEGMENTS, "Invalid number of IPv6 segments; max " + IpMath.IP6_SEGMENTS, ip, ParseException::new);
-            segments += arr.length;
-            for (int i = 0; i < arr.length; i++) {
-                String segment = arr[i];
-                validateSegmentSize(segment, ip);
-                final int n = parseUintSafe(segment, 16);
-                validate(n >= 0 && n <= IpMath.SHORT_MASK, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-                bytes[i * 2] = (byte) (n >> 8);
-                bytes[i * 2 + 1] = (byte) n;
-            }
-        }
-        if (!"".equals(tail)) {
-            final String[] arr = tail.split(":");
-            segments += arr.length;
-            final int offset = bytes.length - (arr.length * 2);
-            for (int i = 0; i < arr.length; i++) {
-                String segment = arr[i];
-                validateSegmentSize(segment, ip);
-                final int n = parseUintSafe(segment, 16);
-                validate(n >= 0 && n <= IpMath.SHORT_MASK, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-                bytes[offset + (i * 2)] = (byte) (n >> 8);
-                bytes[offset + (i * 2) + 1] = (byte) n;
-            }
-        }
-
-        validate(segments <= 8, "Invalid address; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-        validate(shortener >= 0 || segments == 8, "Invalid address; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
-
-        return parse(bytes);
-    }
-
-    private static void validateSegmentSize(CharSequence segment, CharSequence ip) {
-        int len = segment.length();
-        validate(len != 0 && len <= 4, "Invalid digit; Ip6 addresses are :: to ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip, ParseException::new);
+    public V6 parse(CharSequence candidate) {
+        return V6Strings.parse(candidate, V6::fromLongs);
     }
 
     @Override
@@ -144,19 +89,11 @@ final class V6Family extends Family<V6> {
 
     @Override
     public int width() {
-        return V6Consts.WIDTH;
+        return Consts.V6_WIDTH;
     }
 
     @Override
     public Class<V6> type() {
         return V6.class;
-    }
-
-    private static int parseUintSafe(final String i, int radix) {
-        try {
-            return Integer.parseInt(i, radix);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
     }
 }

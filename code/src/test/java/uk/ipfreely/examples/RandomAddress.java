@@ -4,9 +4,12 @@ package uk.ipfreely.examples;
 
 import uk.ipfreely.Address;
 import uk.ipfreely.Family;
+import uk.ipfreely.V6;
+import uk.ipfreely.sets.AddressSets;
 import uk.ipfreely.sets.Block;
 import uk.ipfreely.sets.Range;
 
+import java.util.Random;
 import java.util.function.IntSupplier;
 
 /**
@@ -14,27 +17,14 @@ import java.util.function.IntSupplier;
  */
 public final class RandomAddress {
 
+    private static final IntSupplier RNG = new Random()::nextInt;
+
     private RandomAddress() {}
 
-    /**
-     * Returns random IP address.
-     *
-     * @param family the IP family
-     * @param rng    random number generator
-     * @param <A>    the IP type
-     * @return random address
-     */
-    public static <A extends Address<A>> A generate(Family<A> family, IntSupplier rng) {
-        if (family == Family.v4()) {
-            return family.parse(rng.getAsInt());
-        }
-        return family.parse(randomLong(rng), randomLong(rng));
-    }
-
-    private static long randomLong(IntSupplier rng) {
-        final long intMask = 0xFFFFFFFFL;
-        long l = (rng.getAsInt() &  intMask) << Integer.SIZE;
-        return l | (rng.getAsInt() &  intMask);
+    public static void main(String[] args) {
+        Block<V6> subnet = AddressSets.parseCidr(Family.v6(), "2001:db8:cafe:babe::/64");
+        V6 address = from(subnet, RNG);
+        System.out.println(address);
     }
 
     /**
@@ -72,23 +62,24 @@ public final class RandomAddress {
     }
 
     /**
-     * Random address from the given IP CIDR block.
+     * Returns random IP address.
      *
-     * @param block CIDR block
-     * @param rng random number generator
+     * @param family the IP family
+     * @param rng    random number generator
+     * @param <A>    the IP type
      * @return random address
-     * @param <A> address type
      */
-    public static <A extends Address<A>> A fromBlock(Block<A> block, IntSupplier rng) {
-        A first = block.first();
-        A last = block.last();
-        // if it's a single address, nothing to do
-        if (first.equals(last)) {
-            return first;
+    public static <A extends Address<A>> A generate(Family<A> family, IntSupplier rng) {
+        if (family == Family.v4()) {
+            return family.parse(rng.getAsInt());
         }
-        Family<A> family = first.family();
-        A random = generate(family, rng);
-        return fromBlock(family, block, random);
+        return family.parse(randomLong(rng), randomLong(rng));
+    }
+
+    private static long randomLong(IntSupplier rng) {
+        final long intMask = 0xFFFFFFFFL;
+        long l = (rng.getAsInt() &  intMask) << Integer.SIZE;
+        return l | (rng.getAsInt() &  intMask);
     }
 
     private static <A extends Address<A>> A fromBlock(Family<A> family, Block<A> block, A random) {

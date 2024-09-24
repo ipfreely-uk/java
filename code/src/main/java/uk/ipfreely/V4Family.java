@@ -9,7 +9,7 @@ import static uk.ipfreely.Validation.validate;
 
 final class V4Family extends Family<V4> {
 
-    private static final BigInteger MAX_VALUE = BigInteger.valueOf(2).pow(V4Consts.WIDTH).subtract(BigInteger.ONE);
+    private static final BigInteger MAX_VALUE = BigInteger.valueOf(2).pow(Consts.V4_WIDTH).subtract(BigInteger.ONE);
     private static final String MAX_ASSERTION = "Maximum value is " + MAX_VALUE;
 
     static final Family<V4> INST = new V4Family();
@@ -29,8 +29,8 @@ final class V4Family extends Family<V4> {
     }
 
     @Override
-    public V4 parse(CharSequence ip) {
-        int n = V4Strings.from(ip);
+    public V4 parse(CharSequence candidate) {
+        int n = V4Strings.from(candidate);
         return V4.fromInt(n);
     }
 
@@ -55,7 +55,7 @@ final class V4Family extends Family<V4> {
 
     @Override
     public int width() {
-        return V4Consts.WIDTH;
+        return Consts.V4_WIDTH;
     }
 
     @Override

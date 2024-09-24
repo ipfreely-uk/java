@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;
 
 public class V6Test extends IpTests<V6> {

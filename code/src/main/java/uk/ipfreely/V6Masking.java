@@ -19,14 +19,14 @@ final class V6Masking {
             return -1;
         }
         if (firstHigh == lastHigh) {
-            return V6Consts.WIDTH - lowMask;
+            return Consts.V6_WIDTH - lowMask;
         }
         if (lowMask == 64) {
             int highMask = maskSizeIfBlock(firstHigh, lastHigh);
             if (highMask < 0) {
                 return -1;
             }
-            return V6Consts.WIDTH - (highMask + lowMask);
+            return Consts.V6_WIDTH - (highMask + lowMask);
         }
         return -1;
     }

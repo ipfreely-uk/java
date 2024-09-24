@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- *     Set interface of zero to {@link Family#max()} {@link Address}es.
+ *     Discrete set interface of zero to {@link Family#max()} {@link Address}es.
  * </p>
  * <p>
  *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
@@ -111,7 +111,8 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
     }
 
     /**
-     * Number of unique {@link Address}es in this set.
+     * Number of unique {@link Address}es.
+     * The cardinality of the set.
      *
      * @return count
      */

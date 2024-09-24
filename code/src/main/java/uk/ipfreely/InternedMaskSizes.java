@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
  */
 final class InternedMaskSizes {
 
-    private static final BigInteger[] SIZES = IntStream.rangeClosed(0, V6Consts.WIDTH)
+    private static final BigInteger[] SIZES = IntStream.rangeClosed(0, Consts.V6_WIDTH)
             .mapToObj(InternedMaskSizes::gen)
             .toArray(BigInteger[]::new);
 
@@ -18,11 +18,11 @@ final class InternedMaskSizes {
     }
 
     private static BigInteger gen(int n) {
-        return BigInteger.valueOf(2).pow(V6Consts.WIDTH - n);
+        return BigInteger.valueOf(2).pow(Consts.V6_WIDTH - n);
     }
 
     static BigInteger v4(int maskBits) {
-        int offset = V6Consts.WIDTH - V4Consts.WIDTH + maskBits;
+        int offset = Consts.V6_WIDTH - Consts.V4_WIDTH + maskBits;
         return SIZES[offset];
     }
 

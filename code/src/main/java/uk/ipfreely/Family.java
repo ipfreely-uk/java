@@ -82,11 +82,11 @@ public abstract class Family<A extends Address<A>> {
      * Parses an IP address string.
      * TODO: supported string forms.
      *
-     * @param address valid IP address in this family
+     * @param candidate valid IP address in this family
      * @return parsed address
      * @throws ParseException on invalid address
      */
-    public abstract A parse(CharSequence address);
+    public abstract A parse(CharSequence candidate);
 
     /**
      * Argument must be {@code bitWidth() / 8} bytes in length.
@@ -289,8 +289,8 @@ public abstract class Family<A extends Address<A>> {
      * @see Address#toBytes()
      */
     public static Address<?> unknown(byte... address) {
-        int v4len = V4Consts.WIDTH / Byte.SIZE;
-        int v6len = V6Consts.WIDTH / Byte.SIZE;
+        int v4len = Consts.V4_WIDTH / Byte.SIZE;
+        int v6len = Consts.V6_WIDTH / Byte.SIZE;
         boolean v4 = v4len == address.length;
         boolean v6 = v6len == address.length;
         validate(v4 || v6, "IP addresses must be " + v4len + " or " + v6len + " bytes in length", address, ParseException::new);

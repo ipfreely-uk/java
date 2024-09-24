@@ -9,7 +9,9 @@ import uk.ipfreely.V6;
 import uk.ipfreely.testing.EqualsTester;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;

@@ -189,7 +189,7 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
 
     /**
      * Combines two ranges into a single range using the least and greatest values from each.
-     * The ranges do not have to be contiguous.
+     * The ranges do not have to be contiguous - this is not a union method.
      *
      * @param other another range
      * @return new range
@@ -198,7 +198,12 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
     default Range<A> combine(Range<A> other) {
         A first = Compare.least(first(), other.first());
         A last = Compare.greatest(last(), other.last());
-        // TODO: efficiency - return supersets
+        if (this.first().equals(first) && this.last().equals(last)) {
+            return this;
+        }
+        if (other.first().equals(first) && other.last().equals(last)) {
+            return other;
+        }
         return AddressSets.range(first, last);
     }
 }

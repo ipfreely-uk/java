@@ -20,25 +20,24 @@ final class Chars {
         return offset;
     }
 
-    static CharSequence[] split(CharSequence cs, char match) {
-        int count = 0;
-        for (int i = 0, len = cs.length(); i < len; i++) {
-            if (cs.charAt(i) == match) {
-                count++;
+    static int indexOf(CharSequence cs, CharSequence find) {
+        final int len = find.length();
+        for (int i = 0, limit = cs.length() - len + 1; i < limit; i++) {
+            if (match(cs, i, find, len)) {
+                return i;
             }
         }
+        return -1;
+    }
 
-        CharSequence[] result = new String[count + 1];
-        int offset = 0;
-        int index = 0;
-        for (int i = 0, len = cs.length(); i < len; i++) {
-            if (cs.charAt(i) == match) {
-                result[index++] = cs.subSequence(offset, i);
-                offset = i + 1;
+    private static boolean match(CharSequence cs, int offset, CharSequence find, int len) {
+        for (int i = 0; i < len; i++) {
+            char l = cs.charAt(i + offset);
+            char r = find.charAt(i);
+            if (l != r) {
+                return false;
             }
         }
-        result[index] = cs.subSequence(offset, cs.length());
-
-        return result;
+        return true;
     }
 }
