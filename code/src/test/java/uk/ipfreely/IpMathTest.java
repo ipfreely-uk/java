@@ -80,6 +80,7 @@ public class IpMathTest {
       new UI128(0xFFFFFFFFFFFFFFFFL, 0),
       new UI128(10, 10),
       new UI128(1, 0),
+      new UI128(0x123456789abcdef0L, 0x123456789abcdef0L),
     };
     for (UI128 i : tests) {
       for (UI128 j : tests) {

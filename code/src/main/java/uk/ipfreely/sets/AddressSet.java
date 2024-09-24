@@ -16,6 +16,7 @@ import java.util.stream.Stream;
  *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
  *     Implementations MUST be immutable.
  *     {@link AddressSet#iterator()} MUST produce values from least to greatest.
+ *     This type is always a sorted set.
  * </p>
  * <table border="1">
  *     <caption>AddressSet Contracts</caption>

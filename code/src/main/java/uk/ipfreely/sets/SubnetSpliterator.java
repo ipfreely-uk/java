@@ -45,6 +45,6 @@ final class SubnetSpliterator<A extends Address<A>> implements Spliterator<Block
 
     @Override
     public int characteristics() {
-        return Spliterator.IMMUTABLE | Spliterator.DISTINCT | Spliterator.ORDERED | Spliterator.NONNULL;
+        return IMMUTABLE | DISTINCT | ORDERED | NONNULL;
     }
 }

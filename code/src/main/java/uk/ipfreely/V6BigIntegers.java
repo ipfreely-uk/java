@@ -4,11 +4,14 @@ package uk.ipfreely;
 
 import java.math.BigInteger;
 
-class V6BigIntegers {
+final class V6BigIntegers {
 
     private V6BigIntegers() {}
 
     static BigInteger toBigInteger(long high, long low) {
+        if (high == 0L && low >= 0L) {
+            return BigInteger.valueOf(low);
+        }
         final byte[] barr = V6Bytes.toBytes(high, low);
         return new BigInteger(1, barr);
     }
