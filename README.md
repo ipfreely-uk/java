@@ -5,6 +5,21 @@
 
 IP address manipulation library.
 
+## Example
+
+```java
+// EXAMPLE
+// Define 192.168.0.0/24
+int maskBits = 24;
+V4 networkAddress = Family.v4().parse("192.168.0.0");
+// 255.255.255.0
+V4 mask = Family.v4().subnets().masks().get(maskBits);
+// 0.0.0.255
+V4 inverseMask = mask.not()
+// 192.168.0.255
+V4 lastAddress = inverseMask.or(networkAddress);
+```
+
 ## Documentation
 
 [Javadoc](https://ipfreely-uk.github.io/java/)/[![javadoc](https://javadoc.io/badge2/uk.ipfreely/addresses/javadoc.svg)](https://javadoc.io/doc/uk.ipfreely/addresses) 
