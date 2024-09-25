@@ -48,6 +48,8 @@ public class V6Test extends IpTests<V6> {
             v6().parse(0xFFFFFFFFFFFFFFFFL, 1),
             v6().parse(0, 0),
             v6().parse(0, 2),
+            v6().parse(0, 3),
+            v6().parse(1, 3),
             v6().parse(0xcafebabedeadd00dL, 0xfee1cafecafecafeL),
             v6().parse(0x6e1813e6cb672L, 0x35ff227a8e0557acL)
     );

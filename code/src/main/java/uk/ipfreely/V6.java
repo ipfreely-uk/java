@@ -188,33 +188,29 @@ public final class V6 extends Address<V6> {
         if (compare < 0) {
             return fromLongs(0, 0);
         }
-        // TODO: efficiency
         BigInteger val = toBigInteger().divide(denominator.toBigInteger());
         return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
     }
 
     @Override
     public V6 mod(V6 denominator) {
-        if (isOne(denominator)) {
+        if(isZero(denominator)) {
+            throw new ArithmeticException("divide by zero");
+        }
+        final int compare = compareTo(denominator);
+        if (compare == 0 || isOne(denominator)) {
             return fromLongs(0, 0);
         }
+        if (compare < 0) {
+            return this;
+        }
         if (high == 0 && denominator.high == 0) {
-            long div = Long.divideUnsigned(low, denominator.low);
-            long newLow = low - (div * denominator.low);
-            return fromLongs(0, newLow);
+            long remainder = Long.remainderUnsigned(low, denominator.low);
+            return fromLongs(0, remainder);
         }
-        if(!isZero(denominator)) {
-            final int compare = compareTo(denominator);
-            if (compare == 0) {
-                return fromLongs(0, 0);
-            }
-            if (compare < 0) {
-                return this;
-            }
-        }
-        // TODO: efficiency
-        BigInteger val = toBigInteger().mod(denominator.toBigInteger());
-        return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
+        V6 quotient = divide(denominator);
+        V6 nearest = quotient.multiply(denominator);
+        return subtract(nearest);
     }
 
     @Override
