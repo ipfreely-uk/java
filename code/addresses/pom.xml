@@ -3,21 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>uk.ipfreely</groupId>
+        <artifactId>project</artifactId>
+        <version>8.0.8-alpha-SNAPSHOT</version>
+    </parent>
 
-    <groupId>uk.ipfreely</groupId>
-    <artifactId>project</artifactId>
-    <version>8.0.8-alpha-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <artifactId>addresses</artifactId>
+    <packaging>jar</packaging>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
     <url>https://ipfreely.uk</url>
-
-    <modules>
-        <module>autores-iana-plugin</module>
-        <module>addresses</module>
-        <module>registries</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -40,6 +37,21 @@
         <maven-gpg-plugin>3.1.0</maven-gpg-plugin>
         <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <licenses>
         <license>
@@ -188,13 +200,13 @@
                     <xmlOutput>true</xmlOutput>
                     <failOnError>true</failOnError>
                     <!-- excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile -->
-<!--                    <plugins>-->
-<!--                        <plugin>-->
-<!--                            <groupId>com.h3xstream.findsecbugs</groupId>-->
-<!--                            <artifactId>findsecbugs-plugin</artifactId>-->
-<!--                            <version>1.13.0</version>-->
-<!--                        </plugin>-->
-<!--                    </plugins>-->
+                    <!--                    <plugins>-->
+                    <!--                        <plugin>-->
+                    <!--                            <groupId>com.h3xstream.findsecbugs</groupId>-->
+                    <!--                            <artifactId>findsecbugs-plugin</artifactId>-->
+                    <!--                            <version>1.13.0</version>-->
+                    <!--                        </plugin>-->
+                    <!--                    </plugins>-->
                 </configuration>
                 <executions>
                     <execution>
