@@ -7,10 +7,11 @@
         <version>8.0.8-alpha-SNAPSHOT</version>
     </parent>
 
-    <artifactId>autores-iana-plugin</artifactId>
+    <artifactId>ipfreely-iana-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>autores-iana-plugin Maven Plugin</name>
+    <name>ipfreely-iana-plugin Maven Plugin</name>
+    <description>For internal use only.</description>
 
     <url>http://ipfreely.uk</url>
 
@@ -40,6 +41,17 @@
             <artifactId>plexus-utils</artifactId>
             <version>4.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>uk.autores</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${autores.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -66,6 +78,20 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>uk.autores</groupId>
+                            <artifactId>annotations</artifactId>
+                            <version>${autores.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>

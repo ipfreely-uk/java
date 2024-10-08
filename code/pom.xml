@@ -9,13 +9,13 @@
     <version>8.0.8-alpha-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>IPFreely.uk</name>
+    <name>IPFreely.uk parent project</name>
     <description>IP address manipulation library</description>
     <url>https://ipfreely.uk</url>
 
     <modules>
-        <module>autores-iana-plugin</module>
         <module>addresses</module>
+        <module>ipfreely-iana-plugin</module>
         <module>registries</module>
     </modules>
 
@@ -28,6 +28,7 @@
         <maven-jar-plugin>3.4.2</maven-jar-plugin>
         <maven-source-plugin>3.3.1</maven-source-plugin>
         <maven-javadoc-plugin>3.10.0</maven-javadoc-plugin>
+        <maven-compiler-plugin>3.13.0</maven-compiler-plugin>
         <jacoco-maven-plugin>0.8.12</jacoco-maven-plugin>
         <spotbugs-maven-plugin>4.8.6.4</spotbugs-maven-plugin>
         <spotbugs.version>4.8.6</spotbugs.version>
@@ -39,7 +40,23 @@
         <maven-jxr-plugin>3.5.0</maven-jxr-plugin>
         <maven-gpg-plugin>3.1.0</maven-gpg-plugin>
         <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
+        <autores.version>8.0.35-beta</autores.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <licenses>
         <license>
@@ -114,8 +131,8 @@
                 </configuration>
             </plugin>
             <!-- coverage -->
-            <plugin>
-                <!-- https://www.jacoco.org/jacoco/trunk/doc/ -->
+            <!--<plugin>
+                &lt;!&ndash; https://www.jacoco.org/jacoco/trunk/doc/ &ndash;&gt;
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco-maven-plugin}</version>
@@ -140,6 +157,8 @@
                         <configuration>
                             <excludes>
                                 <exclude>uk/ipfreely/**/Validation.*</exclude>
+                                <exclude>uk/ipfreely/mvn/plugin/iana/*</exclude>
+                                <exclude>uk/ipfreely/autores_iana_plugin/*</exclude>
                             </excludes>
                             <rules>
                                 <rule>
@@ -176,18 +195,18 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs-maven-plugin}</version>
                 <configuration>
+                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
                     <fork>true</fork>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
                     <failOnError>true</failOnError>
-                    <!-- excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile -->
 <!--                    <plugins>-->
 <!--                        <plugin>-->
 <!--                            <groupId>com.h3xstream.findsecbugs</groupId>-->
@@ -230,6 +249,9 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <excludeFromFailureFile>pmd-exclude.properties</excludeFromFailureFile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
