@@ -1,8 +1,6 @@
 package uk.ipfreely.registries;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 final class Colls {
     private Colls() {}
@@ -11,6 +9,6 @@ final class Colls {
         if (map.isEmpty()) {
             return Collections.emptyMap();
         }
-        return new EnumMap<>(map);
+        return Collections.unmodifiableMap(new EnumMap<>(map));
     }
 }
