@@ -15,7 +15,6 @@
 
     <modules>
         <module>addresses</module>
-        <module>ipfreely-iana-plugin</module>
         <module>registries</module>
     </modules>
 

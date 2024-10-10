@@ -5,11 +5,35 @@ import uk.ipfreely.sets.AddressSet;
 
 import java.util.Map;
 
-public interface Record<A extends Address<A>> {
+public final class Record<A extends Address<A>> {
+    private final String name;
+    private final AddressSet<A> addresses;
+    private final Map<Unicast, Boolean> routing;
 
-    String name();
+    Record(String name, AddressSet<A> addresses, Map<Unicast, Boolean> routing) {
+        this.name = name;
+        this.addresses = addresses;
+        this.routing = Colls.immutable(routing);
+    }
 
-    AddressSet<A> set();
+    public String name() {
+        return name;
+    }
 
-    Map<Unicast, Boolean> routing();
+    public AddressSet<A> addresses() {
+        return addresses;
+    }
+
+    public Map<Unicast, Boolean> routing() {
+        return routing;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "name='" + name + '\'' +
+                ", addresses=" + addresses +
+                ", routing=" + routing +
+                '}';
+    }
 }

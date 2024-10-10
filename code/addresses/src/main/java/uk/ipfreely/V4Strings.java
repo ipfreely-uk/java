@@ -56,6 +56,7 @@ final class V4Strings {
     static int from(CharSequence address) {
         final int len = address.length();
 
+        validate(len >= 7, "String too short", address, ParseException::new);
         validate(address.charAt(0) != '.', "Leading dot", address, ParseException::new);
         validate(address.charAt(len - 1) != '.', "Trailing dot", address, ParseException::new);
 

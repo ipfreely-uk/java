@@ -3,18 +3,18 @@ package uk.ipfreely.registries;
 import uk.ipfreely.Address;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableList;
 
-public final class Registry<A extends Address<A>> implements Iterable<Record<A>> {
+public final class Register<A extends Address<A>> implements Iterable<Registry<A>> {
     private final String title;
     private final String id;
-    private final List<Record<A>> contents;
+    private final Collection<Registry<A>> contents;
 
-    Registry(String title, String id, List<Record<A>> contents) {
+    Register(String title, String id, Collection<Registry<A>> contents) {
         this.title = title;
         this.id = id;
         this.contents = unmodifiableList(new ArrayList<>(contents));
@@ -29,11 +29,11 @@ public final class Registry<A extends Address<A>> implements Iterable<Record<A>>
     }
 
     @Override
-    public Iterator<Record<A>> iterator() {
+    public Iterator<Registry<A>> iterator() {
         return contents.iterator();
     }
 
-    public Stream<Record<A>> stream() {
+    public Stream<Registry<A>> stream() {
         return contents.stream();
     }
 }
