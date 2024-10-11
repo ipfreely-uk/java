@@ -37,6 +37,11 @@ final class Xml {
     private final XPathExpression relative = exp(xp, "a:relative");
     private final XPathExpression value = exp(xp, "a:value");
     private final XPathExpression name = exp(xp, "a:name");
+    private final XPathExpression source = exp(xp, "a:source");
+    private final XPathExpression destination = exp(xp, "a:destination");
+    private final XPathExpression forwardable = exp(xp, "a:forwardable");
+    private final XPathExpression global = exp(xp, "a:global");
+    private final XPathExpression reserved = exp(xp, "a:reserved");
 
     Xml() {}
 
@@ -114,8 +119,35 @@ final class Xml {
             addresses = Addressing.parse(id, f, a);
         }
         String n = name.evaluate(record);
+        Map<Unicast, Boolean> rules = rules(record);
+        return new Record<>(n, addresses, rules);
+    }
 
-        return new Record<>(n, addresses, Collections.emptyMap());
+    private Map<Unicast, Boolean> rules(Node record) throws XPathExpressionException {
+        EnumMap<Unicast, Boolean> em = new EnumMap<>(Unicast.class);
+        set(em, record, source, Unicast.SOURCE);
+        set(em, record, destination, Unicast.DESTINATION);
+        set(em, record, forwardable, Unicast.FORWARDABLE);
+        set(em, record, global, Unicast.GLOBALLY_REACHABLE);
+        set(em, record, reserved, Unicast.RESERVED_BY_PROTOCOL);
+        return em;
+    }
+
+    private void set(Map<Unicast, Boolean> map, Node record, XPathExpression exp, Unicast key) throws XPathExpressionException {
+        String value = exp.evaluate(record);
+        if (nullOrEmpty(value)) {
+            return;
+        }
+        if (value.contains("True")) {
+            map.put(key, true);
+        }
+        if (value.contains("False")) {
+            map.put(key, false);
+        }
+    }
+
+    private static boolean nullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
 
     private static final class NameSpaces implements NamespaceContext {
