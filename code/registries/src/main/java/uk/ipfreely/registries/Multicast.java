@@ -11,7 +11,7 @@ public final class Multicast {
     private Multicast() {}
 
     @SuppressWarnings("unchecked")
-    public static <A extends Address<A>> RegistrySet<A> all(Family<A> f) {
+    public static <A extends Address<A>> RegistrySet<A> registry(Family<A> f) {
         Objects.requireNonNull(f);
         return f == Family.v4()
                 ? (RegistrySet<A>) F4.R

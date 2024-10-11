@@ -119,21 +119,21 @@ final class Xml {
             addresses = Addressing.parse(id, f, a);
         }
         String n = name.evaluate(record);
-        Map<Unicast, Boolean> rules = rules(record);
+        Map<Special.Routing, Boolean> rules = rules(record);
         return new Record<>(n, addresses, rules);
     }
 
-    private Map<Unicast, Boolean> rules(Node record) throws XPathExpressionException {
-        EnumMap<Unicast, Boolean> em = new EnumMap<>(Unicast.class);
-        set(em, record, source, Unicast.SOURCE);
-        set(em, record, destination, Unicast.DESTINATION);
-        set(em, record, forwardable, Unicast.FORWARDABLE);
-        set(em, record, global, Unicast.GLOBALLY_REACHABLE);
-        set(em, record, reserved, Unicast.RESERVED_BY_PROTOCOL);
+    private Map<Special.Routing, Boolean> rules(Node record) throws XPathExpressionException {
+        EnumMap<Special.Routing, Boolean> em = new EnumMap<>(Special.Routing.class);
+        set(em, record, source, Special.Routing.SOURCE);
+        set(em, record, destination, Special.Routing.DESTINATION);
+        set(em, record, forwardable, Special.Routing.FORWARDABLE);
+        set(em, record, global, Special.Routing.GLOBALLY_REACHABLE);
+        set(em, record, reserved, Special.Routing.RESERVED_BY_PROTOCOL);
         return em;
     }
 
-    private void set(Map<Unicast, Boolean> map, Node record, XPathExpression exp, Unicast key) throws XPathExpressionException {
+    private void set(Map<Special.Routing, Boolean> map, Node record, XPathExpression exp, Special.Routing key) throws XPathExpressionException {
         String value = exp.evaluate(record);
         if (nullOrEmpty(value)) {
             return;
