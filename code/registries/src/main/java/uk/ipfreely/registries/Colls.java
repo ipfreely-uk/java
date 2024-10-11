@@ -11,4 +11,11 @@ final class Colls {
         }
         return Collections.unmodifiableMap(new EnumMap<>(map));
     }
+
+    static <T> List<T> immutable(List<T> c) {
+        if (c.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(new ArrayList<>(c));
+    }
 }

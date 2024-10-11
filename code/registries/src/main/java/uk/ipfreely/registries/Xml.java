@@ -69,25 +69,25 @@ final class Xml {
         }
     }
 
-    <A extends Address<A>> Register<A> load(Family<A> f, byte[] data) {
+    <A extends Address<A>> RegistrySet<A> load(Family<A> f, byte[] data) {
         Document doc = parse(data);
         try {
             Node reg = (Node) registry.evaluate(doc, XPathConstants.NODE);
             NodeList regs = (NodeList) registry.evaluate(reg, XPathConstants.NODESET);
-            List<Registry<A>> list = new ArrayList<>();
+            List<RecordSet<A>> list = new ArrayList<>();
             for (int i = 0, len = regs.getLength(); i < len; i++) {
                 Node r = regs.item(i);
                 list.add(registry(f, r));
             }
             String t = title.evaluate(reg);
             String i = id.evaluate(reg);
-            return new Register<>(t, i, list);
+            return new RegistrySet<>(t, i, list);
         } catch (XPathExpressionException e) {
             throw new AssertionError(e);
         }
     }
 
-    private <A extends Address<A>> Registry<A> registry(Family<A> f, Node registry) throws XPathExpressionException {
+    private <A extends Address<A>> RecordSet<A> registry(Family<A> f, Node registry) throws XPathExpressionException {
         String t = title.evaluate(registry);
         String ident = id.evaluate(registry);
         NodeList records = (NodeList) record.evaluate(registry, XPathConstants.NODESET);
@@ -96,7 +96,7 @@ final class Xml {
             Node record = records.item(i);
             list.add(record(ident, f, record));
         }
-        return new Registry<>(t, ident, list);
+        return new RecordSet<>(t, ident, list);
     }
 
     private <A extends Address<A>> Record<A> record(String id, Family<A> f, Node record) throws XPathExpressionException {

@@ -12,11 +12,11 @@ class MulticastTest {
     @Test
     void all() {
         {
-            Register<V4> v4 = Multicast.all(Family.v4());
+            RegistrySet<V4> v4 = Multicast.all(Family.v4());
             assertNotNull(v4);
         }
         {
-            Register<V6> v6 = Multicast.all(Family.v6());
+            RegistrySet<V6> v6 = Multicast.all(Family.v6());
             assertNotNull(v6);
         }
     }
