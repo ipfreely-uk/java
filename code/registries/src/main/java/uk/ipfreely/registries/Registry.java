@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Inheritance not supported outside this package.
+ *
+ * @param <R> contents type
+ */
 public abstract class Registry<R> implements Iterable<R> {
     private final String title;
     private final String id;
@@ -16,10 +21,20 @@ public abstract class Registry<R> implements Iterable<R> {
         this.contents = Colls.immutable(contents);
     }
 
+    /**
+     * Contents of "registry/title" elements.
+     *
+     * @return natural language title
+     */
     public String title() {
         return title;
     }
 
+    /**
+     * Derived from XML "registry" elements.
+     *
+     * @return identifier
+     */
     public String id() {
         return id;
     }
@@ -29,10 +44,18 @@ public abstract class Registry<R> implements Iterable<R> {
         return contents.iterator();
     }
 
+    /**
+     * @return contents as stream
+     */
     public Stream<R> stream() {
         return contents.stream();
     }
 
+    /**
+     * Informational.
+     *
+     * @return title
+     */
     @Override
     public String toString() {
         return title;
