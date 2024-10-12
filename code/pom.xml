@@ -188,7 +188,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs-maven-plugin}</version>
                 <configuration>
-                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+                    <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude.xml</excludeFilterFile>
                     <fork>true</fork>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
@@ -237,7 +237,7 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <excludeFromFailureFile>pmd-exclude.properties</excludeFromFailureFile>
+                            <excludeFromFailureFile>${maven.multiModuleProjectDirectory}/pmd-exclude.properties</excludeFromFailureFile>
                         </configuration>
                     </execution>
                 </executions>
