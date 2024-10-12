@@ -9,13 +9,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Representations of:
+ * <p>
+ *     Special IP address registries.
+ * </p>
  * <ul>
  *     <li>
- *         <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xml">IANA IPv4 Special-Purpose Address Registry</a>
+ *         <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xml"
+ *         >IANA IPv4 Special-Purpose Address Registry</a>
  *     </li>
  *     <li>
- *         <a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xml">IANA IPv6 Special-Purpose Address Registry</a>
+ *         <a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xml"
+ *         >IANA IPv6 Special-Purpose Address Registry</a>
  *     </li>
  * </ul>
  * <p>

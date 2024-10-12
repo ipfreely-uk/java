@@ -7,6 +7,9 @@ import uk.ipfreely.V6;
 
 import java.util.Objects;
 
+/**
+ * <p>Multicast registries.</p>
+ */
 public final class Multicast {
     private Multicast() {}
 
