@@ -6,7 +6,7 @@ import uk.ipfreely.sets.AddressSet;
 import java.util.Map;
 
 /**
- * Registry record.
+ * Registry record type.
  *
  * @param <A> address family
  */

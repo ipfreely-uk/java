@@ -8,7 +8,7 @@ import uk.ipfreely.V6;
 import java.util.Objects;
 
 /**
- * <p>Multicast registries.</p>
+ * <p>Multicast IP address registry static methods.</p>
  * <ul>
  *     <li>
  *         <a href="https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml"

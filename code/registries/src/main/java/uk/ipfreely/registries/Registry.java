@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- *     Abstract registry type.
+ *     Abstract registry container base type.
  * </p>
  * <p>
  *     Inheritance not supported outside this package.

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * <p>
- *     Special-purpose IP address registries.
+ *     Special-purpose IP address registry static methods.
  * </p>
  * <ul>
  *     <li>
@@ -71,6 +71,9 @@ public final class Special {
         static final RegistrySet<V6> R = new Xml().load(Family.v6(), IanaIpv6SpecialRegistry.bytes());
     }
 
+    /**
+     * Routing rules for special-purpose IP addresses.
+     */
     public enum Routing {
         /** Can be used as source address */
         SOURCE,
