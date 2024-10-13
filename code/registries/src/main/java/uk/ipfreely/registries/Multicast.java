@@ -9,6 +9,16 @@ import java.util.Objects;
 
 /**
  * <p>Multicast registries.</p>
+ * <ul>
+ *     <li>
+ *         <a href="https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml"
+ *         >IPv4 Multicast Address Space Registry</a>
+ *     </li>
+ *     <li>
+ *         <a href="https://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xml"
+ *         >IPv6 Multicast Address Space Registry</a>
+ *     </li>
+ *  </ul>
  */
 public final class Multicast {
     private Multicast() {}

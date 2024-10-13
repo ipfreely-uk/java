@@ -21,10 +21,20 @@ public final class Record<A extends Address<A>> {
         this.routing = Colls.immutable(routing);
     }
 
+    /**
+     * Natural language name.
+     *
+     * @return name
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * The set of addresses allocated to this record.
+     *
+     * @return address set
+     */
     public AddressSet<A> addresses() {
         return addresses;
     }
@@ -33,6 +43,11 @@ public final class Record<A extends Address<A>> {
         return routing;
     }
 
+    /**
+     * Informational.
+     *
+     * @return name
+     */
     @Override
     public String toString() {
         return name;

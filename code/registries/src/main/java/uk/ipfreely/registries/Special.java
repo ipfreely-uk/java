@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * <p>
- *     Special IP address registries.
+ *     Special-purpose IP address registries.
  * </p>
  * <ul>
  *     <li>
@@ -22,15 +22,24 @@ import java.util.Objects;
  *         >IANA IPv6 Special-Purpose Address Registry</a>
  *     </li>
  * </ul>
- * <p>
- *     Special record blocks may intersect.
- *     "This network" <code>0.0.0.0/8</code> contains
- *     "This host on this network" <code>0.0.0.0/32</code>.
- * </p>
  */
 public final class Special {
     private Special() {}
 
+    /**
+     * <p>
+     *     Special-purpose IP address records for a given IP address family.
+     * </p>
+     * <p>
+     *     Special records may intersect.
+     *     "This network" <code>0.0.0.0/8</code> contains
+     *     "This host on this network" <code>0.0.0.0/32</code>.
+     * </p>
+     *
+     * @param f IPv4 or IPv6
+     * @return special address registry
+     * @param <A> address family
+     */
     @SuppressWarnings("unchecked")
     public static <A extends Address<A>> RegistrySet<A> registry(Family<A> f) {
         Objects.requireNonNull(f);
@@ -40,7 +49,12 @@ public final class Special {
     }
 
     /**
-     * Any routing rules associated with special addresses.
+     * <p>
+     *     Any routing rules associated with special addresses.
+     * </p>
+     * <p>
+     *     Returns the empty set for records from other registries.
+     * </p>
      *
      * @param r record instance
      * @return routing rules

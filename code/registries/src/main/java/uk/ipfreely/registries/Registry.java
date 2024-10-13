@@ -1,16 +1,23 @@
 package uk.ipfreely.registries;
 
+import uk.ipfreely.Address;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * Inheritance not supported outside this package.
+ * <p>
+ *     Abstract registry type.
+ * </p>
+ * <p>
+ *     Inheritance not supported outside this package.
+ * </p>
  *
  * @param <R> contents type
  */
-public abstract class Registry<R> implements Iterable<R> {
+public abstract class Registry<A extends Address<A>, R> implements Iterable<R> {
     private final String title;
     private final String id;
     private final Collection<R> contents;
