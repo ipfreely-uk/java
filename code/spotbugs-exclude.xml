@@ -19,4 +19,8 @@
         <Class name="~.*Multicast.*" />
         <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     </Match>
+    <Match>
+        <Class name="~.*AddressSpace.*" />
+        <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
 </FindBugsFilter>

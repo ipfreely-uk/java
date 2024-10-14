@@ -20,6 +20,8 @@ import static java.util.Objects.requireNonNull;
 
 @ByteArrays(
         {
+                "ipv4-address-space.xml",
+                "ipv6-address-space.xml",
                 "iana-ipv4-special-registry.xml",
                 "iana-ipv6-special-registry.xml",
                 "multicast-addresses.xml",
