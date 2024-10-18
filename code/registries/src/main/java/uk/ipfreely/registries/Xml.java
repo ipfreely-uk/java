@@ -26,6 +26,8 @@ import static java.util.Objects.requireNonNull;
                 "iana-ipv6-special-registry.xml",
                 "multicast-addresses.xml",
                 "ipv6-multicast-addresses.xml",
+                "ipv6-unicast-address-assignments.xml",
+                "ipv6-anycast-addresses.xml",
         }
 )
 final class Xml {

@@ -23,4 +23,12 @@
         <Class name="~.*AddressSpace.*" />
         <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     </Match>
+    <Match>
+        <Class name="~.*AnycastAddresses.*" />
+        <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
+    <Match>
+        <Class name="~.*UnicastAddress.*" />
+        <Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
 </FindBugsFilter>
