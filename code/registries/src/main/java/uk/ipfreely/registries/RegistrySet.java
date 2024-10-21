@@ -20,7 +20,7 @@ public final class RegistrySet<A extends Address<A>> extends Registry<A, RecordS
     }
 
     @Override
-    AddressSet<A> union() {
+    public AddressSet<A> addresses() {
         if (all == null) {
             collect();
         }

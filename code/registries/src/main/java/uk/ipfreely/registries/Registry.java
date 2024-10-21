@@ -1,11 +1,9 @@
 package uk.ipfreely.registries;
 
 import uk.ipfreely.Address;
-import uk.ipfreely.sets.AddressSet;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -18,7 +16,7 @@ import java.util.stream.Stream;
  *
  * @param <R> contents type
  */
-public abstract class Registry<A extends Address<A>, R> implements Iterable<R> {
+public abstract class Registry<A extends Address<A>, R extends Union<A>> implements Iterable<R>, Union<A> {
     private final String title;
     private final String id;
     private final Collection<R> contents;
@@ -28,12 +26,6 @@ public abstract class Registry<A extends Address<A>, R> implements Iterable<R> {
         this.id = id;
         this.contents = Colls.immutable(contents);
     }
-
-    /**
-     *
-     * @return all addresses in registry
-     */
-    abstract AddressSet<A> union();
 
     /**
      * Contents of "registry/title" elements.
@@ -51,6 +43,21 @@ public abstract class Registry<A extends Address<A>, R> implements Iterable<R> {
      */
     public String id() {
         return id;
+    }
+
+    /**
+     * The contents that contains address.
+     *
+     * @param address address to find
+     * @return set
+     */
+    Set<R> containing(A address) {
+        if (!addresses().contains(address)) {
+            return Collections.emptySet();
+        }
+        return stream()
+                .filter(r -> r.addresses().contains(address))
+                .collect(Collectors.toSet());
     }
 
     @Override

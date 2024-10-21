@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @param <A> address family
  */
-public final class Record<A extends Address<A>> {
+public final class Record<A extends Address<A>> implements Union<A> {
     private final String name;
     private final AddressSet<A> addresses;
     private final Map<Special.Routing, Boolean> routing;
@@ -30,15 +30,6 @@ public final class Record<A extends Address<A>> {
         return name;
     }
 
-    /**
-     * The set of addresses allocated to this record.
-     *
-     * @return address set
-     */
-    public AddressSet<A> addresses() {
-        return addresses;
-    }
-
     Map<Special.Routing, Boolean> routing() {
         return routing;
     }
@@ -51,5 +42,10 @@ public final class Record<A extends Address<A>> {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public AddressSet<A> addresses() {
+        return addresses;
     }
 }

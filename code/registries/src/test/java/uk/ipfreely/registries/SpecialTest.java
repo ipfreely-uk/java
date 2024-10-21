@@ -39,7 +39,7 @@ class SpecialTest {
     void member() {
         Address<V4> localhost = Family.v4().parse("127.0.0.1");
         boolean isSpecial = Special.registry(localhost.family())
-                .union()
+                .addresses()
                 .contains(localhost);
         assertTrue(isSpecial);
     }
