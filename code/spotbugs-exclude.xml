@@ -31,4 +31,8 @@
         <Class name="~.*UnicastAddress.*" />
         <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     </Match>
+    <Match>
+        <Class name="~.*RegistryParser.*" />
+        <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    </Match>
 </FindBugsFilter>

@@ -10,4 +10,18 @@
  *     This module depends on the "uk.ipfreely" and "java.xml" modules.
  * </p>
  */
+@ByteArrays(
+        {
+                "ipv4-address-space.xml",
+                "ipv6-address-space.xml",
+                "iana-ipv4-special-registry.xml",
+                "iana-ipv6-special-registry.xml",
+                "multicast-addresses.xml",
+                "ipv6-multicast-addresses.xml",
+                "ipv6-unicast-address-assignments.xml",
+                "ipv6-anycast-addresses.xml",
+        }
+)
 package uk.ipfreely.registries;
+
+import uk.autores.ByteArrays;
