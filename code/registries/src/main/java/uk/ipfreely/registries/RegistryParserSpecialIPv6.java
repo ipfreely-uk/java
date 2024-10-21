@@ -8,10 +8,10 @@ import uk.ipfreely.sets.AddressSets;
 
 import javax.xml.xpath.XPathExpressionException;
 
-final class RegistryParserIPv6 extends RegistryParserSpecial<V6> {
-    static final RegistrySet<V6> REG = new RegistryParserIPv6().load(IanaIpv6SpecialRegistry.bytes());
+final class RegistryParserSpecialIPv6 extends RegistryParserSpecial<V6> {
+    static final RegistrySet<V6> REG = new RegistryParserSpecialIPv6().load(IanaIpv6SpecialRegistry.bytes());
 
-    private RegistryParserIPv6() {}
+    private RegistryParserSpecialIPv6() {}
 
     @Override
     AddressSet<V6> addresses(Node record) throws XPathExpressionException {

@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-final class RegistryParserIPv4 extends RegistryParserSpecial<V4> {
-    static final RegistrySet<V4> REG = new RegistryParserIPv4().load(IanaIpv4SpecialRegistry.bytes());
+final class RegistryParserSpecialIPv4 extends RegistryParserSpecial<V4> {
+    static final RegistrySet<V4> REG = new RegistryParserSpecialIPv4().load(IanaIpv4SpecialRegistry.bytes());
 
-    private RegistryParserIPv4() {}
+    private RegistryParserSpecialIPv4() {}
 
     @Override
     AddressSet<V4> addresses(Node record) throws XPathExpressionException {

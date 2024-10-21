@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RegistryParserIPv6Test {
+class RegistryParserSpecialIPv6Test {
 
     @Test
     void verify() {
-        assertNotNull(RegistryParserIPv6.REG);
+        assertNotNull(RegistryParserSpecialIPv6.REG);
     }
 }

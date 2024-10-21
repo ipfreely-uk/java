@@ -42,8 +42,8 @@ public final class Special {
     public static <A extends Address<A>> RegistrySet<A> registry(Family<A> f) {
         Objects.requireNonNull(f);
         return f == Family.v4()
-                ? (RegistrySet<A>) RegistryParserIPv4.REG
-                : (RegistrySet<A>) RegistryParserIPv6.REG;
+                ? (RegistrySet<A>) RegistryParserSpecialIPv4.REG
+                : (RegistrySet<A>) RegistryParserSpecialIPv6.REG;
     }
 
     /**
