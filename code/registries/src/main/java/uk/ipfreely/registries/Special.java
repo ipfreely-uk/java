@@ -10,16 +10,6 @@ import java.util.Objects;
  * <p>
  *     Special-purpose IP address registry static methods.
  * </p>
- * <ul>
- *     <li>
- *         <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xml"
- *         >IANA IPv4 Special-Purpose Address Registry</a>
- *     </li>
- *     <li>
- *         <a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xml"
- *         >IANA IPv6 Special-Purpose Address Registry</a>
- *     </li>
- * </ul>
  */
 public final class Special {
     private Special() {}
@@ -33,6 +23,16 @@ public final class Special {
      *     "This network" <code>0.0.0.0/8</code> contains
      *     "This host on this network" <code>0.0.0.0/32</code>.
      * </p>
+     * <ul>
+     *     <li>
+     *         <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xml"
+     *         >IANA IPv4 Special-Purpose Address Registry</a>
+     *     </li>
+     *     <li>
+     *         <a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xml"
+     *         >IANA IPv6 Special-Purpose Address Registry</a>
+     *     </li>
+     * </ul>
      *
      * @param f IPv4 or IPv6
      * @return special address registry

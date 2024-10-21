@@ -14,6 +14,7 @@ import java.util.stream.Stream;
  *     Inheritance not supported outside this package.
  * </p>
  *
+ * @param <A> address family
  * @param <R> contents type
  */
 public abstract class Registry<A extends Address<A>, R extends Union<A>> implements Iterable<R>, Union<A> {
@@ -66,6 +67,8 @@ public abstract class Registry<A extends Address<A>, R extends Union<A>> impleme
     }
 
     /**
+     * All elements in registry.
+     *
      * @return contents as stream
      */
     public Stream<R> stream() {
