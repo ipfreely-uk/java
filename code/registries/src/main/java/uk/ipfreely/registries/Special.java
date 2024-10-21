@@ -4,6 +4,7 @@ import uk.ipfreely.Address;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
+import uk.ipfreely.sets.AddressSet;
 
 import java.util.Map;
 import java.util.Objects;
@@ -44,8 +45,8 @@ public final class Special {
     public static <A extends Address<A>> RegistrySet<A> registry(Family<A> f) {
         Objects.requireNonNull(f);
         return f == Family.v4()
-                ? (RegistrySet<A>) F4.R
-                : (RegistrySet<A>) F6.R;
+                ? (RegistrySet<A>) RegistryParserIPv4.REG
+                : (RegistrySet<A>) RegistryParserIPv6.REG;
     }
 
     /**
@@ -61,14 +62,6 @@ public final class Special {
      */
     public static Map<Routing, Boolean> rules(Record<?> r) {
         return r.routing();
-    }
-
-    private static final class F4 {
-        static final RegistrySet<V4> R = new Xml().load(Family.v4(), IanaIpv4SpecialRegistry.bytes());
-    }
-
-    private static final class F6 {
-        static final RegistrySet<V6> R = new Xml().load(Family.v6(), IanaIpv6SpecialRegistry.bytes());
     }
 
     /**

@@ -1,6 +1,7 @@
 package uk.ipfreely.registries;
 
 import uk.ipfreely.Address;
+import uk.ipfreely.sets.AddressSet;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,6 +28,12 @@ public abstract class Registry<A extends Address<A>, R> implements Iterable<R> {
         this.id = id;
         this.contents = Colls.immutable(contents);
     }
+
+    /**
+     *
+     * @return all addresses in registry
+     */
+    abstract AddressSet<A> union();
 
     /**
      * Contents of "registry/title" elements.

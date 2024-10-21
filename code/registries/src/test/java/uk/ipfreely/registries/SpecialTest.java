@@ -1,7 +1,9 @@
 package uk.ipfreely.registries;
 
 import org.junit.jupiter.api.Test;
+import uk.ipfreely.Address;
 import uk.ipfreely.Family;
+import uk.ipfreely.V4;
 import uk.ipfreely.V6;
 
 import java.util.Map;
@@ -31,5 +33,14 @@ class SpecialTest {
         assertTrue(rules.get(Special.Routing.FORWARDABLE));
         assertNull(rules.get(Special.Routing.GLOBALLY_REACHABLE));
         assertFalse(rules.get(Special.Routing.RESERVED_BY_PROTOCOL));
+    }
+
+    @Test
+    void member() {
+        Address<V4> localhost = Family.v4().parse("127.0.0.1");
+        boolean isSpecial = Special.registry(localhost.family())
+                .union()
+                .contains(localhost);
+        assertTrue(isSpecial);
     }
 }
