@@ -5,6 +5,8 @@ import uk.ipfreely.Family;
 
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * <p>Multicast IP address registry static methods.</p>
  */
@@ -29,8 +31,7 @@ public final class Multicast {
      */
     @SuppressWarnings("unchecked")
     public static <A extends Address<A>> RegistrySet<A> registry(Family<A> f) {
-        Objects.requireNonNull(f);
-        return f == Family.v4()
+        return requireNonNull(f) == Family.v4()
                 ? (RegistrySet<A>) RegistryParserMulticastIPv4.REG
                 : (RegistrySet<A>) RegistryParserMulticastIPv6.REG;
     }

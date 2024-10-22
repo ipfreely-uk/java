@@ -8,9 +8,26 @@ import uk.ipfreely.sets.AddressSets;
 
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
+import java.util.ArrayList;
+import java.util.List;
 
 final class RegistryParserMulticastIPv4 extends RegistryParserMulticast<V4> {
-    static final RegistrySet<V4> REG = new RegistryParserMulticastIPv4().load(MulticastAddresses.bytes());
+    static final RegistrySet<V4> REG;
+    static final RecordSet<V4> SCOPES;
+    static {
+        RegistrySet<V4> all = new RegistryParserMulticastIPv4().load(MulticastAddresses.bytes());
+        List<RecordSet<V4>> ranges = new ArrayList<>();
+        RecordSet<V4> scopes = null;
+        for (RecordSet<V4> r : all) {
+            if (r.id().equals("multicast-addresses-13")) {
+                scopes = r;
+            } else {
+                ranges.add(r);
+            }
+        }
+        SCOPES = scopes;
+        REG = new RegistrySet<>(all.title(), all.id(), ranges);
+    }
 
     private final XPathExpression relative = exp("a:relative");
 

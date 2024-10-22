@@ -12,7 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class RegistryParserMulticastIPv6 extends RegistryParserMulticast<V6> {
-    static final RegistrySet<V6> REG = new RegistryParserMulticastIPv6().load(Ipv6MulticastAddresses.bytes());
+    static final RegistrySet<V6> REG;
+    static final RecordSet<V6> SCOPES;
+    static {
+        RegistrySet<V6> all = new RegistryParserMulticastIPv6().load(Ipv6MulticastAddresses.bytes());
+        List<RecordSet<V6>> ranges = new ArrayList<>();
+        RecordSet<V6> scopes = null;
+        for (RecordSet<V6> r : all) {
+            if (r.id().equals("multicast-addresses-13")) {
+                scopes = r;
+            } else {
+                ranges.add(r);
+            }
+        }
+        SCOPES = scopes;
+        REG = new RegistrySet<>(all.title(), all.id(), ranges);
+    }
 
     private final XPathExpression value = exp("a:value");
 
