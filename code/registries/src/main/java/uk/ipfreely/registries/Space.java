@@ -6,15 +6,14 @@ import uk.ipfreely.Family;
 import java.util.Objects;
 
 /**
- * IP address spaces.
+ * <p>
+ *     Top level IP address space allocations.
+ * </p>
  */
 public final class Space {
     private Space() {}
 
     /**
-     * <p>
-     *
-     * </p>
      * <ul>
      *     <li>
      *         <a href="https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xml"
