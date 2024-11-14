@@ -18,4 +18,9 @@ final class RegistryParserSpecialIPv6 extends RegistryParserSpecial<V6> {
         String a = address.evaluate(record).trim();
         return AddressSets.parseCidr(Family.v6(), a);
     }
+
+    @Override
+    boolean isFlat() {
+        return false;
+    }
 }

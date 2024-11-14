@@ -22,4 +22,9 @@ abstract class RegistryParserMulticast<A extends Address<A>> extends RegistryPar
     abstract AddressSet<A> scope(Node record) throws XPathExpressionException;
 
     abstract AddressSet<A> parse(String address);
+
+    @Override
+    String recordDescription() {
+        return "a:description";
+    }
 }

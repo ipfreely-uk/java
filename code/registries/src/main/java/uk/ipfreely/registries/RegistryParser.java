@@ -24,7 +24,9 @@ abstract class RegistryParser<A extends Address<A>> {
     private final XPathExpression title = exp("a:title");
     private final XPathExpression id = exp("@id");
     private final XPathExpression record = exp("a:record");
-    private final XPathExpression name = exp("a:name");
+    private final XPathExpression name = exp(recordDescription());
+
+    abstract String recordDescription();
 
     private Record<A> record(Node record) throws XPathExpressionException {
         String n = name.evaluate(record);
@@ -46,11 +48,15 @@ abstract class RegistryParser<A extends Address<A>> {
         Document doc = parse(data);
         try {
             Node reg = (Node) registry.evaluate(doc, XPathConstants.NODE);
-            NodeList regs = (NodeList) registry.evaluate(reg, XPathConstants.NODESET);
             List<RecordSet<A>> list = new ArrayList<>();
-            for (int i = 0, len = regs.getLength(); i < len; i++) {
-                Node r = regs.item(i);
-                list.add(registry(r));
+            if (isFlat()) {
+                list.add(registry(reg));
+            } else {
+                NodeList regs = (NodeList) registry.evaluate(reg, XPathConstants.NODESET);
+                for (int i = 0, len = regs.getLength(); i < len; i++) {
+                    Node r = regs.item(i);
+                    list.add(registry(r));
+                }
             }
             String t = title.evaluate(reg);
             String i = id.evaluate(reg);
@@ -85,6 +91,8 @@ abstract class RegistryParser<A extends Address<A>> {
             throw new AssertionError(e);
         }
     }
+
+    abstract boolean isFlat();
 
     private static XPath xPath() {
         XPathFactory factory = XPathFactory.newInstance();

@@ -39,4 +39,9 @@ abstract class RegistryParserSpecial<A extends Address<A>> extends RegistryParse
             map.put(key, false);
         }
     }
+
+    @Override
+    String recordDescription() {
+        return "a:name";
+    }
 }

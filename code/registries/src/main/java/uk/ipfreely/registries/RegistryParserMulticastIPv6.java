@@ -78,4 +78,9 @@ final class RegistryParserMulticastIPv6 extends RegistryParserMulticast<V6> {
         }
         return AddressSets.from(all);
     }
+
+    @Override
+    boolean isFlat() {
+        return false;
+    }
 }

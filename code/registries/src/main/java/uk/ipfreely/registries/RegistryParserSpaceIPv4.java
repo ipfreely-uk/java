@@ -15,4 +15,14 @@ public class RegistryParserSpaceIPv4 extends RegistryParserSpace<V4> {
         String cidr = components[0] + ".0.0.0/" + bits;
         return AddressSets.parseCidr(Family.v4(), cidr);
     }
+
+    @Override
+    String recordDescription() {
+        return "a:designation";
+    }
+
+    @Override
+    boolean isFlat() {
+        return true;
+    }
 }

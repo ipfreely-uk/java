@@ -29,4 +29,9 @@ final class RegistryParserSpecialIPv4 extends RegistryParserSpecial<V4> {
         }
         return AddressSets.parseCidr(Family.v4(), a);
     }
+
+    @Override
+    boolean isFlat() {
+        return false;
+    }
 }

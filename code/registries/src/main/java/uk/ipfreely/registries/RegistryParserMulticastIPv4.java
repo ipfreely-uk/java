@@ -55,5 +55,10 @@ final class RegistryParserMulticastIPv4 extends RegistryParserMulticast<V4> {
         V4 a = Family.v4().parse(address);
         return AddressSets.address(a);
     }
+
+    @Override
+    boolean isFlat() {
+        return false;
+    }
 }
 
