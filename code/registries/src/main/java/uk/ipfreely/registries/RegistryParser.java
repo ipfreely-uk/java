@@ -24,11 +24,14 @@ abstract class RegistryParser<A extends Address<A>> {
     private final XPathExpression title = exp("a:title");
     private final XPathExpression id = exp("@id");
     private final XPathExpression record = exp("a:record");
-    private final XPathExpression name = exp(recordDescription());
+    private XPathExpression name;
 
     abstract String recordDescription();
 
     private Record<A> record(Node record) throws XPathExpressionException {
+        if (name == null) {
+            name = exp(recordDescription());
+        }
         String n = name.evaluate(record);
         AddressSet<A> addresses = addresses(record);
         Map<Special.Routing, Boolean> rules = rules(record);
