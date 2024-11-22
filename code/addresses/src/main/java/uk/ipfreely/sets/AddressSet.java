@@ -50,11 +50,21 @@ import java.util.stream.Stream;
  *             {@link uk.ipfreely.sets.AddressSet}
  *         </td>
  *         <td>
- *             ...is made up of non-contiguous ranges or is the empty set.
+ *             ...is made up of non-{@link Range#adjacent(Range)} {@link Range}s or is the empty set.
  *         </td>
  *     </tr>
  * </table>
- *
+ * <p>
+ *     Mixing {@link uk.ipfreely.V4} and {@link uk.ipfreely.V6} in the same set is not permitted.
+ * </p>
+ * <p>
+ *     <strong>Design note:</strong>
+ *     this type does not extend {@link java.util.Collection}
+ *     types because {@link #size()} can
+ *     exceed {@link java.lang.Integer#MAX_VALUE}.
+ * </p>
+ * @see AddressSets#from(Iterable)
+ * @see AddressSets#of(AddressSet[])
  * @param <A> address type
  */
 public interface AddressSet<A extends Address<A>> extends Iterable<A> {
@@ -88,7 +98,7 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
      *     Constituent {@link Range}s.
      * </p>
      * <p>
-     *     Adjacent or overlapping ranges MUST be combined into a single {@link Range}.
+     *     Where {@link Range#adjacent(Range)} or {@link Range#intersects(Range)} are true ranges MUST be combined into a single {@link Range}.
      *     Elements MUST be produced from least {@link Address} to greatest.
      * </p>
      * <p>

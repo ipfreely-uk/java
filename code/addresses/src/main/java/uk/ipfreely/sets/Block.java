@@ -27,9 +27,13 @@ import static uk.ipfreely.sets.Validation.validate;
  * </ul>
  * <p>See {@link AddressSet} for implementation contract.</p>
  *
- * @param <A> the type for the IP version
  * @see Family#subnets()
- * @see uk.ipfreely.Subnets
+ * @see AddressSets#block(Address, Address)
+ * @see AddressSets#block(Address, int)
+ * @see AddressSets#address(Address)
+ * @see AddressSets#parseCidr(Family, String)
+ * @see AddressSets#parseCidr(String)
+ * @param <A> the type for the IP version
  */
 public interface Block<A extends Address<A>> extends Range<A> {
 

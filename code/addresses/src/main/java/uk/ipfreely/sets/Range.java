@@ -20,6 +20,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <p>See {@link AddressSet} for implementation contract.</p>
  * <p>Implementations are always contiguous lists.</p>
  *
+ * @see AddressSets#range(Address, Address)
  * @param <A> address type
  */
 public interface Range<A extends Address<A>> extends AddressSet<A> {

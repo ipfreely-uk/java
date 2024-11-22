@@ -32,6 +32,9 @@ public final class AddressSets {
      *     // <a href="https://datatracker.ietf.org/doc/html/rfc1918#section-3">RFC-1918 Address Allocation for Private Internets</a>
      *     AddressSet&lt;V4&gt; privateRanges = AddressSets.of(classA, classB, classC);
      * </code></pre>
+     * <p>
+     *     Reference to array is not retained.
+     * </p>
      *
      * @param sets source sets
      * @return union of given sets
