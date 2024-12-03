@@ -2,6 +2,7 @@ package uk.ipfreely.registries;
 
 import uk.ipfreely.Address;
 import uk.ipfreely.Family;
+import uk.ipfreely.sets.AddressSet;
 
 import java.util.Map;
 import java.util.Objects;
@@ -12,6 +13,9 @@ import java.util.Objects;
  * </p>
  */
 public final class Special {
+    private static final SetCache LOOPBACK = new SetCache();
+    private static final SetCache DOCUMENTATION = new SetCache();
+
     private Special() {}
 
     /**
@@ -51,6 +55,7 @@ public final class Special {
      *     Any routing rules associated with special addresses.
      * </p>
      * <p>
+     *     Only {@link Routing} rules defined as True or False in the source table will be present.
      *     Returns the empty set for records from other registries.
      * </p>
      *
@@ -59,6 +64,28 @@ public final class Special {
      */
     public static Map<Routing, Boolean> rules(Record<?> r) {
         return r.routing();
+    }
+
+    /**
+     * Loopback addresses.
+     *
+     * @param f family
+     * @return set of loopback addresses
+     * @param <A> address family
+     */
+    public static <A extends Address<A>> AddressSet<A> loopback(Family<A> f) {
+        return LOOPBACK.get(Special::registry, f, r -> r.name().startsWith("Loopback"));
+    }
+
+    /**
+     * Addresses reserved for documentation.
+     *
+     * @param f family
+     * @return set of documentation addresses
+     * @param <A> address family
+     */
+    public static <A extends Address<A>> AddressSet<A> documentation(Family<A> f) {
+        return DOCUMENTATION.get(Special::registry, f, r -> r.name().startsWith("Documentation"));
     }
 
     /**
