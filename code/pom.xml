@@ -16,20 +16,20 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.11.1</junit.version>
+        <junit.version>5.11.3</junit.version>
 
         <maven-jar-plugin>3.4.2</maven-jar-plugin>
         <maven-source-plugin>3.3.1</maven-source-plugin>
-        <maven-javadoc-plugin>3.10.0</maven-javadoc-plugin>
+        <maven-javadoc-plugin>3.11.1</maven-javadoc-plugin>
         <jacoco-maven-plugin>0.8.12</jacoco-maven-plugin>
-        <spotbugs-maven-plugin>4.8.6.4</spotbugs-maven-plugin>
+        <spotbugs-maven-plugin>4.8.6.6</spotbugs-maven-plugin>
         <spotbugs.version>4.8.6</spotbugs.version>
-        <maven-surefire-plugin>3.5.0</maven-surefire-plugin>
-        <maven-pmd-plugin>3.25.0</maven-pmd-plugin>
+        <maven-surefire-plugin>3.5.2</maven-surefire-plugin>
+        <maven-pmd-plugin>3.26.0</maven-pmd-plugin>
         <maven-enforcer-plugin>3.5.0</maven-enforcer-plugin>
         <requireMavenVersion>3.3.9</requireMavenVersion>
-        <maven-checkstyle-plugin>3.5.0</maven-checkstyle-plugin>
-        <maven-jxr-plugin>3.5.0</maven-jxr-plugin>
+        <maven-checkstyle-plugin>3.6.0</maven-checkstyle-plugin>
+        <maven-jxr-plugin>3.6.0</maven-jxr-plugin>
         <maven-gpg-plugin>3.1.0</maven-gpg-plugin>
         <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
     </properties>
