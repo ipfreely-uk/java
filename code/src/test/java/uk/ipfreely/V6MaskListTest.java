@@ -13,16 +13,16 @@ public class V6MaskListTest {
 
   @Test
   public void testFirst() {
-    assertEquals(v6().parse("::"), V6MaskList.MASKS.get(0));
+    assertEquals(v6().parse("::"), V6Masks.MASKS.get(0));
   }
 
   @Test
   public void testLast() {
-    assertEquals(v6().parse("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), V6MaskList.MASKS.get(V6MaskList.MASKS.size() - 1));
+    assertEquals(v6().parse("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), V6Masks.MASKS.get(V6Masks.MASKS.size() - 1));
   }
 
   @Test
   public void testUnique() {
-    assertEquals(V6MaskList.MASKS.size(), new HashSet<>(V6MaskList.MASKS).size());
+    assertEquals(V6Masks.MASKS.size(), new HashSet<>(V6Masks.MASKS).size());
   }
 }

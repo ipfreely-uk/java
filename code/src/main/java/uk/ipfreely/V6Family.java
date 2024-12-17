@@ -52,7 +52,7 @@ final class V6Family extends Family<V6> {
 
     @Override
     public List<V6> masks() {
-        return V6MaskList.MASKS;
+        return V6Masks.MASKS;
     }
 
     @Override

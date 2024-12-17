@@ -12,16 +12,16 @@ public class V4MaskListTest {
 
   @Test
   public void testFirst() {
-    assertEquals(Family.v4().parse("0.0.0.0"), V4MaskList.MASKS.get(0));
+    assertEquals(Family.v4().parse("0.0.0.0"), V4Masks.MASKS.get(0));
   }
 
   @Test
   public void testLast() {
-    assertEquals(Family.v4().parse("255.255.255.255"), V4MaskList.MASKS.get(V4MaskList.MASKS.size() - 1));
+    assertEquals(Family.v4().parse("255.255.255.255"), V4Masks.MASKS.get(V4Masks.MASKS.size() - 1));
   }
 
   @Test
   public void testUnique() {
-    assertEquals(V4MaskList.MASKS.size(), new HashSet<>(V4MaskList.MASKS).size());
+    assertEquals(V4Masks.MASKS.size(), new HashSet<>(V4Masks.MASKS).size());
   }
 }

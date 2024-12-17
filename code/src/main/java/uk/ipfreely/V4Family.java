@@ -65,7 +65,7 @@ final class V4Family extends Family<V4> {
 
     @Override
     public List<V4> masks() {
-        return V4MaskList.MASKS;
+        return V4Masks.MASKS;
     }
 
     @Override
