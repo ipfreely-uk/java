@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class V4MaskListTest {
 
@@ -23,5 +24,10 @@ public class V4MaskListTest {
   @Test
   public void testUnique() {
     assertEquals(V4Masks.MASKS.size(), new HashSet<>(V4Masks.MASKS).size());
+  }
+
+  @Test
+  public void testOutOfBounds() {
+    assertThrows(IndexOutOfBoundsException.class, () -> V4Masks.MASKS.get(Consts.V4_WIDTH + 1));
   }
 }
