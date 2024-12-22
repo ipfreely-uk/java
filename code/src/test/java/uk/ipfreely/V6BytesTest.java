@@ -2,10 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+
 class V6BytesTest {
+
+    @Test
+    void fallOff() {
+        assertThrowsExactly(AssertionError.class, () -> V6Bytes.toLong(0, 1000));
+    }
 
     @Test
     void toFromBytes() {
@@ -14,8 +21,8 @@ class V6BytesTest {
         byte[] bytes = V6Bytes.toBytes(hi, lo);
         R result = V6Bytes.fromBytes(R::new, bytes);
 
-        Assertions.assertEquals(hi, result.hi);
-        Assertions.assertEquals(lo, result.lo);
+        assertEquals(hi, result.hi);
+        assertEquals(lo, result.lo);
     }
 
     private static final class R {
