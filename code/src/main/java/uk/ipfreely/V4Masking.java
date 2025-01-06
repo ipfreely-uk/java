@@ -20,12 +20,11 @@ final class V4Masking {
         if ((xor & first) != 0) {
             return -1;
         }
-        int bc = Integer.bitCount(xor);
-        int leads = Integer.numberOfLeadingZeros(xor);
-        int expected = Consts.V4_WIDTH - leads;
-        if (bc != expected) {
+        int zeroes = Consts.V4_WIDTH - Integer.bitCount(xor);
+        int size = Integer.numberOfLeadingZeros(xor);
+        if (size != zeroes) {
             return -1;
         }
-        return leads;
+        return size;
     }
 }
