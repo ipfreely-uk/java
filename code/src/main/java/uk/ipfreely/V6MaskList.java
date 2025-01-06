@@ -3,6 +3,8 @@
 package uk.ipfreely;
 
 import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.RandomAccess;
 
 /**
@@ -25,6 +27,26 @@ final class V6MaskList extends AbstractList<V6> implements RandomAccess {
         return masks[index];
     }
 
+    @Override
+    public int size() {
+        return SIZE;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        int idx = -1;
+        if (o instanceof V6) {
+            V6 a = (V6) o;
+            idx = Arrays.binarySearch(masks, a, V6::compareTo);
+        }
+        return idx < 0 ? -1 : idx;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
     private static long nth(int index) {
         long ip = 0;
         for (int i = 0; i < index; i++) {
@@ -39,10 +61,5 @@ final class V6MaskList extends AbstractList<V6> implements RandomAccess {
             return source.apply(nth(index), 0L);
         }
         return source.apply(0xffffffffffffffffL, nth(index - FIRST_LOW_IDX));
-    }
-
-    @Override
-    public int size() {
-        return SIZE;
     }
 }

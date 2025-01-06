@@ -3,6 +3,7 @@
 package uk.ipfreely;
 
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.RandomAccess;
 import java.util.function.IntFunction;
 
@@ -28,6 +29,21 @@ final class V4MaskList extends AbstractList<V4> implements RandomAccess {
     @Override
     public int size() {
         return SIZE;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        int idx = -1;
+        if (o instanceof V4) {
+            V4 a = (V4) o;
+            idx = Arrays.binarySearch(masks, a, V4::compareTo);
+        }
+        return idx < 0 ? -1 : idx;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
     }
 
     private static V4 resolve(IntFunction<V4> source, int index) {

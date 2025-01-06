@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v6;
 
 public class V6MaskListTest {
@@ -30,5 +29,27 @@ public class V6MaskListTest {
   @Test
   public void testOutOfBounds() {
     assertThrows(IndexOutOfBoundsException.class, () -> V6Masks.MASKS.get(Consts.V6_WIDTH + 1));
+  }
+
+  @Test
+  void testContains() {
+    for (V6 a : V6Masks.MASKS) {
+      assertTrue(V6Masks.MASKS.contains(a));
+    }
+    V6 two = Family.v6().parse(2);
+    assertFalse(V6Masks.MASKS.contains(two));
+    assertFalse(V6Masks.MASKS.contains(null));
+  }
+
+  @Test
+  void testIndexOf() {
+    for (int i = 0; i < V6Masks.MASKS.size(); i++) {
+      V6 m = V6Masks.MASKS.get(i);
+      int actual = V6Masks.MASKS.indexOf(m);
+      assertEquals(i, actual);
+    }
+    V6 two = Family.v6().parse(2);
+    assertEquals(-1, V6Masks.MASKS.indexOf(two));
+    assertEquals(-1, V6Masks.MASKS.indexOf(null));
   }
 }
