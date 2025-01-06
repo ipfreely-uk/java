@@ -101,7 +101,7 @@ public final class V4 extends Address<V4> {
 
     @Override
     public BigInteger toBigInteger() {
-        return BigInteger.valueOf(value & IpMath.INT_MASK);
+        return BigInteger.valueOf(value & Consts.INT_MASK);
     }
 
     @Override
@@ -126,7 +126,7 @@ public final class V4 extends Address<V4> {
      */
     @Override
     public long lowBits() {
-        return IpMath.INT_MASK & value;
+        return Consts.INT_MASK & value;
     }
 
     @Override

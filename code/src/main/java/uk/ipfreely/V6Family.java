@@ -29,7 +29,7 @@ final class V6Family extends Family<V6> {
 
     @Override
     public V6 parse(int unsigned) {
-        return V6.fromLongs(0, unsigned & IpMath.INT_MASK);
+        return V6.fromLongs(0, unsigned & Consts.INT_MASK);
     }
 
     @Override
