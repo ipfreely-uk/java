@@ -19,5 +19,7 @@ class V4MaskingTest {
         assertEquals(16, V4Masking.maskSizeIfBlock(0xFFFF0000, 0xFFFFFFFF));
         assertEquals(-1, V4Masking.maskSizeIfBlock(0xABFF0000, 0xFFFFFFFF));
         assertEquals(32, V4Masking.maskSizeIfBlock(0xFFFFFFFF, 0xFFFFFFFF));
+        assertEquals(-1, V4Masking.maskSizeIfBlock(0xFFFF0000, 0xFFFE0000));
+        assertEquals(-1, V4Masking.maskSizeIfBlock(0xFFFFFFFF, 0xFFFE0000));
     }
 }

@@ -17,9 +17,6 @@ final class V4Masking {
         if ((xor & first) != 0) {
             return -1;
         }
-        if ((xor & last) != xor) {
-            return -1;
-        }
 
         int index = 0;
         while ((xor & 1) == 1) {
