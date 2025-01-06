@@ -5,8 +5,6 @@ package uk.ipfreely;
 import java.util.Arrays;
 
 final class V4Masking {
-    private static final int[] XORS = allPossible();
-
     private V4Masking() {}
 
     /**
@@ -22,23 +20,12 @@ final class V4Masking {
         if ((xor & first) != 0) {
             return -1;
         }
-        if (xor == 0xFFFFFFFF) {
-            // special case because it's negative
-            return 0;
+        int bc = Integer.bitCount(xor);
+        int leads = Integer.numberOfLeadingZeros(xor);
+        int expected = Consts.V4_WIDTH - leads;
+        if (bc != expected) {
+            return -1;
         }
-        int idx = Arrays.binarySearch(XORS, xor);
-        return (idx < 0)
-                ? -1
-                : Consts.V4_WIDTH - idx;
-    }
-
-    private static int[] allPossible() {
-        int[] result = new int[Consts.V4_WIDTH];
-        for (int next = 0, i = 0; i < result.length; i++) {
-            result[i] = next;
-            next <<= 1;
-            next |= 1;
-        }
-        return result;
+        return leads;
     }
 }
