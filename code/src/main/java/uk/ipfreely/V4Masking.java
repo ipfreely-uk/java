@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
-import java.util.Arrays;
-
 final class V4Masking {
     private V4Masking() {}
 
