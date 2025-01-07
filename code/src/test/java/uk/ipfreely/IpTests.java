@@ -84,7 +84,7 @@ public abstract class IpTests<A extends Address<A>> {
       BigInteger ba = a.toBigInteger();
 
       {
-        double expected = a.toBigInteger().doubleValue();
+        double expected = ba.doubleValue();
         double actual = a.doubleValue();
         assertEquals(expected, actual, a.toString());
       }
