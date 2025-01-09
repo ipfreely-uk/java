@@ -11,6 +11,7 @@ final class V6Strings {
     private V6Strings() {}
 
     static String toIpv6String(final long high, final long low) {
+        // TODO: reduce where z0 >= 0
         final int MAX = IP6_SEGMENTS * 4 + IP6_SEGMENTS - 1;
         char[] buf = new char[MAX];
         int len = toIpv6String(high, low, buf);
