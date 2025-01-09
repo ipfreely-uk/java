@@ -198,6 +198,9 @@ public final class AddressSets {
      * <p>
      *     Creates a block from the given addresses which MUST form a valid CIDR block.
      * </p>
+     * <p>
+     *     Use {@link uk.ipfreely.Subnets#maskBits(Address, Address)} to test for valid blocks.
+     * </p>
      *
      * @param first address
      * @param last address which must be greater or equal to the first address
@@ -205,6 +208,10 @@ public final class AddressSets {
      * @return block
      */
     public static <A extends Address<A>> Block<A> block(final A first, final A last) {
+        if (first.equals(last)) {
+            return address(first);
+        }
+
         final class AddressBlock extends AbstractRange<A> implements Block<A> {
 
             @Override
