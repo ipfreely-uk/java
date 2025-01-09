@@ -2,20 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.examples;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Utility type for converting between {@link Address} and {@link InetAddress}.
+ * Utility type for converting between {@link Addr} and {@link InetAddress}.
  */
 public final class Convert {
 
     private Convert() {}
 
-    public static InetAddress toInetAddress(Address<?> address) {
+    public static InetAddress toInetAddress(Addr<?> address) {
         try {
             return InetAddress.getByAddress(address.toBytes());
         } catch (UnknownHostException e) {
@@ -24,7 +24,7 @@ public final class Convert {
         }
     }
 
-    public static Address<?> toAddress(InetAddress address) {
+    public static Addr<?> toAddress(InetAddress address) {
         return Family.unknown(address.getAddress());
     }
 }

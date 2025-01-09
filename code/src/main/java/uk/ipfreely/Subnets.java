@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <A> address type
  */
-public final class Subnets<A extends Address<A>> {
+public final class Subnets<A extends Addr<A>> {
     private final Family<A> family;
 
     Subnets(Family<A> family) {

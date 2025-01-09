@@ -3,7 +3,7 @@
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.testing.SpliteratorTester;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class RangeSpliteratorTest {
   private void verify(Range<?> range, List<?> ips) {
     int len = range.size().intValue();
     assertEquals(len, ips.size());
-    for (Address<?> ipAddr : range) {
+    for (Addr<?> ipAddr : range) {
       assertTrue(ips.contains(ipAddr));
     }
     assertEquals(range.first(), ips.get(0));

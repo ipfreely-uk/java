@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 import uk.ipfreely.ParseException;
 
@@ -39,7 +39,7 @@ public final class AddressSets {
      * @param <S> range type
      */
     @SafeVarargs
-    public static <A extends Address<A>, S extends AddressSet<A>> AddressSet<A> of(S... sets) {
+    public static <A extends Addr<A>, S extends AddressSet<A>> AddressSet<A> of(S... sets) {
         return from(Arrays.asList(sets));
     }
 
@@ -69,7 +69,7 @@ public final class AddressSets {
      * @param <S> set type
      */
     @SuppressWarnings("unchecked")
-    public static <A extends Address<A>, S extends AddressSet<A>> AddressSet<A> from(Iterable<S> sets) {
+    public static <A extends Addr<A>, S extends AddressSet<A>> AddressSet<A> from(Iterable<S> sets) {
         List<Range<A>> list = new ArrayList<>();
         for (S set : sets) {
             set.ranges().forEach(list::add);
@@ -85,13 +85,13 @@ public final class AddressSets {
     }
 
     @SuppressWarnings("unchecked")
-    private static <A extends Address<A>, R extends Range<A>> Range<A>[] rationalize(Iterable<R> ranges) {
+    private static <A extends Addr<A>, R extends Range<A>> Range<A>[] rationalize(Iterable<R> ranges) {
         SortedSet<Range<A>> set = new TreeSet<>(AddressSets::compare);
         rationalize(set, ranges);
         return set.toArray(new Range[0]);
     }
 
-    private static <A extends Address<A>, R extends Range<A>> void rationalize(SortedSet<Range<A>> set, Iterable<R> ranges) {
+    private static <A extends Addr<A>, R extends Range<A>> void rationalize(SortedSet<Range<A>> set, Iterable<R> ranges) {
         for (Range<A> range : ranges) {
             Iterator<Range<A>> it = set.iterator();
             while(it.hasNext()) {
@@ -108,12 +108,12 @@ public final class AddressSets {
         }
     }
 
-    private static <A extends Address<A>> boolean cannotCombine(Range<A> candidate, Range<A> range) {
+    private static <A extends Addr<A>> boolean cannotCombine(Range<A> candidate, Range<A> range) {
         return Compare.less(range.last(), candidate.first())
                 && !range.last().next().equals(candidate.first());
     }
 
-    private static <A extends Address<A>> int compare(Range<A> r0, Range<A> r1) {
+    private static <A extends Addr<A>> int compare(Range<A> r0, Range<A> r1) {
         return r0.first().compareTo(r1.first());
     }
 
@@ -124,7 +124,7 @@ public final class AddressSets {
      * @param <A> IP version
      * @return immutable instance
      */
-    public static <A extends Address<A>> Block<A> address(final A address) {
+    public static <A extends Addr<A>> Block<A> address(final A address) {
         final class Single extends AbstractRange<A> implements Block<A> {
             @Override
             public A first() {
@@ -168,7 +168,7 @@ public final class AddressSets {
      * @param <A>      the Ip type
      * @return the block instance
      */
-    public static <A extends Address<A>> Block<A> block(final A first, final int maskSize) {
+    public static <A extends Addr<A>> Block<A> block(final A first, final int maskSize) {
         final Family<A> family = first.family();
         int width = family.width();
         if (maskSize == width) {
@@ -199,7 +199,7 @@ public final class AddressSets {
      *     Creates a block from the given addresses which MUST form a valid CIDR block.
      * </p>
      * <p>
-     *     Use {@link uk.ipfreely.Subnets#maskBits(Address, Address)} to test for valid blocks.
+     *     Use {@link uk.ipfreely.Subnets#maskBits(Addr, Addr)} to test for valid blocks.
      * </p>
      *
      * @param first address
@@ -207,7 +207,7 @@ public final class AddressSets {
      * @param <A> IP version
      * @return block
      */
-    public static <A extends Address<A>> Block<A> block(final A first, final A last) {
+    public static <A extends Addr<A>> Block<A> block(final A first, final A last) {
         if (first.equals(last)) {
             return address(first);
         }
@@ -244,7 +244,7 @@ public final class AddressSets {
      * @param <A>   the IP type
      * @return an immutable range of IP addresses
      */
-    public static <A extends Address<A>> Range<A> range(A first, A last) {
+    public static <A extends Addr<A>> Range<A> range(A first, A last) {
         final class AddressRange extends AbstractRange<A> {
 
             @Override
@@ -286,7 +286,7 @@ public final class AddressSets {
         final String s1 = cidrBlock.substring(0, stroke);
         final String s2 = cidrBlock.substring(stroke + 1);
 
-        Address address = Family.unknown(s1);
+        Addr address = Family.unknown(s1);
         int mask = Integer.parseInt(s2);
         try {
             return block(address, mask);
@@ -305,17 +305,17 @@ public final class AddressSets {
      * @throws ParseException on invalid expression or wrong IP version
      */
     @SuppressWarnings("unchecked")
-    public static <A extends Address<A>> Block<A> parseCidr(Family<A> family, String cidrBlock) {
+    public static <A extends Addr<A>> Block<A> parseCidr(Family<A> family, String cidrBlock) {
         Block<?> actual = parseCidr(cidrBlock);
         validate(family == actual.first().family(), "Wrong IP type", actual, ParseException::new);
         return (Block<A>) actual;
     }
 
-    private static final class Empty<A extends Address<A>> extends AbstractAddressSet<A> {
+    private static final class Empty<A extends Addr<A>> extends AbstractAddressSet<A> {
         static final AddressSet<?> IMPL = new Empty<>();
 
         @Override
-        public boolean contains(Address<?> address) {
+        public boolean contains(Addr<?> address) {
             return false;
         }
 
@@ -340,7 +340,7 @@ public final class AddressSets {
         }
     }
 
-    private static final class ArraySet<A extends Address<A>> extends AbstractAddressSet<A> {
+    private static final class ArraySet<A extends Addr<A>> extends AbstractAddressSet<A> {
         private final Range<A>[] ranges;
 
         ArraySet(Range<A>[] ranges) {
@@ -353,7 +353,7 @@ public final class AddressSets {
         }
 
         @Override
-        public boolean contains(Address<?> address) {
+        public boolean contains(Addr<?> address) {
             for (Range<A> range : ranges) {
                 if (range.contains(address)) {
                     return true;

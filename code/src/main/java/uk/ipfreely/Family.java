@@ -9,7 +9,7 @@ import static uk.ipfreely.Validation.validate;
 
 /**
  * <p>
- *  {@link Address} factory and utility type for
+ *  {@link Addr} factory and utility type for
  *  <a href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
  *  and
  *  <a href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>
@@ -25,7 +25,7 @@ import static uk.ipfreely.Validation.validate;
  *
  * @param <A> {@link V4} or {@link V6}
  */
-public abstract class Family<A extends Address<A>> {
+public abstract class Family<A extends Addr<A>> {
     private final Subnets<A> subnets = new Subnets<>(this);
 
     Family() {}
@@ -99,18 +99,18 @@ public abstract class Family<A extends Address<A>> {
     public abstract A parse(byte... address);
 
     /**
-     * Enables the conversion from {@link BigInteger} to the {@link Address} type.
+     * Enables the conversion from {@link BigInteger} to the {@link Addr} type.
      * The largest acceptable value is {@code max().toBigInteger()}.
      *
      * @param address must be between zero and the maximum value inclusive
      * @return the new address
      * @throws ParseException when the argument is out of range
-     * @see Address#toBigInteger()
+     * @see Addr#toBigInteger()
      */
     public abstract A parse(BigInteger address);
 
     /**
-     * Convenience method for creating {@link Address} from number.
+     * Convenience method for creating {@link Addr} from number.
      * All values of <code>int</code> are valid for this method.
      * Every value in the IPv4 range can be created with this method.
      *
@@ -252,9 +252,9 @@ public abstract class Family<A extends Address<A>> {
      * @param candidate IP address
      * @return instance of {@link V4} or {@link V6}
      * @throws ParseException on invalid address
-     * @see Address#toString()
+     * @see Addr#toString()
      */
-    public static Address<?> unknown(CharSequence candidate) {
+    public static Addr<?> unknown(CharSequence candidate) {
         return detect(candidate)
                 .parse(candidate);
     }
@@ -287,9 +287,9 @@ public abstract class Family<A extends Address<A>> {
      * @param address an IPv4 or IPv6 address in byte form
      * @return parsed address
      * @throws ParseException if array is not 4 (V4) or 16 (V6) bytes in length
-     * @see Address#toBytes()
+     * @see Addr#toBytes()
      */
-    public static Address<?> unknown(byte... address) {
+    public static Addr<?> unknown(byte... address) {
         int v4len = Consts.V4_WIDTH / Byte.SIZE;
         int v6len = Consts.V6_WIDTH / Byte.SIZE;
         boolean v4 = v4len == address.length;

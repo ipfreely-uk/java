@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 
 import java.util.Iterator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-abstract class AbstractAddressSet<A extends Address<A>> implements AddressSet<A> {
+abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
 
     @Override
     public boolean equals(Object obj) {

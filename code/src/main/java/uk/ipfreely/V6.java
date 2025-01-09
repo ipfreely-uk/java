@@ -11,10 +11,10 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.asList;
 
 /**
- * Immutable IPv6 {@link Address} and 128-bit unsigned integer value.
+ * Immutable IPv6 {@link Addr} and 128-bit unsigned integer value.
  * Use {@link Family#v6()} to create values.
  */
-public final class V6 extends Address<V6> {
+public final class V6 extends Addr<V6> {
 
     private static final V6[] LOWS = IntStream.rangeClosed(0, 256).mapToObj(i -> new V6(0, i)).toArray(V6[]::new);
     private static final V6[] SPECIALS = initInterned();

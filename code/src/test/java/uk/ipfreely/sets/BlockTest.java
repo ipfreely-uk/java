@@ -96,7 +96,7 @@ public class BlockTest {
     assertEquals(internet, actual.get());
   }
 
-  private <I extends Address<I>> void fromString(Function<String, I> parser, String ip, int mask) {
+  private <I extends Addr<I>> void fromString(Function<String, I> parser, String ip, int mask) {
     String cidr = ip + "/" + mask;
     Block<?> block = AddressSets.parseCidr(cidr);
     assertEquals(parser.apply(ip), block.first());

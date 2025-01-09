@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class IpTests<A extends Address<A>> {
+public abstract class IpTests<A extends Addr<A>> {
 
   protected <T> void testToAndFrom(Family<A> internet,
                                Function<A, T> to,

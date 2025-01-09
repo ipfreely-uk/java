@@ -1,6 +1,6 @@
 package uk.ipfreely.examples;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 import uk.ipfreely.Subnets;
 import uk.ipfreely.V6;
@@ -19,7 +19,7 @@ public final class Subnetworks {
      * @return stream of subnets
      * @param <A> address family
      */
-    static <A extends Address<A>> Stream<Block<A>> divide(Block<A> initial, BigInteger count) {
+    static <A extends Addr<A>> Stream<Block<A>> divide(Block<A> initial, BigInteger count) {
         Family<A> f = initial.first().family();
         Subnets<A> s = f.subnets();
         BigInteger min = f == Family.v4()

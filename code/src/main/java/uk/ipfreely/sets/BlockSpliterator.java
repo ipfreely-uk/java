@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 
 import java.util.Spliterator;
@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 
 import static uk.ipfreely.sets.Validation.validate;
 
-final class BlockSpliterator<A extends Address<A>> implements Spliterator<Block<A>> {
+final class BlockSpliterator<A extends Addr<A>> implements Spliterator<Block<A>> {
 
     // Math.log(2.0)
     private static final double LOG_2 = 0.6931471805599453;

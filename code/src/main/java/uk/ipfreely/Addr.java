@@ -24,7 +24,7 @@ import java.net.InetAddress;
  *      <caption>Comparison with {@link InetAddress}</caption>
  *      <tr>
  *          <th>Feature</th>
- *          <th>{@link Address}</th>
+ *          <th>{@link Addr}</th>
  *          <th>{@link InetAddress}</th>
  *      </tr>
  *      <tr>
@@ -86,8 +86,8 @@ import java.net.InetAddress;
  *
  * @param <A> the address type
  */
-public abstract class Address<A extends Address<A>> implements Comparable<A> {
-    Address() {}
+public abstract class Addr<A extends Addr<A>> implements Comparable<A> {
+    Addr() {}
 
     /**
      * Internet protocol family - V4 or V6.
