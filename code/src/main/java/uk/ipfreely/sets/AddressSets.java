@@ -258,11 +258,11 @@ public final class AddressSets {
             }
         }
 
-        if (first.equals(last)) {
+        int c = first.compareTo(last);
+        if (c == 0) {
             return address(first);
         }
-
-        validate(first.compareTo(last) <= 0, "First address must be less than or equal to last", first, IllegalArgumentException::new);
+        validate(c < 0, "First address must be less than or equal to last", first, IllegalArgumentException::new);
 
         int maskSize = first.family().subnets().maskBits(first, last);
         return maskSize < 0
