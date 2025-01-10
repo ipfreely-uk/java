@@ -6,7 +6,7 @@ import static uk.ipfreely.Validation.validate;
 
 final class V6Strings {
 
-    static final int IP6_SEGMENTS = 8;
+    private static final int IP6_SEGMENTS = 8;
 
     private V6Strings() {}
 
@@ -31,7 +31,8 @@ final class V6Strings {
             buf = new char[MAX];
             len = appendHex(high, low, 0, IP6_SEGMENTS, buf, len);
         } else {
-            buf = new char[MAX - ((zn - z0) * Short.SIZE)];
+            int compacted = ((zn - z0) * 4);
+            buf = new char[MAX - compacted];
             len = appendHex(high, low, 0, z0, buf, len);
             len = Chars.append(buf, len, "::");
             len = appendHex(high, low, zn, IP6_SEGMENTS, buf, len);
