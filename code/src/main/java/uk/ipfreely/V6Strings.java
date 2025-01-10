@@ -31,7 +31,7 @@ final class V6Strings {
             buf = new char[MAX];
             len = appendHex(high, low, 0, IP6_SEGMENTS, buf, len);
         } else {
-            int compacted = ((zn - z0) * 4);
+            int compacted = (zn - z0) * 4;
             buf = new char[MAX - compacted];
             len = appendHex(high, low, 0, z0, buf, len);
             len = Chars.append(buf, len, "::");
