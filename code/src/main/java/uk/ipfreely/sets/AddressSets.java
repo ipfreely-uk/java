@@ -175,23 +175,14 @@ public final class AddressSets {
             return address(first);
         }
 
-        validate(maskSize >= 0, "Valid mask size cannot be less than 0", maskSize, IllegalArgumentException::new);
+        validate(maskSize >= 0, "Mask bits cannot be less than 0", maskSize, IllegalArgumentException::new);
         validate(maskSize <= width, "Mask must not exceed address width 32 (IPv4) or 128 (IPv6)", maskSize, IllegalArgumentException::new);
-
-        // TODO: mask and first check
+        validate(first.trailingZeros() >= width - maskSize, "Mask must cover network address bits", maskSize, IllegalArgumentException::new);
 
         final List<A> masks = family.subnets().masks();
-        final A zero = family.min();
-        final A inverseMask = masks.get(maskSize).not();
-        final A anded = first.and(inverseMask);
-
-        final A last = first.or(inverseMask);
-        final Block<A> block = block(first, last);
-
-        // TODO: check mask bits before this
-        validate(zero.equals(anded), "Mask must cover all address bits", block, IllegalArgumentException::new);
-
-        return block;
+        final A complement = masks.get(maskSize).not();
+        final A last = first.or(complement);
+        return block(first, last);
     }
 
     /**
