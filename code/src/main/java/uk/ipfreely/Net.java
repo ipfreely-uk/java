@@ -1,3 +1,5 @@
+// Copyright 2025 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
 import java.net.Inet4Address;
@@ -9,8 +11,8 @@ import java.net.InetAddress;
  *     Convenience methods for converting to/from {@link InetAddress}.
  * </p>
  */
-public final class StdNet {
-    private StdNet() {}
+public final class Net {
+    private Net() {}
 
     /**
      * Creates {@link InetAddress}.

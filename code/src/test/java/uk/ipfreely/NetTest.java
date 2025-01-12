@@ -8,31 +8,31 @@ import java.net.InetAddress;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StdNetTest {
+class NetTest {
 
     @Test
     void inetAddress() {
         Addr<?> expected = Family.v4().parse("127.0.0.1");
-        InetAddress ia = StdNet.toInetAddress(expected);
-        Addr<?> actual = StdNet.toAddr(ia);
+        InetAddress ia = Net.toInetAddress(expected);
+        Addr<?> actual = Net.toAddr(ia);
         assertEquals(expected, actual);
 
-        assertThrowsExactly(AssertionError.class, () -> StdNet.toInetAddress(null));
+        assertThrowsExactly(AssertionError.class, () -> Net.toInetAddress(null));
     }
 
     @Test
     void toInet4Address() {
         V4 expected = Family.v4().parse("127.0.0.1");
-        Inet4Address ia = StdNet.toInet4Address(expected);
-        V4 actual = StdNet.toV4(ia);
+        Inet4Address ia = Net.toInet4Address(expected);
+        V4 actual = Net.toV4(ia);
         assertEquals(expected, actual);
     }
 
     @Test
     void toInet6Address() {
         V6 expected = Family.v6().parse("fe80::1");
-        Inet6Address ia = StdNet.toInet6Address(expected);
-        V6 actual = StdNet.toV6(ia);
+        Inet6Address ia = Net.toInet6Address(expected);
+        V6 actual = Net.toV6(ia);
         assertEquals(expected, actual);
     }
 }

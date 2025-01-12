@@ -75,15 +75,6 @@ import java.net.InetAddress;
  *     <a href="https://guava.dev/">Google Guava</a>.
  * </p>
  *
- * <p>Conversion to/from {@link InetAddress} can be performed using:</p>
- * <ul>
- *         <li>{@link InetAddress#getAddress()}</li>
- *         <li>{@link InetAddress#getByAddress(byte[])}</li>
- *         <li>{@link #toBytes()}</li>
- *         <li>{@link Family#unknown(byte...)}</li>
- *         <li>{@link Family#parse(byte...)}</li>
- * </ul>
- *
  * @param <A> the address type
  */
 public abstract class Addr<A extends Addr<A>> implements Comparable<A> {
