@@ -57,7 +57,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      * {@link #first()} and less than or equal to
      * {@link #last()}.
      *
-     * @param address the address to test
+     * @param address candidate (cannot be null)
      * @return true if this sequence contains the given IP address
      */
     @SuppressWarnings("unchecked")

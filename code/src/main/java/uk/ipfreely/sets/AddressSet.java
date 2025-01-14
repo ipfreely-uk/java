@@ -103,7 +103,7 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
     /**
      * Tests if {@link Range#contains(Addr)} is true for any of the constituent {@link #ranges()}.
      *
-     * @param address candidate
+     * @param address candidate (cannot be null)
      * @return true if the given address is present
      */
     default boolean contains(Addr<?> address) {
