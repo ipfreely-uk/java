@@ -5,6 +5,8 @@ package uk.ipfreely;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Objects;
 
 /**
  * <p>
@@ -21,9 +23,10 @@ public final class Net {
      * @return I/O type
      */
     public static InetAddress toInetAddress(Addr<?> address) {
+        Objects.requireNonNull(address);
         try {
             return InetAddress.getByAddress(address.toBytes());
-        } catch (Throwable e) {
+        } catch (UnknownHostException e) {
             throw new AssertionError(e);
         }
     }
