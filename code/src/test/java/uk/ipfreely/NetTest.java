@@ -21,7 +21,7 @@ class NetTest {
     }
 
     @Test
-    void toInet4Address() {
+    void inet4Address() {
         V4 expected = Family.v4().parse("127.0.0.1");
         Inet4Address ia = Net.toInet4Address(expected);
         V4 actual = Net.toV4(ia);
@@ -29,7 +29,7 @@ class NetTest {
     }
 
     @Test
-    void toInet6Address() {
+    void inet6Address() {
         V6 expected = Family.v6().parse("fe80::1");
         Inet6Address ia = Net.toInet6Address(expected);
         V6 actual = Net.toV6(ia);
