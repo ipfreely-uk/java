@@ -40,7 +40,7 @@ class NetTest {
     }
 
     private static void throwChecked(Throwable t) {
-        NetTest.<RuntimeException>throwIt(t);
+        NetTest.throwIt(t);
     }
 
     @SuppressWarnings("unchecked")
