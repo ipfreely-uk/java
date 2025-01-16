@@ -2,9 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import static uk.ipfreely.Validation.validate;
 
 final class V6Strings {
