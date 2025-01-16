@@ -34,6 +34,15 @@ final class V6Family extends Family<V6> {
 
     @Override
     public V6 parse(CharSequence candidate) {
+        for (int i = candidate.length() - 1; i >= 0; i--) {
+            char ch = candidate.charAt(i);
+            if (ch == ':') {
+                break;
+            }
+            if (ch == '.') {
+                return V6Strings.parse4In6(candidate, V6::fromLongs);
+            }
+        }
         return V6Strings.parse(candidate, V6::fromLongs);
     }
 

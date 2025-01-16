@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import static uk.ipfreely.Validation.validate;
 
 final class V6Strings {
@@ -216,6 +219,19 @@ final class V6Strings {
 
         long high = highHead | highTail;
         long low = lowHead | lowTail;
+        return factory.apply(high, low);
+    }
+
+    static <T> T parse4In6(CharSequence cs, V6Function<T> factory) {
+        int end = Chars.lastIndexOf(cs, ':');
+        int startLen = end + 1;
+        CharSequence head = Chars.view(cs, 0, startLen);
+        head = Chars.concat(head, "0:0");
+        V6 v6 = parse(head, Family.v6()::parse);
+        CharSequence tail = Chars.view(cs, end + 1, cs.length() - startLen);
+        long v4 = V4Strings.from(tail) & 0xFFFFFFFFL;
+        long high = v6.highBits();
+        long low = v6.lowBits() | v4;
         return factory.apply(high, low);
     }
 }

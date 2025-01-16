@@ -54,6 +54,20 @@ class V6StringsTest {
         }
     }
 
+    @Test
+    void parse4in6() {
+        {
+            N expected = new N(0, 0xD014403L);
+            N actual = V6Strings.parse4In6("::13.1.68.3", N::new);
+            assertEquals(expected, actual);
+        }
+        {
+            N expected = new N(0, 0xFFFF81903426L);
+            N actual = V6Strings.parse4In6("0:0:0:0:0:FFFF:129.144.52.38", N::new);
+            assertEquals(expected, actual);
+        }
+    }
+
     private static class N {
         final long high;
         final long low;

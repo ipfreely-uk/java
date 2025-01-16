@@ -70,6 +70,7 @@ public abstract class Family<A extends Addr<A>> {
      * </p>
      * <p>
      *     All values are valid for IPv6.
+     *     Arguments are treated as unsigned.
      * </p>
      *
      * @param high high bits of the IP address
@@ -81,7 +82,6 @@ public abstract class Family<A extends Addr<A>> {
 
     /**
      * Parses an IP address string.
-     * TODO: supported string forms.
      *
      * @param candidate valid IP address in this family
      * @return parsed address
