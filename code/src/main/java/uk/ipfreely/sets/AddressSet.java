@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 
 import java.math.BigInteger;
@@ -10,13 +10,12 @@ import java.util.stream.Stream;
 
 /**
  * <p>
- *     Discrete set interface of zero to {@link Family#max()} {@link Address}es.
+ *     Discrete ordered set interface of zero to {@link Family#max()} {@link Addr}es.
  * </p>
  * <p>
  *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
  *     Implementations MUST be immutable.
- *     {@link AddressSet#iterator()} MUST produce values from least to greatest.
- *     This type is always a sorted set.
+ *     Iteration methods MUST produce values from least to greatest.
  * </p>
  * <table border="1">
  *     <caption>AddressSet Contracts</caption>
@@ -58,7 +57,7 @@ import java.util.stream.Stream;
  *
  * @param <A> address type
  */
-public interface AddressSet<A extends Address<A>> extends Iterable<A> {
+public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
 
     /**
      * <p>
@@ -90,10 +89,10 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
      * </p>
      * <p>
      *     Adjacent or overlapping ranges MUST be combined into a single {@link Range}.
-     *     Elements MUST be produced from least {@link Address} to greatest.
+     *     Elements MUST be produced from least {@link Addr} to greatest.
      * </p>
      * <p>
-     *     A {@link Stream} of {@link Address} values can be obtained with {@code ranges().flatMap(Range::stream)}.
+     *     A {@link Stream} of {@link Addr} values can be obtained with {@code ranges().flatMap(Range::stream)}.
      *     A {@link Stream} of {@link Block}s can be obtained with {@code ranges().flatMap(Range::blocks)}.
      * </p>
      *
@@ -102,17 +101,17 @@ public interface AddressSet<A extends Address<A>> extends Iterable<A> {
     Stream<Range<A>> ranges();
 
     /**
-     * Tests if {@link Range#contains(Address)} is true for any of the constituent {@link #ranges()}.
+     * Tests if {@link Range#contains(Addr)} is true for any of the constituent {@link #ranges()}.
      *
      * @param address candidate
      * @return true if the given address is present
      */
-    default boolean contains(Address<?> address) {
+    default boolean contains(Addr<?> address) {
         return ranges().anyMatch(r -> r.contains(address));
     }
 
     /**
-     * Number of unique {@link Address}es.
+     * Number of unique {@link Addr}es.
      * The cardinality of the set.
      *
      * @return count

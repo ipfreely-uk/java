@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.examples;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 
 /**
  * Utility type for IP math with overflow/underflow checks that raise {@link ArithmeticException}.
@@ -20,7 +20,7 @@ public class StrictAddressMath {
      * @return sum
      * @throws ArithmeticException on overflow
      */
-    public static <A extends Address<A>> A add(A augend, A addend) {
+    public static <A extends Addr<A>> A add(A augend, A addend) {
         A result = augend.add(addend);
         if (augend.compareTo(result) > 0 && addend.compareTo(result) > 0) {
             throw new ArithmeticException(msg(augend, " + ", addend));
@@ -37,7 +37,7 @@ public class StrictAddressMath {
      * @return difference
      * @throws ArithmeticException on underflow
      */
-    public static <A extends Address<A>> A subtract(A minuend, A subtraend) {
+    public static <A extends Addr<A>> A subtract(A minuend, A subtraend) {
         if (minuend.compareTo(subtraend) < 0) {
             throw new ArithmeticException(msg(minuend, " - ", subtraend));
         }
@@ -53,7 +53,7 @@ public class StrictAddressMath {
      * @return product
      * @throws ArithmeticException on overflow
      */
-    public static <A extends Address<A>> A multiply(A multiplier, A multiplicand) {
+    public static <A extends Addr<A>> A multiply(A multiplier, A multiplicand) {
         A zero = multiplier.family().min();
         if (multiplicand.equals(zero) || multiplier.equals(zero)) {
             return zero;
@@ -65,7 +65,7 @@ public class StrictAddressMath {
         return multiplier.multiply(multiplicand);
     }
 
-    private static <A extends Address<A>> String msg(A a, String op, A b) {
+    private static <A extends Addr<A>> String msg(A a, String op, A b) {
         return "Out of range: " + a + op + b;
     }
 }

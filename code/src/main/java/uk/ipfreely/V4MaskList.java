@@ -3,40 +3,55 @@
 package uk.ipfreely;
 
 import java.util.AbstractList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.RandomAccess;
 import java.util.function.IntFunction;
-
-import static uk.ipfreely.Validation.validate;
 
 /**
  * A list of all possible Ip4 masks including 0
  */
 final class V4MaskList extends AbstractList<V4> implements RandomAccess {
+    private static final int SIZE = Consts.V4_WIDTH + 1;
 
-    private static final int SIZE = Integer.SIZE + 1;
-
-    static List<V4> MASKS = new V4MaskList(V4::fromInt);
-
-    private final IntFunction<V4> source;
+    private final V4[] masks = new V4[SIZE];
 
     V4MaskList(IntFunction<V4> source) {
-        this.source = source;
+        for (int i = 0; i < masks.length; i++) {
+            masks[i] = resolve(source, i);
+        }
     }
 
     @Override
     public V4 get(int index) {
-        validate(index >= 0 && index < SIZE, "Index must be between 0 and " + SIZE, index, IndexOutOfBoundsException::new);
+        return masks[index];
+    }
+
+    @Override
+    public int size() {
+        return SIZE;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        int idx = -1;
+        if (o instanceof V4) {
+            V4 a = (V4) o;
+            idx = Arrays.binarySearch(masks, a, V4::compareTo);
+        }
+        return idx < 0 ? -1 : idx;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
+    private static V4 resolve(IntFunction<V4> source, int index) {
         int ip = 0;
         for (int i = 0; i < index; i++) {
             ip >>>= 1;
             ip |= 0b10000000_00000000_00000000_00000000;
         }
         return source.apply(ip);
-    }
-
-    @Override
-    public int size() {
-        return SIZE;
     }
 }

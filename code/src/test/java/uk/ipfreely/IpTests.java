@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class IpTests<A extends Address<A>> {
+public abstract class IpTests<A extends Addr<A>> {
 
   protected <T> void testToAndFrom(Family<A> internet,
                                Function<A, T> to,
@@ -81,14 +81,21 @@ public abstract class IpTests<A extends Address<A>> {
     BigInteger size = max.add(BigInteger.ONE);
 
     for (A a : ips) {
+      BigInteger ba = a.toBigInteger();
+
       {
-        double expected = a.toBigInteger().doubleValue();
+        double expected = ba.doubleValue();
         double actual = a.doubleValue();
         assertEquals(expected, actual, a.toString());
       }
+      {
+        // NOT
+        A actual = a.not();
+        assertNotEquals(a, actual);
+        assertEquals(a, actual.not());
+      }
 
       for (A b : ips) {
-        BigInteger ba = a.toBigInteger();
         BigInteger bb = b.toBigInteger();
         {
           // add
@@ -139,6 +146,24 @@ public abstract class IpTests<A extends Address<A>> {
             A actual = a.mod(b);
             assertEquals(expected, actual, a + "%" + b);
           }
+        }
+        {
+          // AND
+          A expected = internet.parse(ba.and(bb));
+          A actual = a.and(b);
+          assertEquals(expected, actual, a + "&" + b);
+        }
+        {
+          // OR
+          A expected = internet.parse(ba.or(bb));
+          A actual = a.or(b);
+          assertEquals(expected, actual, a + "|" + b);
+        }
+        {
+          // XOR
+          A expected = internet.parse(ba.xor(bb));
+          A actual = a.xor(b);
+          assertEquals(expected, actual, a + "^" + b);
         }
       }
     }

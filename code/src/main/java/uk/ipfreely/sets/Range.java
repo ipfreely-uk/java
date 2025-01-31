@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -15,14 +15,14 @@ import static uk.ipfreely.sets.Validation.validate;
 
 /**
  * <p>
- *     {@link AddressSet} interface that forms contiguous range of one or more {@link Address}es.
+ *     {@link AddressSet} interface that forms contiguous range of one or more {@link Addr}es.
  * </p>
  * <p>See {@link AddressSet} for implementation contract.</p>
  * <p>Implementations are always contiguous lists.</p>
  *
  * @param <A> address type
  */
-public interface Range<A extends Address<A>> extends AddressSet<A> {
+public interface Range<A extends Addr<A>> extends AddressSet<A> {
 
     /**
      * Least element in the range.
@@ -43,7 +43,7 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
     }
 
     /**
-     * Number of {@link Address}es in range.
+     * Number of {@link Addr}es in range.
      *
      * @return number of addresses including {@link #first()} and {@link #last()}
      */
@@ -61,7 +61,7 @@ public interface Range<A extends Address<A>> extends AddressSet<A> {
      * @return true if this sequence contains the given IP address
      */
     @SuppressWarnings("unchecked")
-    default boolean contains(Address<?> address) {
+    default boolean contains(Addr<?> address) {
         A first = first();
         if (first.getClass() != address.getClass()) {
             return false;

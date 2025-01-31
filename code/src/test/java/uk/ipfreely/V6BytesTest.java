@@ -4,15 +4,33 @@ package uk.ipfreely;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+
 class V6BytesTest {
 
     @Test
-    void toBytes() {
-        //TODO
+    void fallOff() {
+        assertThrowsExactly(AssertionError.class, () -> V6Bytes.toLong(0, 1000));
     }
 
     @Test
-    void fromBytes() {
-        //TODO
+    void toFromBytes() {
+        long hi = 0x1234567890abcdefL;
+        long lo = 0xfedcba0987654321L;
+        byte[] bytes = V6Bytes.toBytes(hi, lo);
+        R result = V6Bytes.fromBytes(R::new, bytes);
+
+        assertEquals(hi, result.hi);
+        assertEquals(lo, result.lo);
+    }
+
+    private static final class R {
+        final long hi;
+        final long lo;
+        R(long hi, long lo) {
+            this.hi = hi;
+            this.lo = lo;
+        }
     }
 }

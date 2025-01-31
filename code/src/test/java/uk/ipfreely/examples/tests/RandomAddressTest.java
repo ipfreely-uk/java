@@ -3,7 +3,7 @@
 package uk.ipfreely.examples.tests;
 
 import org.junit.jupiter.api.Test;
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
@@ -25,22 +25,22 @@ class RandomAddressTest {
     @Test
     void generate() {
         {
-            Address<V4> address = RandomAddress.generate(Family.v4(), RAN::nextInt);
+            Addr<V4> address = RandomAddress.generate(Family.v4(), RAN::nextInt);
             assertNotNull(address);
         }
         {
-            Address<V6> address = RandomAddress.generate(Family.v6(), RAN::nextInt);
+            Addr<V6> address = RandomAddress.generate(Family.v6(), RAN::nextInt);
             assertNotNull(address);
         }
         {
             int actual = 3000;
-            Address<V4> address = RandomAddress.generate(Family.v4(), () -> actual);
+            Addr<V4> address = RandomAddress.generate(Family.v4(), () -> actual);
             assertEquals(BigInteger.valueOf(actual), address.toBigInteger());
         }
         {
             int actual = 3000;
             Iterator<Integer> randoms = Arrays.asList(0, 0, 0, actual).iterator();
-            Address<V6> address = RandomAddress.generate(Family.v6(), randoms::next);
+            Addr<V6> address = RandomAddress.generate(Family.v6(), randoms::next);
             assertEquals(BigInteger.valueOf(actual), address.toBigInteger());
         }
     }
@@ -49,7 +49,7 @@ class RandomAddressTest {
     void from() {
         {
             Range<V4> range = AddressSets.range(Family.v4().min(), Family.v4().max());
-            Address<V4> address = RandomAddress.from(range, RAN::nextInt);
+            Addr<V4> address = RandomAddress.from(range, RAN::nextInt);
             assertTrue(range.contains(address));
         }
     }

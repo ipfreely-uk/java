@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.ipfreely.Family.v4;
 
-public class AddressTest {
+public class AddrTest {
 
   @Test
   void testAddress() {

@@ -13,7 +13,7 @@ final class Validation {
         if (!predicate) {
             StringJoiner joiner = new StringJoiner(" ");
             for (byte b : actual) {
-                joiner.add("0x" + Integer.toHexString(b & IpMath.BYTE_MASK));
+                joiner.add("0x" + Integer.toHexString(b & Consts.BYTE_MASK));
             }
             raise(explanation, joiner.toString(), ex);
         }

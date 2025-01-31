@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely;
 
-import static uk.ipfreely.IpMath.*;
+import static uk.ipfreely.Consts.*;
 
 final class V6Bytes {
 

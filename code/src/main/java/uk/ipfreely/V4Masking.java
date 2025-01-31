@@ -3,7 +3,6 @@
 package uk.ipfreely;
 
 final class V4Masking {
-
     private V4Masking() {}
 
     /**
@@ -12,22 +11,18 @@ final class V4Masking {
      * @return the mask size if this range can be a CIDR block or -1
      */
     static int maskSizeIfBlock(final int first, final int last) {
+        if (Integer.compareUnsigned(first, last) > 0) {
+            return -1;
+        }
         int xor = first ^ last;
-
         if ((xor & first) != 0) {
             return -1;
         }
-        if ((xor & last) != xor) {
+        int zeroes = Consts.V4_WIDTH - Integer.bitCount(xor);
+        int size = Integer.numberOfLeadingZeros(xor);
+        if (size != zeroes) {
             return -1;
         }
-
-        int index = 0;
-        while ((xor & 1) == 1) {
-            xor >>>= 1;
-            index++;
-        }
-        return xor == 0
-                ? Consts.V4_WIDTH - index
-                : -1;
+        return size;
     }
 }

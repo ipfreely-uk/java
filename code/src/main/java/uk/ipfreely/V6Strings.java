@@ -6,18 +6,11 @@ import static uk.ipfreely.Validation.validate;
 
 final class V6Strings {
 
-    static final int IP6_SEGMENTS = 8;
+    private static final int IP6_SEGMENTS = 8;
 
     private V6Strings() {}
 
     static String toIpv6String(final long high, final long low) {
-        final int MAX = IP6_SEGMENTS * 4 + IP6_SEGMENTS - 1;
-        char[] buf = new char[MAX];
-        int len = toIpv6String(high, low, buf);
-        return new String(buf, 0, len);
-    }
-
-    private static int toIpv6String(final long high, final long low, final char[] buf) {
         int z0 = -1;
         int zn = -1;
         for (int i = 0; i < IP6_SEGMENTS; i++) {
@@ -30,15 +23,22 @@ final class V6Strings {
             }
         }
 
+        final int MAX = IP6_SEGMENTS * 4 + IP6_SEGMENTS - 1;
+        char[] buf;
+
         int len = 0;
         if (z0 < 0) {
+            buf = new char[MAX];
             len = appendHex(high, low, 0, IP6_SEGMENTS, buf, len);
         } else {
+            int compacted = (zn - z0) * 4;
+            buf = new char[MAX - compacted];
             len = appendHex(high, low, 0, z0, buf, len);
             len = Chars.append(buf, len, "::");
             len = appendHex(high, low, zn, IP6_SEGMENTS, buf, len);
         }
-        return len;
+
+        return new String(buf, 0, len);
     }
 
     /**

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <A> address type
  */
-public final class Subnets<A extends Address<A>> {
+public final class Subnets<A extends Addr<A>> {
     private final Family<A> family;
 
     Subnets(Family<A> family) {
@@ -41,6 +41,9 @@ public final class Subnets<A extends Address<A>> {
      * <p>
      * For IPv6 index 0 is <em>/0</em> {@code "::"}
      * and index 128 is <em>/128</em> {@code "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"}.
+     * </p>
+     * <p>
+     *     {@link List#indexOf(Object)} can be used to detect the mask width for CIDR expressions.
      * </p>
      *
      * @return immutable list of possible network address masks

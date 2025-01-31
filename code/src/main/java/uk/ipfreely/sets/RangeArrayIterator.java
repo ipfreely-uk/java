@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static uk.ipfreely.sets.Validation.validate;
 
-final class RangeArrayIterator<A extends Address<A>> implements Iterator<A> {
+final class RangeArrayIterator<A extends Addr<A>> implements Iterator<A> {
 
     private final Range<A>[] ranges;
     private int index;

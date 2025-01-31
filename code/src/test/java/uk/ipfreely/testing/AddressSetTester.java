@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.testing;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 import uk.ipfreely.sets.AddressSet;
 import uk.ipfreely.sets.Block;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public final class AddressSetTester {
     private AddressSetTester() {}
 
-    public static <A extends Address<A>> void test(AddressSet<A> set) {
+    public static <A extends Addr<A>> void test(AddressSet<A> set) {
         string(set);
         membership(set);
         ranges(set);
@@ -28,7 +28,7 @@ public final class AddressSetTester {
         assertTrue(actual.endsWith("}"));
     }
 
-    private static <A extends Address<A>> void membership(AddressSet<A> set) {
+    private static <A extends Addr<A>> void membership(AddressSet<A> set) {
         Iterator<A> it = set.iterator();
         for (int i = 0; i < 10; i++) {
             if (it.hasNext()) {
@@ -44,11 +44,11 @@ public final class AddressSetTester {
         }
     }
 
-    private static <A extends Address<A>> void ranges(AddressSet<A> set) {
+    private static <A extends Addr<A>> void ranges(AddressSet<A> set) {
         set.ranges().limit(10).forEach(AddressSetTester::range);
     }
 
-    private static <A extends Address<A>> void blocks(AddressSet<A> set) {
+    private static <A extends Addr<A>> void blocks(AddressSet<A> set) {
         set.ranges()
                 .limit(10)
                 .flatMap(Range::blocks)
@@ -56,12 +56,12 @@ public final class AddressSetTester {
                 .forEach(AddressSetTester::block);
     }
 
-    private static <A extends Address<A>> void range(Range<A> r) {
+    private static <A extends Addr<A>> void range(Range<A> r) {
         int i = r.first().compareTo(r.last());
         assertTrue(i <= 0);
     }
 
-    private static <A extends Address<A>> void block(Block<A> b) {
+    private static <A extends Addr<A>> void block(Block<A> b) {
         A first = b.first();
         int i = first.compareTo(b.last());
         assertTrue(i <= 0);

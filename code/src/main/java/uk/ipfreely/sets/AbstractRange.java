@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 
 /**
  * Base type for implementing contract-compliant {@link Range} types.
  *
  * @param <A> address type
  */
-abstract class AbstractRange<A extends Address<A>> implements Range<A> {
+abstract class AbstractRange<A extends Addr<A>> implements Range<A> {
 
     /**
      * Contract implementation.

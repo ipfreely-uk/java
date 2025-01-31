@@ -3,7 +3,6 @@
 package uk.ipfreely;
 
 final class V6Masking {
-
     private V6Masking() {}
 
     /**
@@ -14,43 +13,31 @@ final class V6Masking {
      * @return the block mask size if this range can be a CIDR block or -1
      */
     static int maskSizeIfBlock(final long firstHigh, final long firstLow, final long lastHigh, final long lastLow) {
-        int lowMask = maskSizeIfBlock(firstLow, lastLow);
-        if (lowMask < 0) {
+        long c = Long.compareUnsigned(firstHigh, lastHigh);
+        if (c > 0) {
             return -1;
-        }
-        if (firstHigh == lastHigh) {
-            return Consts.V6_WIDTH - lowMask;
-        }
-        if (lowMask == 64) {
-            int highMask = maskSizeIfBlock(firstHigh, lastHigh);
-            if (highMask < 0) {
-                return -1;
-            }
-            return Consts.V6_WIDTH - (highMask + lowMask);
-        }
-        return -1;
-    }
-
-    /**
-     * @param first the bits of the first IP
-     * @param last  the bits of the last IP
-     * @return the mask size or -1 for no mask
-     */
-    private static int maskSizeIfBlock(final long first, final long last) {
-        long xor = first ^ last;
-
-        if ((xor & first) != 0) {
-            return -1;
-        }
-        if ((xor & last) != xor) {
+        } else if ((c == 0) && (Long.compareUnsigned(firstLow, lastLow) > 0)) {
             return -1;
         }
 
-        int count = 0;
-        while ((xor & 1) == 1) {
-            xor >>>= 1;
-            count++;
+        long highXor = firstHigh ^ lastHigh;
+        if ((highXor & firstHigh) != 0) {
+            return -1;
         }
-        return (xor == 0) ? count : -1;
+        long lowXor = firstLow ^ lastLow;
+        if ((lowXor & firstLow) != 0) {
+            return -1;
+        }
+
+        int bitCount = Long.bitCount(lowXor) + Long.bitCount(highXor);
+        int zeroes = Consts.V6_WIDTH - bitCount;
+        int size = Long.numberOfLeadingZeros(highXor);
+        if (size == Long.SIZE) {
+            size += Long.numberOfLeadingZeros(lowXor);
+        }
+        if (size != zeroes) {
+            return -1;
+        }
+        return size;
     }
 }

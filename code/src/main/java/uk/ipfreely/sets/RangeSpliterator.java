@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 
 import java.util.Comparator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-final class RangeSpliterator<A extends Address<A>> implements Spliterator<A> {
+final class RangeSpliterator<A extends Addr<A>> implements Spliterator<A> {
 
     private A current;
     private final A last;

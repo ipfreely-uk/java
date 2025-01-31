@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <p>
  *     {@link Range} interface that forms
  *     <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of
- *     IP {@link Address}es.
+ *     IP {@link Addr}es.
  * </p>
  * <p>Example: {@code "192.168.0.0/24"}.</p>
  * <ul>
@@ -31,7 +31,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * @see Family#subnets()
  * @see uk.ipfreely.Subnets
  */
-public interface Block<A extends Address<A>> extends Range<A> {
+public interface Block<A extends Addr<A>> extends Range<A> {
 
     /**
      * The block in CIDR notation like {@code 192.168.100.0/24}.
@@ -71,7 +71,7 @@ public interface Block<A extends Address<A>> extends Range<A> {
     }
 
     /**
-     * Number of {@link Address}es in block.
+     * Number of {@link Addr}es in block.
      *
      * @return block size
      */

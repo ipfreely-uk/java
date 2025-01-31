@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.examples;
 
-import uk.ipfreely.Address;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 import uk.ipfreely.V6;
 import uk.ipfreely.sets.AddressSets;
@@ -35,7 +35,7 @@ public final class RandomAddress {
      * @param <A>   address type
      * @return random address
      */
-    public static <A extends Address<A>> A from(Range<A> range, IntSupplier rng) {
+    public static <A extends Addr<A>> A from(Range<A> range, IntSupplier rng) {
         A first = range.first();
         A last = range.last();
         // if it's a single address, nothing to do
@@ -69,7 +69,7 @@ public final class RandomAddress {
      * @param <A>    the IP type
      * @return random address
      */
-    public static <A extends Address<A>> A generate(Family<A> family, IntSupplier rng) {
+    public static <A extends Addr<A>> A generate(Family<A> family, IntSupplier rng) {
         if (family == Family.v4()) {
             return family.parse(rng.getAsInt());
         }
@@ -82,7 +82,7 @@ public final class RandomAddress {
         return l | (rng.getAsInt() &  intMask);
     }
 
-    private static <A extends Address<A>> A fromBlock(Family<A> family, Block<A> block, A random) {
+    private static <A extends Addr<A>> A fromBlock(Family<A> family, Block<A> block, A random) {
         A inverseMask = family.subnets().masks()
                 .get(block.maskSize())
                 .not();

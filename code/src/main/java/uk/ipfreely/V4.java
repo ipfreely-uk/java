@@ -11,10 +11,10 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.asList;
 
 /**
- * Immutable IPv4 {@link Address} and 32-bit unsigned integer value.
+ * Immutable IPv4 {@link Addr} and 32-bit unsigned integer value.
  * Use {@link Family#v4()} to create values.
  */
-public final class V4 extends Address<V4> {
+public final class V4 extends Addr<V4> {
 
     private static final V4[] LOWS = IntStream.rangeClosed(0, 256).mapToObj(V4::new).toArray(V4[]::new);
     private static final V4[] SPECIALS = initSpecialInterned();
@@ -101,7 +101,7 @@ public final class V4 extends Address<V4> {
 
     @Override
     public BigInteger toBigInteger() {
-        return BigInteger.valueOf(value & IpMath.INT_MASK);
+        return BigInteger.valueOf(value & Consts.INT_MASK);
     }
 
     @Override
@@ -126,7 +126,7 @@ public final class V4 extends Address<V4> {
      */
     @Override
     public long lowBits() {
-        return IpMath.INT_MASK & value;
+        return Consts.INT_MASK & value;
     }
 
     @Override
