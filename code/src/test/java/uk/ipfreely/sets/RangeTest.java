@@ -189,4 +189,16 @@ public class RangeTest {
     assertFalse(AddressSets.address(zero).contiguous(AddressSets.address(ten)));
     assertFalse(AddressSets.address(ten).contiguous(AddressSets.address(zero)));
   }
+
+  @Test
+  void family() {
+    {
+      Range<V4> b = AddressSets.parseCidr(Family.v4(), "192.168.0.0/24");
+      assertSame(Family.v4(), b.family());
+    }
+    {
+      Range<V6> b = AddressSets.parseCidr(Family.v6(), "::/128");
+      assertSame(Family.v6(), b.family());
+    }
+  }
 }
