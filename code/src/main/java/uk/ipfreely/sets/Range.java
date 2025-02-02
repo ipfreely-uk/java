@@ -3,7 +3,6 @@
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
-import uk.ipfreely.Familial;
 import uk.ipfreely.Family;
 
 import java.math.BigInteger;
@@ -24,7 +23,7 @@ import static uk.ipfreely.sets.Validation.validate;
  *
  * @param <A> address type
  */
-public interface Range<A extends Addr<A>> extends AddressSet<A>, Familial<A> {
+public interface Range<A extends Addr<A>> extends AddressSet<A> {
 
     /**
      * Least element in the range.
@@ -40,6 +39,11 @@ public interface Range<A extends Addr<A>> extends AddressSet<A>, Familial<A> {
      */
     A last();
 
+    /**
+     * Convenience method.
+     *
+     * @return range family
+     */
     default Family<A> family() {
         return first().family();
     }

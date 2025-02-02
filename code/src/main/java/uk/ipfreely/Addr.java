@@ -77,7 +77,7 @@ import java.net.InetAddress;
  *
  * @param <A> the address type
  */
-public abstract class Addr<A extends Addr<A>> implements Comparable<A>, Familial<A> {
+public abstract class Addr<A extends Addr<A>> implements Comparable<A> {
     Addr() {}
 
     /**
