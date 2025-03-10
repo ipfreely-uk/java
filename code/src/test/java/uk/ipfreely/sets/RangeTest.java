@@ -33,8 +33,10 @@ public class RangeTest {
 
   @Test
   public void testSize() {
-    BigInteger size = AddressSets.range(first, last).size();
+    Range<V6> r = AddressSets.range(first, last);
+    BigInteger size = r.size();
     assertEquals(BigInteger.valueOf(11), size);
+    assertFalse(r.isEmpty());
   }
 
   @Test

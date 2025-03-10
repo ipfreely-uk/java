@@ -34,6 +34,7 @@ class AddressSetsTest {
             assertTrue(actual.contains(zero.first()));
             assertTrue(actual.contains(ten.first()));
             assertEquals(BigInteger.valueOf(11), actual.size());
+            assertFalse(actual.isEmpty());
         }
         {
             AddressSet<V4> actual = AddressSets.of(zero, ten);
@@ -41,12 +42,14 @@ class AddressSetsTest {
 
             assertEquals(2, actual.ranges().count());
             assertEquals(reverse, actual);
+            assertFalse(reverse.isEmpty());
         }
         {
             AddressSet<V4> actual = AddressSets.of(zero, AddressSets.address(v4().parse(0)));
 
             assertEquals(1, actual.ranges().count());
             assertEquals(BigInteger.ONE, actual.size());
+            assertFalse(actual.isEmpty());
         }
     }
 
@@ -82,6 +85,7 @@ class AddressSetsTest {
         assertEquals(BigInteger.ZERO, empty.size());
         assertFalse(empty.iterator().hasNext());
         assertEquals(0L, empty.ranges().count());
+        assertTrue(empty.isEmpty());
     }
 
     @Test

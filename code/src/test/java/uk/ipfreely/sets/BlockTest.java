@@ -5,6 +5,7 @@ package uk.ipfreely.sets;
 import org.junit.jupiter.api.Test;
 import uk.ipfreely.*;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -42,6 +43,16 @@ public class BlockTest {
     assertEquals(network, AddressSets.block(network.first(), 32));
     assertEquals(network.hashCode(), AddressSets.block(network.first(), 32).hashCode());
     assertNotEquals(network, other);
+  }
+
+  @Test
+  public void size() {
+    Block<V6> network = AddressSets.block(v6().parse("FE80:DEAD::0"), 32);
+    BigInteger expected = Family.v6().subnets().count(network.maskSize());
+    BigInteger actual = network.size();
+
+    assertEquals(expected, actual);
+    assertFalse(network.isEmpty());
   }
 
   @Test

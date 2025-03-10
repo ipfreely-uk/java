@@ -80,6 +80,15 @@ public interface Block<A extends Addr<A>> extends Range<A> {
     }
 
     /**
+     * Block is never empty.
+     *
+     * @return false
+     */
+    default boolean isEmpty() {
+        return false;
+    }
+
+    /**
      * Divides the block into smaller subnets of given bit mask size.
      *
      * @param size between {@link #maskSize()} and {@link Family#width()} inclusive

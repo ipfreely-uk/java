@@ -357,6 +357,11 @@ public final class AddressSets {
         public Iterator<A> iterator() {
             return new RangeArrayIterator<>(ranges);
         }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
     }
 
 }

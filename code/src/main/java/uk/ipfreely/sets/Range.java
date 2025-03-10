@@ -63,6 +63,15 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
     }
 
     /**
+     * Range is never empty.
+     *
+     * @return false
+     */
+    default boolean isEmpty() {
+        return false;
+    }
+
+    /**
      * Tests argument is same {@link uk.ipfreely.Family} and more than or equal to
      * {@link #first()} and less than or equal to
      * {@link #last()}.
