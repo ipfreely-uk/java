@@ -11,6 +11,15 @@ final class V6Strings {
     private V6Strings() {}
 
     static String toIpv6String(final long high, final long low) {
+        if (isV4Mapped(high, low)) {
+            String prefix = "::ffff:";
+            String v4 = V4Strings.to((int) low);
+            char[] buf = new char[prefix.length() + v4.length()];
+            Chars.append(buf, 0, prefix);
+            Chars.append(buf, prefix.length(), v4);
+            return new String(buf);
+        }
+
         int z0 = -1;
         int zn = -1;
         for (int i = 0; i < IP6_SEGMENTS; i++) {
@@ -39,6 +48,12 @@ final class V6Strings {
         }
 
         return new String(buf, 0, len);
+    }
+
+    private static boolean isV4Mapped(long high, long low) {
+        return high == 0
+                && low >= 0xffff_0000_0000L
+                && low <= 0xffff_ffff_ffffL;
     }
 
     /**
