@@ -22,7 +22,7 @@
         <maven-source-plugin>3.3.1</maven-source-plugin>
         <maven-javadoc-plugin>3.11.2</maven-javadoc-plugin>
         <jacoco-maven-plugin>0.8.12</jacoco-maven-plugin>
-        <spotbugs-maven-plugin>4.8.6.6</spotbugs-maven-plugin>
+        <spotbugs-maven-plugin>4.9.3.0</spotbugs-maven-plugin>
         <spotbugs.version>4.8.6</spotbugs.version>
         <maven-surefire-plugin>3.5.2</maven-surefire-plugin>
         <maven-pmd-plugin>3.26.0</maven-pmd-plugin>
