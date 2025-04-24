@@ -6,7 +6,7 @@
 
     <groupId>uk.ipfreely</groupId>
     <artifactId>addresses</artifactId>
-    <version>8.0.11-alpha</version>
+    <version>8.0.15-beta</version>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
@@ -112,7 +112,7 @@
                 <configuration>
                     <bottom>
                         <![CDATA[
-                        Copyright 2024
+                        Copyright 2024-2025
                         <a href="https://github.com/ipfreely-uk/java/blob/main/LICENSE">https://github.com/ipfreely-uk/java/blob/main/LICENSE</a>
                         ]]>
                     </bottom>
@@ -195,14 +195,6 @@
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
                     <failOnError>true</failOnError>
-                    <!-- excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile -->
-<!--                    <plugins>-->
-<!--                        <plugin>-->
-<!--                            <groupId>com.h3xstream.findsecbugs</groupId>-->
-<!--                            <artifactId>findsecbugs-plugin</artifactId>-->
-<!--                            <version>1.13.0</version>-->
-<!--                        </plugin>-->
-<!--                    </plugins>-->
                 </configuration>
                 <executions>
                     <execution>
@@ -213,7 +205,6 @@
                     </execution>
                 </executions>
                 <dependencies>
-                    <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>

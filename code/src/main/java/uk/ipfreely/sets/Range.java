@@ -3,6 +3,7 @@
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
+import uk.ipfreely.Family;
 
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -38,6 +39,15 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      */
     A last();
 
+    /**
+     * Convenience method.
+     *
+     * @return range family
+     */
+    default Family<A> family() {
+        return first().family();
+    }
+
     default Stream<Range<A>> ranges() {
         return Stream.of(this);
     }
@@ -53,11 +63,20 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
     }
 
     /**
+     * Range is never empty.
+     *
+     * @return false
+     */
+    default boolean isEmpty() {
+        return false;
+    }
+
+    /**
      * Tests argument is same {@link uk.ipfreely.Family} and more than or equal to
      * {@link #first()} and less than or equal to
      * {@link #last()}.
      *
-     * @param address the address to test
+     * @param address candidate (cannot be null)
      * @return true if this sequence contains the given IP address
      */
     @SuppressWarnings("unchecked")

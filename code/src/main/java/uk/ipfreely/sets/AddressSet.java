@@ -103,7 +103,7 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
     /**
      * Tests if {@link Range#contains(Addr)} is true for any of the constituent {@link #ranges()}.
      *
-     * @param address candidate
+     * @param address candidate (cannot be null)
      * @return true if the given address is present
      */
     default boolean contains(Addr<?> address) {
@@ -111,12 +111,21 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
     }
 
     /**
-     * Number of unique {@link Addr}es.
+     * Number of unique {@link Addr}s.
      * The cardinality of the set.
      *
      * @return count
      */
     default BigInteger size() {
         return ranges().map(Range::size).reduce(BigInteger.ZERO, BigInteger::add);
+    }
+
+    /**
+     * Tests for the empty set.
+     *
+     * @return true if empty
+     */
+    default boolean isEmpty() {
+        return !iterator().hasNext();
     }
 }

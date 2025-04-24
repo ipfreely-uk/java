@@ -20,7 +20,7 @@ public final class Subnetworks {
      * @param <A> address family
      */
     static <A extends Addr<A>> Stream<Block<A>> divide(Block<A> initial, BigInteger count) {
-        Family<A> f = initial.first().family();
+        Family<A> f = initial.family();
         Subnets<A> s = f.subnets();
         BigInteger min = f == Family.v4()
                 ? count.add(BigInteger.valueOf(2))

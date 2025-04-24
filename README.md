@@ -15,9 +15,9 @@ V4 networkAddress = Family.v4().parse("192.168.0.0");
 // 255.255.255.0
 V4 mask = Family.v4().subnets().masks().get(maskBits);
 // 0.0.0.255
-V4 inverseMask = mask.not()
+V4 maskComplement = mask.not()
 // 192.168.0.255
-V4 lastAddress = inverseMask.or(networkAddress);
+V4 lastAddress = maskComplement.or(networkAddress);
 ```
 
 ## Documentation

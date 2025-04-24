@@ -5,31 +5,34 @@ package uk.ipfreely;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Objects;
 
 /**
  * <p>
- *     Convenience methods for converting to/from {@link InetAddress}.
+ *     Convenience methods for converting between {@link Addr} and {@link InetAddress}.
  * </p>
  */
 public final class Net {
     private Net() {}
 
     /**
-     * Creates {@link InetAddress}.
+     * Any IP address.
      *
      * @param address mathematical type
      * @return I/O type
      */
     public static InetAddress toInetAddress(Addr<?> address) {
+        Objects.requireNonNull(address);
         try {
             return InetAddress.getByAddress(address.toBytes());
-        } catch (Throwable e) {
+        } catch (UnknownHostException e) {
             throw new AssertionError(e);
         }
     }
 
     /**
-     * Creates {@link Inet4Address}.
+     * IPv4.
      *
      * @param address mathematical type
      * @return I/O type
@@ -39,7 +42,7 @@ public final class Net {
     }
 
     /**
-     * Creates {@link Inet6Address}.
+     * IPv6.
      *
      * @param address mathematical type
      * @return I/O type
@@ -49,7 +52,7 @@ public final class Net {
     }
 
     /**
-     * From {@link InetAddress}.
+     * Any IP address.
      *
      * @param address I/O type
      * @return mathematical type
@@ -59,7 +62,7 @@ public final class Net {
     }
 
     /**
-     * From {@link Inet4Address}.
+     * IPv4.
      *
      * @param address I/O type
      * @return mathematical type
@@ -69,7 +72,7 @@ public final class Net {
     }
 
     /**
-     * From {@link Inet6Address}.
+     * IPv6.
      *
      * @param address I/O type
      * @return mathematical type
