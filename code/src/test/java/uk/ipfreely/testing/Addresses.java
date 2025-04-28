@@ -20,7 +20,7 @@ public final class Addresses {
             };
             return v4;
         }
-        // TODO: 4 in 6
+        // Don't add 4in6 to this list
         String[] v6 = {
                 "::",
                 "dead:beef:cafe:babe:deaf:f001:face:1ace",
@@ -38,7 +38,6 @@ public final class Addresses {
                 "1:1:1:1::",
                 "1:1:1:1:1::",
                 "1:1:1:1:1:1::",
-                //"::255.255.255.255",
         };
         return v6;
     }
