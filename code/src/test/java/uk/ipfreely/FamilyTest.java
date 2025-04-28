@@ -68,32 +68,8 @@ public class FamilyTest {
   }
 
   @Test
-  void regexV6() {
-    testRegex(Family.v6());
-  }
-
-  @Test
-  void regexV4() {
-    testRegex(Family.v4());
-  }
-
-  private void testRegex(Family<?> family) {
-    Pattern p = Pattern.compile("^" + family.regex() + "$");
-
-    for (String candidate : Addresses.valid(family)) {
-      Matcher m = p.matcher(candidate);
-      assertTrue(m.matches());
-    }
-
-    for (String candidate : Addresses.invalid(family)) {
-      Matcher m = p.matcher(candidate);
-      assertFalse(m.matches());
-    }
-  }
-
-  @Test
   void subnets() {
     assertEquals(Family.v4().subnets().toString(), Family.v4().subnets().toString());
-    assertSame(Family.v4().subnets().family(), Family.v4().subnets().family());
+    assertSame(Family.v4(), Family.v4().subnets().family());
   }
 }

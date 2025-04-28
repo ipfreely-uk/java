@@ -79,6 +79,8 @@ final class V4Strings {
                 result |= quad;
                 quad = 0;
                 digits = 0;
+            } else if (quad == 0 && digits > 0) {
+                validate(last != '0', "Leading zeroes not supported", address, ParseException::new);
             } else {
                 digits++;
                 quad = quad * 10 + ch - '0';

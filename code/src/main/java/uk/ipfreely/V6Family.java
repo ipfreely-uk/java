@@ -77,26 +77,6 @@ final class V6Family extends Family<V6> {
     }
 
     @Override
-    public String regex() {
-        // https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-        String v4seg = "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])";
-        String v4addr = "(" + v4seg + "\\.){3,3}" + v4seg;
-        String v6seg = "[0-9a-fA-F]{1,4}";
-        String v6addr = "(" + v6seg + ":){7,7}" + v6seg + "|";
-        v6addr += "(" + v6seg  + ":){1,7}:|";
-        v6addr += "(" + v6seg + ":){1,6}:" + v6seg + "|";
-        v6addr += "(" + v6seg + ":){1,5}(:" + v6seg + "){1,2}|";
-        v6addr += "(" + v6seg + ":){1,4}(:" + v6seg + "){1,3}|";
-        v6addr += "(" + v6seg + ":){1,3}(:" + v6seg + "){1,4}|";
-        v6addr += "(" + v6seg + ":){1,2}(:" + v6seg + "){1,5}|";
-        v6addr += v6seg + ":((:" + v6seg + "){1,6})|";
-        v6addr += ":((:" + v6seg + "){1,7}|:)|";
-        v6addr += "::(ffff(:0{1,4}){0,1}:){0,1}" + v4addr + "|";
-        v6addr += "(" + v6seg + ":){1,4}:" + v4addr;
-        return v6addr;
-    }
-
-    @Override
     public int width() {
         return Consts.V6_WIDTH;
     }
