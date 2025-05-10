@@ -79,11 +79,4 @@ final class V4Family extends Family<V4> {
 
         return InternedMaskSizes.v4(maskBits);
     }
-
-    @Override
-    public String regex() {
-        // https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-        String v4seg = "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])";
-        return  "(" + v4seg + "\\.){3,3}" + v4seg;
-    }
 }

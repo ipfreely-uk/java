@@ -27,3 +27,11 @@ V4 lastAddress = maskComplement.or(networkAddress);
 ## Releases
 
 Libraries are published to [Maven Central](https://central.sonatype.com/artifact/uk.ipfreely/addresses/overview)
+
+## Building
+
+Requires [JDK8](https://whichjdk.com/)+.
+
+```shell
+ ./code/mvnw -f code/pom.xml install
+```

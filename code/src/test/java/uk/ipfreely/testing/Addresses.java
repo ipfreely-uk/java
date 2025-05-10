@@ -20,7 +20,7 @@ public final class Addresses {
             };
             return v4;
         }
-        // TODO: embedded v4
+        // Don't add 4in6 to this list
         String[] v6 = {
                 "::",
                 "dead:beef:cafe:babe:deaf:f001:face:1ace",
@@ -46,6 +46,7 @@ public final class Addresses {
         if (family.equals(Family.v4())) {
             String[] v4 = {
                     "0.0..0",
+                    "0,0,0,0",
                     "255.255.0255.255",
                     "555.555.555.555",
                     "255.255.255.-1",
@@ -56,6 +57,7 @@ public final class Addresses {
                     "1.2.3.4.5",
                     "z",
                     "a",
+                    "0.010.0.0", // decimal or octal ambiguity
             };
             return v4;
         }

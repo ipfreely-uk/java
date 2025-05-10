@@ -7,6 +7,7 @@ import uk.ipfreely.Family;
 
 import java.math.BigInteger;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * <p>
@@ -99,6 +100,17 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
      * @return constituent ranges
      */
     Stream<Range<A>> ranges();
+
+    /**
+     * <p>
+     *     Addresses from least to greatest.
+     * </p>
+     *
+     * @return address stream
+     */
+    default Stream<A> addresses() {
+        return StreamSupport.stream(spliterator(), false);
+    }
 
     /**
      * Tests if {@link Range#contains(Addr)} is true for any of the constituent {@link #ranges()}.

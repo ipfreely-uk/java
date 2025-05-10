@@ -221,32 +221,6 @@ public abstract class Family<A extends Addr<A>> {
     abstract BigInteger maskAddressCount(int maskBits);
 
     /**
-     * <p>Regular expression for detecting IP addresses in this family.</p>
-     * <pre><code>
-     *     // EXAMPLE
-     *     String startOfString = "^";
-     *     String endOfString = "$";
-     *     String or = "|";
-     *     String v4r = Family.v4().regex();
-     *     String v6r = Family.v6().regex();
-     *     Pattern addressPattern = Pattern.compile(startOfString + v4r + or + v6r + endOfString);
-     *
-     *     for (String candidate : new String[]{"172.0.0.1", "foo", "::1",}) {
-     *         Matcher m = addressPattern.matcher(candidate);
-     *         if (m.matches()) {
-     *             System.out.println(Family.unknown(candidate).family() + "\t" + candidate);
-     *         } else {
-     *             System.out.println("none\t" + candidate);
-     *         }
-     *     }
-     * </code></pre>
-     *
-     * @return regular expression for matching address patterns
-     * @see java.util.regex.Pattern
-     */
-    public abstract String regex();
-
-    /**
      * Uses heuristics to detect IP address family and calls {@link #parse(CharSequence)}.
      *
      * @param candidate IP address

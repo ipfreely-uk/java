@@ -8,6 +8,7 @@ import uk.ipfreely.ParseException;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import static uk.ipfreely.sets.Validation.validate;
@@ -70,11 +71,11 @@ public final class AddressSets {
      */
     @SuppressWarnings("unchecked")
     public static <A extends Addr<A>, S extends AddressSet<A>> AddressSet<A> from(Iterable<S> sets) {
-        List<Range<A>> list = new ArrayList<>();
+        SortedSet<Range<A>> results = new TreeSet<>(AddressSets::compare);
         for (S set : sets) {
-            set.ranges().forEach(list::add);
+            set.ranges().forEach(r -> rationalize(results, r));
         }
-        final Range<A>[] data = rationalize(list);
+        final Range<A>[] data = results.toArray(new Range[0]);
         if (data.length == 0) {
             return (AddressSet<A>) Empty.IMPL;
         }
@@ -84,33 +85,19 @@ public final class AddressSets {
         return new ArraySet<>(data);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <A extends Addr<A>, R extends Range<A>> Range<A>[] rationalize(Iterable<R> ranges) {
-        SortedSet<Range<A>> set = new TreeSet<>(AddressSets::compare);
-        rationalize(set, ranges);
-        return set.toArray(new Range[0]);
-    }
-
-    private static <A extends Addr<A>, R extends Range<A>> void rationalize(SortedSet<Range<A>> set, Iterable<R> ranges) {
-        for (Range<A> range : ranges) {
-            Iterator<Range<A>> it = set.iterator();
-            while(it.hasNext()) {
-                Range<A> candidate = it.next();
-                if (cannotCombine(candidate, range)) {
-                    break;
-                }
-                if (range.contiguous(candidate)) {
-                    it.remove();
-                    range = range.combine(candidate);
-                }
+    private static <A extends Addr<A>> void rationalize(SortedSet<Range<A>> target, Range<A> r) {
+        Range<A> candidate = r;
+        Iterator<Range<A>> it = target.iterator();
+        while (it.hasNext()) {
+            Range<A> next = it.next();
+            if (next.contiguous(candidate)) {
+                candidate = candidate.combine(next);
+                it.remove();
+            } else if (compare(r, next) < 0) {
+                break;
             }
-            set.add(range);
         }
-    }
-
-    private static <A extends Addr<A>> boolean cannotCombine(Range<A> candidate, Range<A> range) {
-        return Compare.less(range.last(), candidate.first())
-                && !range.last().next().equals(candidate.first());
+        target.add(candidate);
     }
 
     private static <A extends Addr<A>> int compare(Range<A> r0, Range<A> r1) {
@@ -300,6 +287,16 @@ public final class AddressSets {
         Block<?> actual = parseCidr(cidrBlock);
         validate(family == actual.first().family(), "Wrong IP type", actual, ParseException::new);
         return (Block<A>) actual;
+    }
+
+    /**
+     * {@link Collector} for creating {@link AddressSet} from {@link Stream}.
+     *
+     * @return collector
+     * @param <A> address family
+     */
+    public static <A extends Addr<A>> Collector<AddressSet<A>, ?, AddressSet<A>> collector() {
+        return new AddressCollector<>();
     }
 
     private static final class Empty<A extends Addr<A>> extends AbstractAddressSet<A> {

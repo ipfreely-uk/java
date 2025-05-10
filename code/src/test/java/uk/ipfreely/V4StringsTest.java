@@ -4,7 +4,7 @@ package uk.ipfreely;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class V4StringsTest {
 
@@ -23,5 +23,7 @@ class V4StringsTest {
         assertEquals(0xFFFFFFFF, V4Strings.from("255.255.255.255"));
         assertEquals(0xFF000001, V4Strings.from("255.0.0.1"));
         assertEquals(0x0A096401, V4Strings.from("10.9.100.1"));
+
+        assertThrowsExactly(ParseException.class, () -> V4Strings.from("01.0.0.0"));
     }
 }
