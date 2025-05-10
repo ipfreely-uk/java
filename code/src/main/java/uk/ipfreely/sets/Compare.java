@@ -17,16 +17,4 @@ final class Compare {
                 ? a
                 : b;
     }
-
-//    static <C extends Comparable<C>> boolean lessOrEqual(C lesser, C bigger) {
-//        return lesser.compareTo(bigger) <= 0;
-//    }
-
-    static <C extends Comparable<C>> boolean less(C lesser, C bigger) {
-        return lesser.compareTo(bigger) < 0;
-    }
-
-//    static <C extends Comparable<C>> boolean greater(C bigger, C lesser) {
-//        return lesser.compareTo(bigger) > 0;
-//    }
 }

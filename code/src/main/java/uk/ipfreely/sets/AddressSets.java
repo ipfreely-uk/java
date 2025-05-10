@@ -70,11 +70,11 @@ public final class AddressSets {
      */
     @SuppressWarnings("unchecked")
     public static <A extends Addr<A>, S extends AddressSet<A>> AddressSet<A> from(Iterable<S> sets) {
-        List<Range<A>> list = new ArrayList<>();
+        SortedSet<Range<A>> results = new TreeSet<>(AddressSets::compare);
         for (S set : sets) {
-            set.ranges().forEach(list::add);
+            set.ranges().forEach(r -> rationalize(results, r));
         }
-        final Range<A>[] data = rationalize(list);
+        final Range<A>[] data = results.toArray(new Range[0]);
         if (data.length == 0) {
             return (AddressSet<A>) Empty.IMPL;
         }
@@ -84,33 +84,22 @@ public final class AddressSets {
         return new ArraySet<>(data);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <A extends Addr<A>, R extends Range<A>> Range<A>[] rationalize(Iterable<R> ranges) {
-        SortedSet<Range<A>> set = new TreeSet<>(AddressSets::compare);
-        rationalize(set, ranges);
-        return set.toArray(new Range[0]);
-    }
-
-    private static <A extends Addr<A>, R extends Range<A>> void rationalize(SortedSet<Range<A>> set, Iterable<R> ranges) {
-        for (Range<A> range : ranges) {
-            Iterator<Range<A>> it = set.iterator();
-            while(it.hasNext()) {
-                Range<A> candidate = it.next();
-                if (cannotCombine(candidate, range)) {
+    private static <A extends Addr<A>> void rationalize(SortedSet<Range<A>> target, Range<A> r) {
+        Range<A> candidate = r;
+        Iterator<Range<A>> it = target.iterator();
+        while (it.hasNext()) {
+            Range<A> next = it.next();
+            if (next.contiguous(candidate)) {
+                candidate = candidate.combine(next);
+                it.remove();
+            } else {
+                int c = compare(r, next);
+                if (c < 0) {
                     break;
                 }
-                if (range.contiguous(candidate)) {
-                    it.remove();
-                    range = range.combine(candidate);
-                }
             }
-            set.add(range);
         }
-    }
-
-    private static <A extends Addr<A>> boolean cannotCombine(Range<A> candidate, Range<A> range) {
-        return Compare.less(range.last(), candidate.first())
-                && !range.last().next().equals(candidate.first());
+        target.add(candidate);
     }
 
     private static <A extends Addr<A>> int compare(Range<A> r0, Range<A> r1) {
