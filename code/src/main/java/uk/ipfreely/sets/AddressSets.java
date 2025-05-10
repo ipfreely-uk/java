@@ -8,6 +8,7 @@ import uk.ipfreely.ParseException;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import static uk.ipfreely.sets.Validation.validate;
@@ -92,11 +93,8 @@ public final class AddressSets {
             if (next.contiguous(candidate)) {
                 candidate = candidate.combine(next);
                 it.remove();
-            } else {
-                int c = compare(r, next);
-                if (c < 0) {
-                    break;
-                }
+            } else if (compare(r, next) < 0) {
+                break;
             }
         }
         target.add(candidate);
@@ -289,6 +287,16 @@ public final class AddressSets {
         Block<?> actual = parseCidr(cidrBlock);
         validate(family == actual.first().family(), "Wrong IP type", actual, ParseException::new);
         return (Block<A>) actual;
+    }
+
+    /**
+     * {@link Collector} for creating {@link AddressSet} from {@link Stream}.
+     *
+     * @return collector
+     * @param <A> address family
+     */
+    public static <A extends Addr<A>> Collector<AddressSet<A>, ?, AddressSet<A>> collector() {
+        return new AddressCollector<>();
     }
 
     private static final class Empty<A extends Addr<A>> extends AbstractAddressSet<A> {
