@@ -132,14 +132,14 @@ public class RangeTest {
   }
 
   @Test
-  void combine() {
+  void extremes() {
     V4 zero = Family.v4().parse(0);
     V4 one = Family.v4().parse(1);
     V4 ten = Family.v4().parse(10);
     {
       // combined with self
       Range<V4> r = AddressSets.range(zero, zero);
-      Range<V4> actual = r.combine(r);
+      Range<V4> actual = r.extremes(r);
       assertEquals(r, actual);
     }
     {
@@ -147,7 +147,7 @@ public class RangeTest {
       Range<V4> r0 = AddressSets.range(zero, zero);
       Range<V4> r1 = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, one);
-      Range<V4> actual = r0.combine(r1);
+      Range<V4> actual = r0.extremes(r1);
       assertEquals(expected, actual);
     }
     {
@@ -155,7 +155,7 @@ public class RangeTest {
       Range<V4> r0 = AddressSets.range(zero, zero);
       Range<V4> r1 = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, one);
-      Range<V4> actual = r1.combine(r0);
+      Range<V4> actual = r1.extremes(r0);
       assertEquals(expected, actual);
     }
     {
@@ -163,7 +163,7 @@ public class RangeTest {
       Range<V4> superset = AddressSets.range(zero, ten);
       Range<V4> subset = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, ten);
-      Range<V4> actual = subset.combine(superset);
+      Range<V4> actual = subset.extremes(superset);
       assertEquals(expected, actual);
     }
     {
@@ -171,7 +171,7 @@ public class RangeTest {
       Range<V4> superset = AddressSets.range(zero, ten);
       Range<V4> subset = AddressSets.range(one, one);
       Range<V4> expected = AddressSets.range(zero, ten);
-      Range<V4> actual = superset.combine(subset);
+      Range<V4> actual = superset.extremes(subset);
       assertEquals(expected, actual);
     }
   }

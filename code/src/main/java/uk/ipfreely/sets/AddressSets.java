@@ -91,7 +91,7 @@ public final class AddressSets {
         while (it.hasNext()) {
             Range<A> next = it.next();
             if (next.contiguous(candidate)) {
-                candidate = candidate.combine(next);
+                candidate = candidate.extremes(next);
                 it.remove();
             } else if (compare(r, next) < 0) {
                 break;

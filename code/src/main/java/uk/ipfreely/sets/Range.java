@@ -215,7 +215,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      * @return new range
      * @see #contiguous(Range) 
      */
-    default Range<A> combine(Range<A> other) {
+    default Range<A> extremes(Range<A> other) {
         A first = Compare.least(first(), other.first());
         A last = Compare.greatest(last(), other.last());
         if (this.first().equals(first) && this.last().equals(last)) {
