@@ -5,9 +5,6 @@ package uk.ipfreely;
 import org.junit.jupiter.api.Test;
 import uk.ipfreely.testing.Addresses;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;

@@ -2,7 +2,10 @@ package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -10,6 +13,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 final class AddressCollector<A extends Addr<A>> implements Collector<AddressSet<A>, Collection<AddressSet<A>>, AddressSet<A>> {
+
+    static final AddressCollector<?> INSTANCE = new AddressCollector<>();
 
     @Override
     public Supplier<Collection<AddressSet<A>>> supplier() {

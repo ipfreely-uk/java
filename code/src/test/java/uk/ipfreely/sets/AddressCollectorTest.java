@@ -1,3 +1,5 @@
+// Copyright 2025 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
@@ -7,7 +9,7 @@ import uk.ipfreely.V4;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AddressCollectorTest {
 

@@ -3,6 +3,7 @@
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
+import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
@@ -10,7 +11,10 @@ import uk.ipfreely.testing.AddressSetTester;
 import uk.ipfreely.testing.EqualsTester;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -154,5 +158,26 @@ class AddressSetsTest {
                     .collect(AddressSets.collector());
             assertEquals(expected, actual);
         }
+        {
+            AddressSet<V4> expected = AddressSets.range(Family.v4().min(), Family.v4().parse(1024));
+            AddressSet<V4> as1 = expected.addresses()
+                    .filter(this::even)
+                    .map(AddressSets::address)
+                    .collect(AddressSets.collector());
+            AddressSet<V4> as2 = expected.addresses()
+                    .filter(this::odd)
+                    .map(AddressSets::address)
+                    .collect(AddressSets.collector());
+            AddressSet<V4> actual = AddressSets.of(as1, as2);
+            assertEquals(expected, actual);
+        }
+    }
+
+    private boolean even(Addr<?> a) {
+        return a.lowBits() % 2 == 0;
+    }
+
+    private boolean odd(Addr<?> a) {
+        return a.lowBits() % 2 == 1;
     }
 }
