@@ -4,6 +4,7 @@ package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,24 +41,5 @@ abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
     @Override
     public int hashCode() {
         return ranges().mapToInt(Object::hashCode).reduce(0, (n, r) -> n * 31 + r);
-    }
-
-    @Override
-    public String toString() {
-        final int BUF_SIZE = (8 * 4 + 7) * (4 * 2 + 2) + 4;
-
-        List<Range<?>> ranges = ranges().limit(6).collect(toList());
-        StringBuilder buf = new StringBuilder(BUF_SIZE);
-        buf.append('{');
-        String delim = "";
-        for (int i = 0; i < Math.min(5, ranges.size()); i++) {
-            buf.append(delim);
-            delim = "; ";
-            buf.append(ranges.get(i));
-        }
-        if (ranges.size() == 6) {
-            buf.append(";...");
-        }
-        return buf.append('}').toString();
     }
 }

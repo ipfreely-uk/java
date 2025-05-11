@@ -256,7 +256,6 @@ public final class AddressSets {
      * @return the block instance
      * @throws ParseException on invalid expression
      */
-    @SuppressWarnings({"unchecked"})
     public static Block<?> parseCidr(String cidrBlock) {
         final int stroke = cidrBlock.lastIndexOf('/');
         validate(stroke >= 0, "CIDR notation is 'ip/mask'", cidrBlock, ParseException::new);
@@ -264,10 +263,13 @@ public final class AddressSets {
         final String s1 = cidrBlock.substring(0, stroke);
         final String s2 = cidrBlock.substring(stroke + 1);
 
+        @SuppressWarnings("rawtypes")
         Addr address = Family.unknown(s1);
         int mask = Integer.parseInt(s2);
         try {
-            return block(address, mask);
+            @SuppressWarnings("unchecked")
+            Block<?> b = block(address, mask);
+            return b;
         } catch (IllegalArgumentException e) {
             throw new ParseException(e);
         }
@@ -358,6 +360,19 @@ public final class AddressSets {
         @Override
         public boolean isEmpty() {
             return false;
+        }
+
+        @Override
+        public String toString() {
+            int LIMIT = 5;
+            StringJoiner buf = new StringJoiner(", ", "{", "}");
+            for (int i = 0; i < Math.min(ranges.length, LIMIT); i++) {
+                buf.add(ranges[i].toString());
+            }
+            if (ranges.length > LIMIT) {
+                buf.add("[" + ranges.length + "...]");
+            }
+            return buf.toString();
         }
     }
 

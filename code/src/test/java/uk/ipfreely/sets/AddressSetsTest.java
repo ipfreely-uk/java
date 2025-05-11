@@ -115,7 +115,9 @@ class AddressSetsTest {
         AddressSet<V4> set = large();
         String actual = set.toString();
         assertEquals('{', actual.charAt(0));
-        assertTrue(actual.endsWith(";...}"));
+        String expected = ", [1000...]}";
+        String end = actual.substring(actual.length() - expected.length());
+        assertEquals(expected, end);
     }
 
     private AddressSet<V4> large() {
