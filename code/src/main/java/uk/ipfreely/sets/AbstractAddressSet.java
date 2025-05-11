@@ -4,11 +4,7 @@ package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
 
