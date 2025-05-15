@@ -293,6 +293,7 @@ public final class AddressSets {
 
     /**
      * {@link Collector} for creating {@link AddressSet} from {@link Stream}.
+     * This collector reduces intermediate states when the number of sets reaches a threshold.
      *
      * @return collector
      * @param <A> address family
