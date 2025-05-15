@@ -30,7 +30,7 @@ Libraries are published to [Maven Central](https://central.sonatype.com/artifact
 
 ## Building
 
-Requires [JDK8](https://whichjdk.com/)+.
+Requires [JDK17](https://whichjdk.com/)+.
 
 ```shell
  ./code/mvnw -f code/pom.xml install
