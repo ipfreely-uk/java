@@ -297,8 +297,8 @@ public final class AddressSets {
      * @return collector
      * @param <A> address family
      */
-    public static <A extends Addr<A>> Collector<AddressSet<A>, ?, AddressSet<A>> collector() {
-        return new AddressCollector<>();
+    public static <A extends Addr<A>> Collector<AddressSet<A>, Collection<AddressSet<A>>, AddressSet<A>> collector() {
+        return AddressCollector.impl();
     }
 
     private static final class Empty<A extends Addr<A>> extends AbstractAddressSet<A> {

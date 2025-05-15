@@ -18,7 +18,7 @@ class AddressCollectorTest {
         AddressSet<V4> home1 = AddressSets.parseCidr(Family.v4(), "127.0.0.1/32");
         AddressSet<V4> home2 = AddressSets.parseCidr(Family.v4(), "127.0.0.2/32");
 
-        AddressCollector<V4> collector = new AddressCollector<>();
+        AddressCollector<V4> collector = AddressCollector.impl();
         Collection<AddressSet<V4>> one = collector.supplier().get();
         one.add(home1);
         Collection<AddressSet<V4>> two = collector.supplier().get();

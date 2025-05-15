@@ -13,8 +13,14 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 final class AddressCollector<A extends Addr<A>> implements Collector<AddressSet<A>, Collection<AddressSet<A>>, AddressSet<A>> {
+    private static final AddressCollector<?> IMPL = new AddressCollector<>();
 
-    static final AddressCollector<?> INSTANCE = new AddressCollector<>();
+    private AddressCollector() {}
+
+    @SuppressWarnings("unchecked")
+    static <A extends Addr<A>> AddressCollector<A> impl() {
+        return (AddressCollector<A>) IMPL;
+    }
 
     @Override
     public Supplier<Collection<AddressSet<A>>> supplier() {
