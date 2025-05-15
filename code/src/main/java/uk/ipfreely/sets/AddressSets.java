@@ -364,7 +364,7 @@ public final class AddressSets {
 
         @Override
         public String toString() {
-            int LIMIT = 5;
+            final int LIMIT = 5;
             StringJoiner buf = new StringJoiner(", ", "{", "}");
             for (int i = 0; i < Math.min(ranges.length, LIMIT); i++) {
                 buf.add(ranges[i].toString());
