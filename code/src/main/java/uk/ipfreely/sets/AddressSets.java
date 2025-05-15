@@ -1,4 +1,4 @@
-// Copyright 2024 https://github.com/ipfreely-uk/java/blob/main/LICENSE
+// Copyright 2024-2025 https://github.com/ipfreely-uk/java/blob/main/LICENSE
 // SPDX-License-Identifier: Apache-2.0
 package uk.ipfreely.sets;
 
@@ -91,7 +91,7 @@ public final class AddressSets {
         while (it.hasNext()) {
             Range<A> next = it.next();
             if (next.contiguous(candidate)) {
-                candidate = candidate.combine(next);
+                candidate = candidate.extremes(next);
                 it.remove();
             } else if (compare(r, next) < 0) {
                 break;
@@ -256,7 +256,6 @@ public final class AddressSets {
      * @return the block instance
      * @throws ParseException on invalid expression
      */
-    @SuppressWarnings({"unchecked"})
     public static Block<?> parseCidr(String cidrBlock) {
         final int stroke = cidrBlock.lastIndexOf('/');
         validate(stroke >= 0, "CIDR notation is 'ip/mask'", cidrBlock, ParseException::new);
@@ -264,10 +263,13 @@ public final class AddressSets {
         final String s1 = cidrBlock.substring(0, stroke);
         final String s2 = cidrBlock.substring(stroke + 1);
 
+        @SuppressWarnings("rawtypes")
         Addr address = Family.unknown(s1);
         int mask = Integer.parseInt(s2);
         try {
-            return block(address, mask);
+            @SuppressWarnings("unchecked")
+            Block<?> b = block(address, mask);
+            return b;
         } catch (IllegalArgumentException e) {
             throw new ParseException(e);
         }
@@ -291,12 +293,13 @@ public final class AddressSets {
 
     /**
      * {@link Collector} for creating {@link AddressSet} from {@link Stream}.
+     * This collector reduces intermediate states when the number of sets reaches a threshold.
      *
      * @return collector
      * @param <A> address family
      */
-    public static <A extends Addr<A>> Collector<AddressSet<A>, ?, AddressSet<A>> collector() {
-        return new AddressCollector<>();
+    public static <A extends Addr<A>> Collector<AddressSet<A>, Collection<AddressSet<A>>, AddressSet<A>> collector() {
+        return AddressSetCollector.impl();
     }
 
     private static final class Empty<A extends Addr<A>> extends AbstractAddressSet<A> {
@@ -358,6 +361,19 @@ public final class AddressSets {
         @Override
         public boolean isEmpty() {
             return false;
+        }
+
+        @Override
+        public String toString() {
+            final int LIMIT = 5;
+            StringJoiner buf = new StringJoiner(", ", "{", "}");
+            for (int i = 0; i < Math.min(ranges.length, LIMIT); i++) {
+                buf.add(ranges[i].toString());
+            }
+            if (ranges.length > LIMIT) {
+                buf.add("[" + ranges.length + "...]");
+            }
+            return buf.toString();
         }
     }
 

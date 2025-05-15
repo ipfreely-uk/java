@@ -2,14 +2,25 @@ package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-final class AddressCollector<A extends Addr<A>> implements Collector<AddressSet<A>, Collection<AddressSet<A>>, AddressSet<A>> {
+final class AddressSetCollector<A extends Addr<A>> implements Collector<AddressSet<A>, Collection<AddressSet<A>>, AddressSet<A>> {
+    private static final AddressSetCollector<?> IMPL = new AddressSetCollector<>();
+
+    private AddressSetCollector() {}
+
+    @SuppressWarnings("unchecked")
+    static <A extends Addr<A>> AddressSetCollector<A> impl() {
+        return (AddressSetCollector<A>) IMPL;
+    }
 
     @Override
     public Supplier<Collection<AddressSet<A>>> supplier() {
@@ -18,7 +29,7 @@ final class AddressCollector<A extends Addr<A>> implements Collector<AddressSet<
 
     @Override
     public BiConsumer<Collection<AddressSet<A>>, AddressSet<A>> accumulator() {
-        return AddressCollector::accumulate;
+        return AddressSetCollector::accumulate;
     }
 
     private static <A extends Addr<A>> void accumulate(Collection<AddressSet<A>> c, AddressSet<A> s) {
@@ -28,7 +39,7 @@ final class AddressCollector<A extends Addr<A>> implements Collector<AddressSet<
 
     @Override
     public BinaryOperator<Collection<AddressSet<A>>> combiner() {
-        return AddressCollector::combine;
+        return AddressSetCollector::combine;
     }
 
     private static <A extends Addr<A>> Collection<AddressSet<A>> combine(Collection<AddressSet<A>> c0, Collection<AddressSet<A>> c1) {

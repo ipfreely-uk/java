@@ -5,7 +5,6 @@ package uk.ipfreely;
 import org.junit.jupiter.api.Test;
 import uk.ipfreely.testing.Addresses;
 
-import java.net.Inet6Address;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
