@@ -52,16 +52,13 @@ public final class AddressSets {
      * </code></pre>
      * <pre><code>
      *     // EXAMPLE
-     *     List&lt;String&gt; addresses = Arrays.asList("192.168.0.1", "192.168.0.10", "192.168.0.11", "192.168.0.12");
      *     // 4 entries: "192.168.0.1/32", "192.168.0.10/32", "192.168.0.11/32", "192.168.0.12/32"
-     *     Set&lt;Block&lt;V4&gt;&gt; raw = addresses.stream()
+     *     List&lt;String&gt; addresses = Arrays.asList("192.168.0.1", "192.168.0.10", "192.168.0.11", "192.168.0.12");
+     *     // 2 entries: "192.168.0.1/32", "192.168.0.10-192.168.0.12"
+     *     AddressSet&lt;V4&gt; rationalized = addresses.stream()
      *                 .map(Family.v4()::parse)
      *                 .map(AddressSets::address)
-     *                 .collect(Collectors.toSet());
-     *     // 2 entries: "192.168.0.1/32", "192.168.0.10-192.168.0.12"
-     *     Set&lt;Range&lt;V4&gt;&gt; rationalized = AddressSets.from(raw)
-     *                 .ranges()
-     *                 .collect(Collectors.toSet());
+     *                 .collect(AddressSets.collector());
      * </code></pre>
      *
      * @param sets source sets
