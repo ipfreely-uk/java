@@ -34,7 +34,7 @@ import java.util.stream.StreamSupport;
  *         </td>
  *         <td>
  *             ...forms a valid
- *             <a href="https://tools.ietf.org/html/rfc4632">RFC4632</a>
+ *             <a target="_top" href="https://tools.ietf.org/html/rfc4632">RFC4632</a>
  *             CIDR block.
  *         </td>
  *     </tr>
