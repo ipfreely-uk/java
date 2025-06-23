@@ -28,6 +28,10 @@ V4 lastAddress = maskComplement.or(networkAddress);
 
 Libraries are published to [Maven Central](https://central.sonatype.com/artifact/uk.ipfreely/addresses/overview)
 
+## Versions
+
+Version numbers are three digits - the Java version, major version, minor version.
+
 ## Building
 
 Requires [JDK8](https://whichjdk.com/)+.
