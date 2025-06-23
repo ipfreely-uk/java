@@ -10,9 +10,9 @@ import static uk.ipfreely.Validation.validate;
 /**
  * <p>
  *  {@link Addr} factory and utility type for
- *  <a href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
+ *  <a target="_top" href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
  *  and
- *  <a href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>
+ *  <a target="_top" href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>
  *  obtained via {@link #v4()} and {@link #v6()}.
  * </p>
  * <p>
@@ -20,7 +20,7 @@ import static uk.ipfreely.Validation.validate;
  *     Inheritance outside the package is not supported.
  *     Instances have identity equality.
  *     Future implementations may become
- *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
+ *     <a target="_top" href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
  * </p>
  *
  * @param <A> {@link V4} or {@link V6}

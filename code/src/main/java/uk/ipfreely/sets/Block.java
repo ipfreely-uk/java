@@ -14,7 +14,7 @@ import static uk.ipfreely.sets.Validation.validate;
 /**
  * <p>
  *     {@link Range} interface that forms
- *     <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of
+ *     <a target="_top" href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of
  *     IP {@link Addr}es.
  * </p>
  * <p>Example: {@code "192.168.0.0/24"}.</p>

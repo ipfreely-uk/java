@@ -13,9 +13,9 @@ import java.net.InetAddress;
  * <p>
  *     Inheritance outside the package is not supported.
  *     Future implementations may become
- *     <a href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
+ *     <a target="_top" href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
  *     Future implementations may become
- *     <a href="https://openjdk.org/projects/valhalla/">value objects</a>.
+ *     <a target="_top" href="https://openjdk.org/projects/valhalla/">value objects</a>.
  * </p>
  *
  * <h2>Usage Hints</h2>
@@ -71,8 +71,8 @@ import java.net.InetAddress;
  *
  * <p>
  *     For {@link InetAddress} see the following libraries for overlapping utility methods:
- *     <a href="https://commons.apache.org/proper/commons-net/">Apache Commons Net</a>;
- *     <a href="https://guava.dev/">Google Guava</a>.
+ *     <a target="_top" href="https://commons.apache.org/proper/commons-net/">Apache Commons Net</a>;
+ *     <a target="_top" href="https://guava.dev/">Google Guava</a>.
  * </p>
  *
  * @param <A> the address type
@@ -280,7 +280,7 @@ public abstract class Addr<A extends Addr<A>> implements Comparable<A> {
      * Positive operands shift right.
      * Values exceeding {@link Family#width()} overflow as described
      * in The Java Language Specification Java SE 21 Edition
-     * <a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.19">15.19. Shift Operators</a>.
+     * <a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.19" target="_top">15.19. Shift Operators</a>.
      * <pre><code>
      *     // EXAMPLE
      *     // 0.0.0.1

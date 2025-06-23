@@ -6,7 +6,7 @@
 
     <groupId>uk.ipfreely</groupId>
     <artifactId>addresses</artifactId>
-    <version>8.0.17-beta</version>
+    <version>8.0.18-beta</version>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
@@ -16,7 +16,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.12.2</junit.version>
+        <junit.version>5.13.1</junit.version>
 
         <maven-jar-plugin>3.4.2</maven-jar-plugin>
         <maven-source-plugin>3.3.1</maven-source-plugin>
@@ -113,7 +113,7 @@
                     <bottom>
                         <![CDATA[
                         Copyright 2024-2025
-                        <a href="https://github.com/ipfreely-uk/java/blob/main/LICENSE">https://github.com/ipfreely-uk/java/blob/main/LICENSE</a>
+                        <a href="https://github.com/ipfreely-uk/java/blob/main/LICENSE" target="_top">https://github.com/ipfreely-uk/java/blob/main/LICENSE</a>
                         ]]>
                     </bottom>
                     <doclint>all</doclint>

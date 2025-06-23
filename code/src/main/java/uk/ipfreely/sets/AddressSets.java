@@ -30,7 +30,7 @@ public final class AddressSets {
      *     Range&lt;V4&gt; classA = AddressSets.parseCidr(Family.v4(), "10.0.0.0/8");
      *     Range&lt;V4&gt; classB = AddressSets.parseCidr(Family.v4(), "176.16.0.0/12");
      *     Range&lt;V4&gt; classC = AddressSets.parseCidr(Family.v4(), "192.168.0.0/16");
-     *     // <a href="https://datatracker.ietf.org/doc/html/rfc1918#section-3">RFC-1918 Address Allocation for Private Internets</a>
+     *     // <a target="_top" href="https://datatracker.ietf.org/doc/html/rfc1918#section-3">RFC-1918 Address Allocation for Private Internets</a>
      *     AddressSet&lt;V4&gt; privateRanges = AddressSets.of(classA, classB, classC);
      * </code></pre>
      *
@@ -52,16 +52,13 @@ public final class AddressSets {
      * </code></pre>
      * <pre><code>
      *     // EXAMPLE
-     *     List&lt;String&gt; addresses = Arrays.asList("192.168.0.1", "192.168.0.10", "192.168.0.11", "192.168.0.12");
      *     // 4 entries: "192.168.0.1/32", "192.168.0.10/32", "192.168.0.11/32", "192.168.0.12/32"
-     *     Set&lt;Block&lt;V4&gt;&gt; raw = addresses.stream()
+     *     List&lt;String&gt; addresses = Arrays.asList("192.168.0.1", "192.168.0.10", "192.168.0.11", "192.168.0.12");
+     *     // 2 entries: "192.168.0.1/32", "192.168.0.10-192.168.0.12"
+     *     AddressSet&lt;V4&gt; rationalized = addresses.stream()
      *                 .map(Family.v4()::parse)
      *                 .map(AddressSets::address)
-     *                 .collect(Collectors.toSet());
-     *     // 2 entries: "192.168.0.1/32", "192.168.0.10-192.168.0.12"
-     *     Set&lt;Range&lt;V4&gt;&gt; rationalized = AddressSets.from(raw)
-     *                 .ranges()
-     *                 .collect(Collectors.toSet());
+     *                 .collect(AddressSets.collector());
      * </code></pre>
      *
      * @param sets source sets
@@ -249,7 +246,7 @@ public final class AddressSets {
     }
 
     /**
-     * Parses a CIDR string form as defined by <a href="https://tools.ietf.org/html/rfc4632">RFC4632</a>.
+     * Parses a CIDR string form as defined by <a target="_top" href="https://tools.ietf.org/html/rfc4632">RFC4632</a>.
      * Example: {@code "127.0.0.1/32"}.
      *
      * @param cidrBlock the CIDR notation string
