@@ -31,7 +31,7 @@
         <maven-checkstyle-plugin>3.6.0</maven-checkstyle-plugin>
         <maven-jxr-plugin>3.6.0</maven-jxr-plugin>
         <maven-gpg-plugin>3.1.0</maven-gpg-plugin>
-        <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
+        <central-publishing-maven-plugin>0.8.0</central-publishing-maven-plugin>
     </properties>
 
     <dependencies>
@@ -295,7 +295,7 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>central</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
@@ -329,16 +329,14 @@
                         </configuration>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>0.8.0</version>
+          <extensions>true</extensions>
+          <configuration>
+            <publishingServerId>central</publishingServerId>
+          </configuration>
+        </plugin>
                 </plugins>
             </build>
         </profile>
