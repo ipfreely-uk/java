@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Provides utility methods for working with
- * <a href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a>
+ * <a target="_top" href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a>
  * blocks of IP addresses for a given {@link Family}.
  * Obtain instances from {@link Family#subnets()}.
  *

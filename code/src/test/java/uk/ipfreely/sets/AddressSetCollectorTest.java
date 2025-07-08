@@ -11,14 +11,14 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AddressCollectorTest {
+class AddressSetCollectorTest {
 
     @Test
     void combiner() {
         AddressSet<V4> home1 = AddressSets.parseCidr(Family.v4(), "127.0.0.1/32");
         AddressSet<V4> home2 = AddressSets.parseCidr(Family.v4(), "127.0.0.2/32");
 
-        AddressCollector<V4> collector = new AddressCollector<>();
+        AddressSetCollector<V4> collector = AddressSetCollector.impl();
         Collection<AddressSet<V4>> one = collector.supplier().get();
         one.add(home1);
         Collection<AddressSet<V4>> two = collector.supplier().get();

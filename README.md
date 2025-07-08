@@ -15,7 +15,7 @@ V4 networkAddress = Family.v4().parse("192.168.0.0");
 // 255.255.255.0
 V4 mask = Family.v4().subnets().masks().get(maskBits);
 // 0.0.0.255
-V4 maskComplement = mask.not()
+V4 maskComplement = mask.not();
 // 192.168.0.255
 V4 lastAddress = maskComplement.or(networkAddress);
 ```
@@ -27,6 +27,10 @@ V4 lastAddress = maskComplement.or(networkAddress);
 ## Releases
 
 Libraries are published to [Maven Central](https://central.sonatype.com/artifact/uk.ipfreely/addresses/overview)
+
+## Versions
+
+Version numbers are three digits - the Java version, major version, minor version.
 
 ## Building
 

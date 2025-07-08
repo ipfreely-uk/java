@@ -67,7 +67,7 @@ public final class V6 extends Addr<V6> {
     }
 
     /**
-     * See <a href="https://tools.ietf.org/html/rfc5952">A Recommendation for IPv6 Address Text Representation</a>.
+     * See <a target="_top" href="https://tools.ietf.org/html/rfc5952">A Recommendation for IPv6 Address Text Representation</a>.
      *
      * @return the address in RFC5952 format
      */
