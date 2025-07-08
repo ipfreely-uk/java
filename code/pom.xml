@@ -6,7 +6,7 @@
 
     <groupId>uk.ipfreely</groupId>
     <artifactId>addresses</artifactId>
-    <version>8.1.0-SNAPSHOT</version>
+    <version>8.1.0</version>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
