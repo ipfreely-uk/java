@@ -16,7 +16,7 @@ import static uk.ipfreely.sets.Validation.validate;
 
 /**
  * <p>
- *     {@link AddressSet} interface that forms contiguous range of one or more {@link Addr}es.
+ *     {@link AddressSet} interface that forms contiguous range of one or more {@link Addr}esses.
  * </p>
  * <p>See {@link AddressSet} for implementation contract.</p>
  * <p>Implementations are always contiguous lists.</p>
@@ -209,7 +209,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
 
     /**
      * Combines two ranges into a single range using the least and greatest values from each.
-     * The ranges do not have to be contiguous - this is not a union method.
+     * The ranges do NOT have to be contiguous - this is not a union method.
      *
      * @param other another range
      * @return new range

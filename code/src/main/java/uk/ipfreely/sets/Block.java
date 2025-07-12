@@ -71,7 +71,7 @@ public interface Block<A extends Addr<A>> extends Range<A> {
     }
 
     /**
-     * Number of {@link Addr}es in block.
+     * Number of {@link Addr}esses in block.
      *
      * @return block size
      */
