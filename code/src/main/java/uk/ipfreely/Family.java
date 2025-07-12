@@ -17,15 +17,12 @@ import static uk.ipfreely.Validation.validate;
  * </p>
  * <p>
  *     There are only two instances of this type.
- *     Inheritance outside the package is not supported.
  *     Instances have identity equality.
- *     Future implementations may become
- *     <a target="_top" href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
  * </p>
  *
  * @param <A> {@link V4} or {@link V6}
  */
-public abstract class Family<A extends Addr<A>> {
+public abstract sealed class Family<A extends Addr<A>> permits V4Family, V6Family {
     private final Subnets<A> subnets = new Subnets<>(this);
 
     Family() {}
