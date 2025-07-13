@@ -25,12 +25,6 @@ class V6BytesTest {
         assertEquals(lo, result.lo);
     }
 
-    private static final class R {
-        final long hi;
-        final long lo;
-        R(long hi, long lo) {
-            this.hi = hi;
-            this.lo = lo;
-        }
+    private record R(long hi, long lo) {
     }
 }

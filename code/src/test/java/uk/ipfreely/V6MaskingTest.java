@@ -49,13 +49,6 @@ class V6MaskingTest {
         return new A(high, low);
     }
 
-    private static final class A {
-        final long high;
-        final long low;
-
-        private A(long high, long low) {
-            this.high = high;
-            this.low = low;
-        }
+    private record A(long high, long low) {
     }
 }

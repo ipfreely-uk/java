@@ -126,7 +126,7 @@ public class RangeTest {
     {
       // extra address
       Range<V4> r = AddressSets.range(b.first().prev(), b.last());
-      List<Block<V4>> blocks = r.blocks().collect(Collectors.toList());
+      List<Block<V4>> blocks = r.blocks().toList();
       assertEquals(2, blocks.size());
     }
   }
