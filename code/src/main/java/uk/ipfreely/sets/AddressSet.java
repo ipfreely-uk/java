@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * <p>
- *     Discrete ordered set interface of zero to {@link Family#max()} {@link Addr}es.
+ *     Discrete ordered set interface of zero to {@link Family#max()} {@link Addr}esses.
  * </p>
  * <p>
  *     {@code AddressSet} is tightly coupled to {@link Range} and {@link Block}.
@@ -90,10 +90,10 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
      * </p>
      * <p>
      *     Adjacent or overlapping ranges MUST be combined into a single {@link Range}.
-     *     Elements MUST be produced from least {@link Addr} to greatest.
+     *     Elements MUST be produced from least {@link Addr}ess to greatest.
      * </p>
      * <p>
-     *     A {@link Stream} of {@link Addr} values can be obtained with {@code ranges().flatMap(Range::stream)}.
+     *     A {@link Stream} of {@link Addr}ess values can be obtained with {@code ranges().flatMap(Range::stream)}.
      *     A {@link Stream} of {@link Block}s can be obtained with {@code ranges().flatMap(Range::blocks)}.
      * </p>
      *
@@ -123,8 +123,8 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
     }
 
     /**
-     * Number of unique {@link Addr}s.
-     * The cardinality of the set.
+     * Cardinality of the set.
+     * Number of unique {@link Addr}res.
      *
      * @return count
      */

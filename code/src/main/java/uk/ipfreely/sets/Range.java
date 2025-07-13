@@ -16,7 +16,7 @@ import static uk.ipfreely.sets.Validation.validate;
 
 /**
  * <p>
- *     {@link AddressSet} interface that forms contiguous range of one or more {@link Addr}es.
+ *     {@link AddressSet} interface that forms contiguous range of one or more {@link Addr}esses.
  * </p>
  * <p>See {@link AddressSet} for implementation contract.</p>
  * <p>Implementations are always contiguous lists.</p>
@@ -197,19 +197,15 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      * @return true if adjacent
      */
     default boolean adjacent(Range<A> r) {
-        A f0 = first();
-        A l0 = last();
-        A f1 = r.first();
-        A l1 = r.last();
-        return contains(f1.next())
-                || contains(l1.prev())
-                || r.contains(f0.next())
-                || r.contains(l0.prev());
+        return RangeContains.next(this, r.first())
+                || RangeContains.prev(this, r.last())
+                || RangeContains.next(r, first())
+                || RangeContains.prev(r, last());
     }
 
     /**
      * Combines two ranges into a single range using the least and greatest values from each.
-     * The ranges do not have to be contiguous - this is not a union method.
+     * The ranges do NOT have to be contiguous - this is not a union method.
      *
      * @param other another range
      * @return new range
