@@ -197,15 +197,11 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      * @return true if adjacent
      */
     default boolean adjacent(Range<A> r) {
-        A f0 = first();
-        A l0 = last();
-        A f1 = r.first();
-        A l1 = r.last();
+        return RangeContains.next(this, r.first())
+                || RangeContains.prev(this, r.last())
+                || RangeContains.next(r, first())
+                || RangeContains.prev(r, last());
         // TODO: looks buggy
-        return contains(f1.next())
-                || contains(l1.prev())
-                || r.contains(f0.next())
-                || r.contains(l0.prev());
     }
 
     /**

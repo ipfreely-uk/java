@@ -203,4 +203,37 @@ public class RangeTest {
       assertSame(Family.v6(), b.family());
     }
   }
+
+
+  @Test
+  void intersects() {
+    {
+      Block<V4> min = AddressSets.address(Family.v4().min());
+      Block<V4> max = AddressSets.address(Family.v4().max());
+      assertFalse(min.intersects(max));
+      assertFalse(max.intersects(min));
+    }
+    {
+      Block<V4> min = AddressSets.address(Family.v4().min());
+      Block<V4> max = AddressSets.address(Family.v4().max());
+      assertTrue(max.intersects(max));
+      assertTrue(min.intersects(min));
+    }
+  }
+
+  @Test
+  void adjacent() {
+    {
+      Block<V4> min = AddressSets.address(Family.v4().min());
+      Block<V4> max = AddressSets.address(Family.v4().max());
+      assertFalse(min.adjacent(max));
+      assertFalse(max.adjacent(min));
+    }
+    {
+      Block<V4> zero = AddressSets.address(Family.v4().min());
+      Block<V4> one = AddressSets.address(Family.v4().min().next());
+      assertTrue(zero.adjacent(one));
+      assertTrue(one.adjacent(zero));
+    }
+  }
 }
