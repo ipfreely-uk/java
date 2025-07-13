@@ -4,6 +4,7 @@ package uk.ipfreely;
 
 import java.util.AbstractList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.RandomAccess;
 
 /**
@@ -15,10 +16,14 @@ final class V6MaskList extends AbstractList<V6> implements RandomAccess {
 
     private final V6[] masks = new V6[SIZE];
 
-    V6MaskList(V6Function<V6> source) {
+    private V6MaskList(V6Function<V6> source) {
         for (int i = 0; i < masks.length; i++) {
             masks[i] = resolve(source, i);
         }
+    }
+
+    static List<V6> from(V6Function<V6> source) {
+        return new V6MaskList(source);
     }
 
     @Override
@@ -34,8 +39,7 @@ final class V6MaskList extends AbstractList<V6> implements RandomAccess {
     @Override
     public int indexOf(Object o) {
         int idx = -1;
-        if (o instanceof V6) {
-            V6 a = (V6) o;
+        if (o instanceof V6 a) {
             idx = Arrays.binarySearch(masks, a, V6::compareTo);
         }
         return idx < 0 ? -1 : idx;

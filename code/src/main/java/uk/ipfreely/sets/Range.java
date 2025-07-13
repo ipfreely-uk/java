@@ -201,6 +201,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
         A l0 = last();
         A f1 = r.first();
         A l1 = r.last();
+        // TODO: looks buggy
         return contains(f1.next())
                 || contains(l1.prev())
                 || r.contains(f0.next())

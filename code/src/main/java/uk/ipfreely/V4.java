@@ -20,7 +20,7 @@ public final class V4 extends Addr<V4> {
     private static final V4[] SPECIALS = initSpecialInterned();
 
     private static V4[] initSpecialInterned() {
-        final List<V4> masks = new V4MaskList(V4::new);
+        final List<V4> masks = V4MaskList.from(V4::new);
         final Set<V4> set = new HashSet<>(masks);
         set.add(new V4(Integer.MAX_VALUE));
         // add inverse masks

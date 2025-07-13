@@ -45,54 +45,45 @@ final class V6Bytes {
 
     static long toLong(final int offset, final int len, final byte... bytes) {
         int off = offset;
-        switch (len) {
-            case 8:
-                return toLong(bytes[off++]) << BYTE7
-                        | toLong(bytes[off++]) << BYTE6
-                        | toLong(bytes[off++]) << BYTE5
-                        | toLong(bytes[off++]) << BYTE4
-                        | toLong(bytes[off++]) << BYTE3
-                        | toLong(bytes[off++]) << BYTE2
-                        | toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 7:
-                return toLong(bytes[off++]) << BYTE6
-                        | toLong(bytes[off++]) << BYTE5
-                        | toLong(bytes[off++]) << BYTE4
-                        | toLong(bytes[off++]) << BYTE3
-                        | toLong(bytes[off++]) << BYTE2
-                        | toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 6:
-                return toLong(bytes[off++]) << BYTE5
-                        | toLong(bytes[off++]) << BYTE4
-                        | toLong(bytes[off++]) << BYTE3
-                        | toLong(bytes[off++]) << BYTE2
-                        | toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 5:
-                return toLong(bytes[off++]) << BYTE4
-                        | toLong(bytes[off++]) << BYTE3
-                        | toLong(bytes[off++]) << BYTE2
-                        | toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 4:
-                return toLong(bytes[off++]) << BYTE3
-                        | toLong(bytes[off++]) << BYTE2
-                        | toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 3:
-                return toLong(bytes[off++]) << BYTE2
-                        | toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 2:
-                return toLong(bytes[off++]) << BYTE1
-                        | toLong(bytes[off]);
-            case 1:
-                return toLong(bytes[off]);
-            default:
-                throw new AssertionError("len==" + len);
-        }
+        return switch (len) {
+            case 8 -> toLong(bytes[off++]) << BYTE7
+                    | toLong(bytes[off++]) << BYTE6
+                    | toLong(bytes[off++]) << BYTE5
+                    | toLong(bytes[off++]) << BYTE4
+                    | toLong(bytes[off++]) << BYTE3
+                    | toLong(bytes[off++]) << BYTE2
+                    | toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 7 -> toLong(bytes[off++]) << BYTE6
+                    | toLong(bytes[off++]) << BYTE5
+                    | toLong(bytes[off++]) << BYTE4
+                    | toLong(bytes[off++]) << BYTE3
+                    | toLong(bytes[off++]) << BYTE2
+                    | toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 6 -> toLong(bytes[off++]) << BYTE5
+                    | toLong(bytes[off++]) << BYTE4
+                    | toLong(bytes[off++]) << BYTE3
+                    | toLong(bytes[off++]) << BYTE2
+                    | toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 5 -> toLong(bytes[off++]) << BYTE4
+                    | toLong(bytes[off++]) << BYTE3
+                    | toLong(bytes[off++]) << BYTE2
+                    | toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 4 -> toLong(bytes[off++]) << BYTE3
+                    | toLong(bytes[off++]) << BYTE2
+                    | toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 3 -> toLong(bytes[off++]) << BYTE2
+                    | toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 2 -> toLong(bytes[off++]) << BYTE1
+                    | toLong(bytes[off]);
+            case 1 -> toLong(bytes[off]);
+            default -> throw new AssertionError("len==" + len);
+        };
     }
 
     private static long toLong(final byte b) {

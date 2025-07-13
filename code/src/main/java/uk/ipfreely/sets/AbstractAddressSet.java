@@ -13,11 +13,10 @@ abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof AddressSet)) {
-            return false;
-        }
-        AddressSet<?> other = (AddressSet<?>) obj;
+        return (obj instanceof AddressSet<?> other) && eq(other);
+    }
 
+    private boolean eq(AddressSet<?> other) {
         if (!other.size().equals(size())) {
             return false;
         }

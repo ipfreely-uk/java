@@ -20,7 +20,7 @@ public final class V6 extends Addr<V6> {
     private static final V6[] SPECIALS = initInterned();
 
     private static V6[] initInterned() {
-        final List<V6> masks = new V6MaskList(V6::new);
+        final List<V6> masks = V6MaskList.from(V6::new);
         final Set<V6> set = new HashSet<>(masks);
         for (V6 mask : masks) {
             set.add(new V6(~mask.high, ~mask.low));
