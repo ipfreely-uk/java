@@ -9,7 +9,7 @@ import static uk.ipfreely.Validation.validate;
 
 /**
  * <p>
- *  {@link Addr} factory and utility type for
+ *  {@link Addr}ess factory and utility type for
  *  <a target="_top" href="https://www.rfc-editor.org/rfc/rfc791">IpV4</a>
  *  and
  *  <a target="_top" href="https://www.rfc-editor.org/rfc/rfc2460">IpV6</a>
@@ -96,7 +96,7 @@ public abstract sealed class Family<A extends Addr<A>> permits V4Family, V6Famil
     public abstract A parse(byte... address);
 
     /**
-     * Enables the conversion from {@link BigInteger} to the {@link Addr} type.
+     * Enables the conversion from {@link BigInteger} to the {@link Addr}ess type.
      * The largest acceptable value is {@code max().toBigInteger()}.
      *
      * @param address must be between zero and the maximum value inclusive

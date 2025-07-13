@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.asList;
 
 /**
- * Immutable IPv4 {@link Addr} and 32-bit unsigned integer value.
+ * Immutable IPv4 {@link Addr}ess and 32-bit unsigned integer value.
  * Use {@link Family#v4()} to create values.
  */
 public final class V4 extends Addr<V4> {

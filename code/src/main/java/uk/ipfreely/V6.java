@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 import static java.util.Arrays.asList;
 
 /**
- * Immutable IPv6 {@link Addr} and 128-bit unsigned integer value.
+ * Immutable IPv6 {@link Addr}ess and 128-bit unsigned integer value.
  * Use {@link Family#v6()} to create values.
  */
 public final class V6 extends Addr<V6> {
