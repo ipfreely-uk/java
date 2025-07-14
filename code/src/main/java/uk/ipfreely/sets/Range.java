@@ -201,7 +201,6 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
                 || RangeContains.prev(this, r.last())
                 || RangeContains.next(r, first())
                 || RangeContains.prev(r, last());
-        // TODO: looks buggy
     }
 
     /**
