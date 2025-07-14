@@ -165,7 +165,7 @@ public final class V6 extends Addr<V6> {
         if (isTwo(multiplicand)) {
             return this.add(this);
         }
-        // TODO: use Math.unsignedMultiplyHigh when Java 8 deprecated
+        // TODO: use Math.unsignedMultiplyHigh when Java 18 is base
         return V6Arithmetic.multiply(V6::fromLongs, high, low, multiplicand.high, multiplicand.low);
     }
 
