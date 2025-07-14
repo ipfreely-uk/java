@@ -58,6 +58,7 @@ final class RangeSpliterator<A extends Addr<A>> implements Spliterator<A> {
 
     @Override
     public int characteristics() {
+        // TODO: look at SIZED and SUBSIZED
         return IMMUTABLE | DISTINCT | SORTED | ORDERED | NONNULL;
     }
 
