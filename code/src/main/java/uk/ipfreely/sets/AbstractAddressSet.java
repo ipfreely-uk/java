@@ -4,8 +4,6 @@ package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
 
-import java.util.Iterator;
-
 abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
 
     @Override
@@ -21,8 +19,8 @@ abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
             return false;
         }
 
-        Iterator<?> me = ranges().iterator();
-        Iterator<?> you = other.ranges().iterator();
+        var me = ranges().iterator();
+        var you = other.ranges().iterator();
         while(me.hasNext() && you.hasNext()) {
             Object mine = me.next();
             Object yours = you.next();
@@ -35,6 +33,7 @@ abstract class AbstractAddressSet<A extends Addr<A>> implements AddressSet<A> {
 
     @Override
     public int hashCode() {
-        return ranges().mapToInt(Object::hashCode).reduce(0, (n, r) -> n * 31 + r);
+        return ranges().mapToInt(Object::hashCode)
+                .reduce(0, (n, r) -> n * 31 + r);
     }
 }

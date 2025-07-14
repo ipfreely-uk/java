@@ -101,7 +101,7 @@ public interface Block<A extends Addr<A>> extends Range<A> {
         }
 
         A first = first();
-        Family<A> family = first.family();
+        var family = first.family();
         validate(size >= maskSize(), "Not enough mask bits", size, IllegalArgumentException::new);
         validate(size <= family.width(), "Too many mask bits", size, IllegalArgumentException::new);
 

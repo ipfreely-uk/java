@@ -64,7 +64,7 @@ final class RangeSpliterator<A extends Addr<A>> implements Spliterator<A> {
 
     @Override
     public Comparator<? super A> getComparator() {
-        // null because IP implements Comparable
+        // null because IP implements Comparable & everything sorted in natural order
         return null;
     }
 }

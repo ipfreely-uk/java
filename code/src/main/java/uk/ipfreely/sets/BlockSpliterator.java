@@ -3,7 +3,6 @@
 package uk.ipfreely.sets;
 
 import uk.ipfreely.Addr;
-import uk.ipfreely.Family;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -19,7 +18,7 @@ final class BlockSpliterator<A extends Addr<A>> implements Spliterator<Block<A>>
     private final A end;
 
     BlockSpliterator(A start, A end) {
-        Family<A> family = start.family();
+        var family = start.family();
         boolean internet = start.equals(family.min()) && end.equals(family.max());
         validate(!internet, "Cannot handle entire internet", family, IllegalArgumentException::new);
         this.start = start;
@@ -39,7 +38,7 @@ final class BlockSpliterator<A extends Addr<A>> implements Spliterator<Block<A>>
         double x = l / LOG_2;
         int maxDiff = (int) (width - Math.floor(x));
         int maskSize = Math.max(maxSize, maxDiff);
-        Block<A> block = AddressSets.block(start, maskSize);
+        var block = AddressSets.block(start, maskSize);
         A last = block.last();
         start = last.equals(end) ? null : last.next();
         action.accept(block);
