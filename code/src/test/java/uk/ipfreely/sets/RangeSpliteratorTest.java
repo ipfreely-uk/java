@@ -4,6 +4,7 @@ package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
 import uk.ipfreely.Addr;
+import uk.ipfreely.V6;
 import uk.ipfreely.testing.SpliteratorTester;
 
 import java.util.ArrayList;
@@ -77,5 +78,48 @@ public class RangeSpliteratorTest {
   @Test
   void spliterator() {
     SpliteratorTester.test(ranges[0].spliterator());
+  }
+
+  @Test
+  void estimateSize() {
+    {
+      var splitter = new RangeSpliterator<>(v6().min(), v6().min());
+      long actual = splitter.estimateSize();
+      assertEquals(1, actual);
+    }
+    {
+      var splitter = new RangeSpliterator<>(v6().min(), v6().max());
+      long actual = splitter.estimateSize();
+      assertEquals(Long.MAX_VALUE, actual);
+    }
+    {
+      V6 value = v6().parse(0, Long.MAX_VALUE);
+      var splitter = new RangeSpliterator<>(v6().min(), value);
+      long actual = splitter.estimateSize();
+      assertEquals(Long.MAX_VALUE, actual);
+    }
+    {
+      V6 value = v6().parse(0, Long.MAX_VALUE - 1);
+      var splitter = new RangeSpliterator<>(v6().min(), value);
+      long actual = splitter.estimateSize();
+      assertEquals(Long.MAX_VALUE, actual);
+    }
+    {
+      V6 value = v6().parse(0, Long.MAX_VALUE - 2);
+      var splitter = new RangeSpliterator<>(v6().min(), value);
+      long actual = splitter.estimateSize();
+      assertEquals(Long.MAX_VALUE - 1, actual);
+    }
+    {
+      V6 value = v6().parse(0, Long.MAX_VALUE - 2);
+      var splitter = new RangeSpliterator<>(v6().min(), value);
+      long actual = splitter.estimateSize();
+      assertEquals(Long.MAX_VALUE - 1, actual);
+    }
+    {
+      var splitter = new RangeSpliterator<>(v4().min(), v4().max());
+      long actual = splitter.estimateSize();
+      assertEquals(0xFFFFFFFFL + 1, actual);
+    }
   }
 }

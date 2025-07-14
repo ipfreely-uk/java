@@ -46,14 +46,13 @@ final class RangeSpliterator<A extends Addr<A>> implements Spliterator<A> {
     @Override
     public long estimateSize() {
         A diff = last.subtract(current);
-        if (diff.family().max().equals(diff)) {
+        long high = diff.highBits();
+        if (high != 0) {
             return Long.MAX_VALUE;
         }
-        diff = diff.next();
-        long high = diff.highBits();
         long low = diff.lowBits();
-        return high == 0 && low >= 0
-                ? low
+        return low >= 0 && low < Long.MAX_VALUE
+                ? low + 1
                 : Long.MAX_VALUE;
     }
 
