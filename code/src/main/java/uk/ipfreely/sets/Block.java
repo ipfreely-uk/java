@@ -95,6 +95,11 @@ public interface Block<A extends Addr<A>> extends Range<A> {
      * @return stream of subnet blocks
      */
     default Stream<Block<A>> subnets(int size) {
+        int ms = maskSize();
+        if (ms == size) {
+            return Stream.of(this);
+        }
+
         A first = first();
         Family<A> family = first.family();
         validate(size >= maskSize(), "Not enough mask bits", size, IllegalArgumentException::new);
