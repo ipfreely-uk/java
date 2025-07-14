@@ -81,8 +81,8 @@ public class V6Test extends IpTests<V6> {
     assertEquals("ffff:0:0:ffff:ffff::", v6().parse("ffff:0:0:ffff:ffff:0:0:0").toString());
     assertEquals("::", v6().parse("0:0:0:0:0:0:0:0").toString());
 
-    // TODO: 4in6
     assertEquals("::d01:4403", v6().parse("::13.1.68.3").toString());
+    assertEquals("::ffff:13.1.68.3", v6().parse("::ffff:13.1.68.3").toString());
 
     for (String bad : new String[]{"foo.bar", "f:f:f", " ::", ":: ", "fffff::"}) {
       expect(bad, ParseException.class, () -> v6().parse(bad));
