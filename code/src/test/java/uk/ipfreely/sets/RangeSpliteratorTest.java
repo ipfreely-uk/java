@@ -122,4 +122,36 @@ public class RangeSpliteratorTest {
       assertEquals(0xFFFFFFFFL + 1, actual);
     }
   }
+
+  @Test
+  void characteristics() {
+    {
+      var splitter = new RangeSpliterator<>(v4().min(), v4().max());
+      long sized = splitter.characteristics() & Spliterator.SIZED;
+      long subsized = splitter.characteristics() & Spliterator.SUBSIZED;
+      assertEquals(Spliterator.SIZED, sized);
+      assertEquals(Spliterator.SUBSIZED, subsized);
+    }
+    {
+      var splitter = new RangeSpliterator<>(v6().min(), v6().max());
+      long sized = splitter.characteristics() & Spliterator.SIZED;
+      long subsized = splitter.characteristics() & Spliterator.SUBSIZED;
+      assertEquals(0, sized);
+      assertEquals(0, subsized);
+    }
+  }
+
+  @Test
+  void getExactSizeIfKnown() {
+    {
+      var splitter = new RangeSpliterator<>(v4().min(), v4().max());
+      long actual = splitter.getExactSizeIfKnown();
+      assertEquals(0xFFFFFFFFL + 1, actual);
+    }
+    {
+      var splitter = new RangeSpliterator<>(v6().min(), v6().max());
+      long actual = splitter.getExactSizeIfKnown();
+      assertEquals(-1, actual);
+    }
+  }
 }
