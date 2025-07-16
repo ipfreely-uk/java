@@ -59,7 +59,7 @@ final class RangeSpliterator<A extends Addr<A>> implements Spliterator<A> {
     public int characteristics() {
         int chrctrstcs = IMMUTABLE | DISTINCT | SORTED | ORDERED | NONNULL;
         if (estimateSize() < Long.MAX_VALUE) {
-            // when estimate is less than MAX_VALUE can report exact size via
+            // when estimate is less than MAX_VALUE can report exact size
             chrctrstcs |= SIZED | SUBSIZED;
         }
         return chrctrstcs;
