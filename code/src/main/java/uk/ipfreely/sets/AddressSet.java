@@ -6,6 +6,7 @@ import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
 
 import java.math.BigInteger;
+import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -100,6 +101,11 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
      * @return constituent ranges
      */
     Stream<Range<A>> ranges();
+
+    @Override
+    default Spliterator<A> spliterator() {
+        return AddressSetSpliterator.consume(ranges());
+    }
 
     /**
      * <p>

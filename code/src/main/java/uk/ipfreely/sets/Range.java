@@ -129,6 +129,8 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      *     {@link Spliterator#ORDERED};
      *     {@link Spliterator#SORTED};
      *     {@link Spliterator#NONNULL}.
+     *     If smaller than {@link Long#MAX_VALUE}
+     *     also {@link Spliterator#SIZED} and {@link Spliterator#SUBSIZED}.
      * </p>
      * <p>
      *     {@link Spliterator#trySplit()} is implemented.
