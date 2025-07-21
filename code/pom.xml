@@ -26,7 +26,7 @@
         <spotbugs.version>4.8.6</spotbugs.version>
         <maven-surefire-plugin>3.5.3</maven-surefire-plugin>
         <maven-pmd-plugin>3.27.0</maven-pmd-plugin>
-        <maven-enforcer-plugin>3.6.0</maven-enforcer-plugin>
+        <maven-enforcer-plugin>3.6.1</maven-enforcer-plugin>
         <requireMavenVersion>3.3.9</requireMavenVersion>
         <maven-checkstyle-plugin>3.6.0</maven-checkstyle-plugin>
         <maven-jxr-plugin>3.6.0</maven-jxr-plugin>
