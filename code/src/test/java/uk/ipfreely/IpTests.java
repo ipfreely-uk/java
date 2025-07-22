@@ -168,16 +168,4 @@ public abstract class IpTests<A extends Addr<A>> {
       }
     }
   }
-
-  protected void testCharSequence(Function<String, ? extends CharSequence> parser, String... ips) {
-    for (String ip : ips) {
-      CharSequence sq = parser.apply(ip);
-      assertEquals(ip.length(), sq.length(), ip);
-      for (int i = 0; i < ip.length(); i++) {
-        char expected = ip.charAt(i);
-        char actual = sq.charAt(i);
-        assertEquals(String.valueOf(expected), String.valueOf(actual), ip);
-      }
-    }
-  }
 }
