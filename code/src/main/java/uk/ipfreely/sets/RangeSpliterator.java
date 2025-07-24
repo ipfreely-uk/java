@@ -46,25 +46,36 @@ final class RangeSpliterator<A extends Addr<A>> implements Spliterator<A> {
     @Override
     public long estimateSize() {
         A diff = last.subtract(current);
-        if (diff.family().max().equals(diff)) {
-            return Long.MAX_VALUE;
-        }
-        diff = diff.next();
         long high = diff.highBits();
         long low = diff.lowBits();
-        return high == 0 && low >= 0
-                ? low
+        return (high == 0
+                && low >= 0
+                && low < Long.MAX_VALUE)
+                ? low + 1
                 : Long.MAX_VALUE;
     }
 
     @Override
     public int characteristics() {
-        return IMMUTABLE | DISTINCT | ORDERED | SORTED | NONNULL;
+        int chrctrstcs = IMMUTABLE | DISTINCT | SORTED | ORDERED | NONNULL;
+        if (estimateSize() < Long.MAX_VALUE) {
+            // when estimate is less than MAX_VALUE can report exact size
+            chrctrstcs |= SIZED | SUBSIZED;
+        }
+        return chrctrstcs;
+    }
+
+    @Override
+    public long getExactSizeIfKnown() {
+        long estimate = estimateSize();
+        return estimate < Long.MAX_VALUE
+                ? estimate
+                : -1;
     }
 
     @Override
     public Comparator<? super A> getComparator() {
-        // null because IP implements Comparable
+        // null because A implements Comparable & everything SORTED in natural order
         return null;
     }
 }

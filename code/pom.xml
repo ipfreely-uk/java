@@ -6,27 +6,27 @@
 
     <groupId>uk.ipfreely</groupId>
     <artifactId>addresses</artifactId>
-    <version>8.1.1</version>
+    <version>17.1.0</version>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
     <url>https://ipfreely.uk</url>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.13.3</junit.version>
+        <junit.version>5.13.4</junit.version>
 
         <maven-jar-plugin>3.4.2</maven-jar-plugin>
         <maven-source-plugin>3.3.1</maven-source-plugin>
         <maven-javadoc-plugin>3.11.2</maven-javadoc-plugin>
         <jacoco-maven-plugin>0.8.13</jacoco-maven-plugin>
         <spotbugs-maven-plugin>4.8.6.6</spotbugs-maven-plugin>
-        <spotbugs.version>4.8.6</spotbugs.version>
+        <spotbugs.version>4.9.3</spotbugs.version>
         <maven-surefire-plugin>3.5.3</maven-surefire-plugin>
         <maven-pmd-plugin>3.27.0</maven-pmd-plugin>
-        <maven-enforcer-plugin>3.6.0</maven-enforcer-plugin>
+        <maven-enforcer-plugin>3.6.1</maven-enforcer-plugin>
         <requireMavenVersion>3.3.9</requireMavenVersion>
         <maven-checkstyle-plugin>3.6.0</maven-checkstyle-plugin>
         <maven-jxr-plugin>3.6.0</maven-jxr-plugin>
@@ -76,13 +76,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${maven-jar-plugin}</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Automatic-Module-Name>uk.ipfreely</Automatic-Module-Name>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
             </plugin>
             <!-- https://central.sonatype.org/publish/publish-maven/ -->
             <plugin>
@@ -209,6 +202,7 @@
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
                     <failOnError>true</failOnError>
+                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
                 <executions>
                     <execution>

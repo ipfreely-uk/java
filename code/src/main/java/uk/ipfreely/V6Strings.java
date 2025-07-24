@@ -12,7 +12,7 @@ final class V6Strings {
 
     static String toIpv6String(final long high, final long low) {
         if (isV4Mapped(high, low)) {
-            String prefix = "::ffff:";
+            var prefix = "::ffff:";
             String v4 = V4Strings.to((int) low);
             char[] buf = new char[prefix.length() + v4.length()];
             Chars.append(buf, 0, prefix);

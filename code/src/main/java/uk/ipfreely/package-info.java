@@ -9,8 +9,5 @@
  * <p>
  *     Use {@link uk.ipfreely.Net} to convert to/from standard library types.
  * </p>
- * <p>
- *     The <em>Java Platform Module System</em> name of this library is <code>uk.ipfreely</code>.
- * </p>
  */
 package uk.ipfreely;

@@ -11,7 +11,7 @@ final class Validation {
 
     static void validate(final boolean predicate, final String explanation, final byte[] actual, final Function<String, RuntimeException> ex) {
         if (!predicate) {
-            StringJoiner joiner = new StringJoiner(" ");
+            var joiner = new StringJoiner(" ");
             for (byte b : actual) {
                 joiner.add("0x" + Integer.toHexString(b & Consts.BYTE_MASK));
             }

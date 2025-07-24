@@ -21,8 +21,8 @@ import static uk.ipfreely.Family.v6;
 
 public class RangeTest {
 
-  private V6 first = v6().parse("fe80::");
-  private V6 last = v6().parse("fe80::a");
+  private final V6 first = v6().parse("fe80::");
+  private final V6 last = v6().parse("fe80::a");
 
   @Test
   public void testWrongOrder() {
@@ -126,7 +126,7 @@ public class RangeTest {
     {
       // extra address
       Range<V4> r = AddressSets.range(b.first().prev(), b.last());
-      List<Block<V4>> blocks = r.blocks().collect(Collectors.toList());
+      List<Block<V4>> blocks = r.blocks().toList();
       assertEquals(2, blocks.size());
     }
   }

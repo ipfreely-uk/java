@@ -15,7 +15,7 @@ import static uk.ipfreely.sets.Validation.validate;
  * <p>
  *     {@link Range} interface that forms
  *     <a target="_top" href="https://tools.ietf.org/html/rfc4632">RFC-4632 Classless Inter-domain Routing</a> block of
- *     IP {@link Addr}es.
+ *     IP {@link Addr}esses.
  * </p>
  * <p>Example: {@code "192.168.0.0/24"}.</p>
  * <ul>
@@ -95,8 +95,13 @@ public interface Block<A extends Addr<A>> extends Range<A> {
      * @return stream of subnet blocks
      */
     default Stream<Block<A>> subnets(int size) {
+        int ms = maskSize();
+        if (ms == size) {
+            return Stream.of(this);
+        }
+
         A first = first();
-        Family<A> family = first.family();
+        var family = first.family();
         validate(size >= maskSize(), "Not enough mask bits", size, IllegalArgumentException::new);
         validate(size <= family.width(), "Too many mask bits", size, IllegalArgumentException::new);
 

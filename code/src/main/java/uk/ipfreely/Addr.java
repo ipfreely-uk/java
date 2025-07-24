@@ -11,9 +11,6 @@ import java.net.InetAddress;
  *     Use {@link Family} to create instances.
  * </p>
  * <p>
- *     Inheritance outside the package is not supported.
- *     Future implementations may become
- *     <a target="_top" href="https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html">sealed</a>.
  *     Future implementations may become
  *     <a target="_top" href="https://openjdk.org/projects/valhalla/">value objects</a>.
  * </p>
@@ -77,7 +74,7 @@ import java.net.InetAddress;
  *
  * @param <A> the address type
  */
-public abstract class Addr<A extends Addr<A>> implements Comparable<A> {
+public abstract sealed class Addr<A extends Addr<A>> implements Comparable<A> permits V4, V6 {
     Addr() {}
 
     /**

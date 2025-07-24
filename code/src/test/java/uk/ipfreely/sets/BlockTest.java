@@ -9,7 +9,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
@@ -83,7 +82,7 @@ public class BlockTest {
     Block<V4> internet = AddressSets.block(v4().min(), v4().max());
     Block<V4> first = AddressSets.block(v4().parse("0.0.0.0"), v4().parse("0.255.255.255"));
     Block<V4> last = AddressSets.block(v4().parse("255.0.0.0"), v4().parse("255.255.255.255"));
-    List<Block<V4>> actual = internet.subnets(8).collect(Collectors.toList());
+    List<Block<V4>> actual = internet.subnets(8).toList();
     assertEquals(256, actual.size());
     assertEquals(first, actual.get(0));
     assertEquals(last, actual.get(actual.size() - 1));

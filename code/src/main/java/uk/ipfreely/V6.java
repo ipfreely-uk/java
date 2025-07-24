@@ -4,14 +4,12 @@ package uk.ipfreely;
 
 import java.math.BigInteger;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
 
 /**
- * Immutable IPv6 {@link Addr} and 128-bit unsigned integer value.
+ * Immutable IPv6 {@link Addr}ess and 128-bit unsigned integer value.
  * Use {@link Family#v6()} to create values.
  */
 public final class V6 extends Addr<V6> {
@@ -20,8 +18,8 @@ public final class V6 extends Addr<V6> {
     private static final V6[] SPECIALS = initInterned();
 
     private static V6[] initInterned() {
-        final List<V6> masks = new V6MaskList(V6::new);
-        final Set<V6> set = new HashSet<>(masks);
+        var masks = V6MaskList.from(V6::new);
+        var set = new HashSet<>(masks);
         for (V6 mask : masks) {
             set.add(new V6(~mask.high, ~mask.low));
         }
@@ -165,7 +163,7 @@ public final class V6 extends Addr<V6> {
         if (isTwo(multiplicand)) {
             return this.add(this);
         }
-        // TODO: use Math.unsignedMultiplyHigh when Java 8 deprecated
+        // TODO: use Math.unsignedMultiplyHigh when Java 18 is base
         return V6Arithmetic.multiply(V6::fromLongs, high, low, multiplicand.high, multiplicand.low);
     }
 

@@ -22,12 +22,9 @@ abstract class AbstractRange<A extends Addr<A>> implements Range<A> {
         if (other == this) {
             return true;
         }
-        if (other instanceof Range) {
-            Range<?> r = (Range<?>) other;
-            return r.first().equals(first())
-                    && r.last().equals(last());
-        }
-        return false;
+        return (other instanceof Range<?> r)
+                && r.first().equals(first())
+                && r.last().equals(last());
     }
 
     /**

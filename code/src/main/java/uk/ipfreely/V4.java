@@ -4,14 +4,12 @@ package uk.ipfreely;
 
 import java.math.BigInteger;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Arrays.asList;
 
 /**
- * Immutable IPv4 {@link Addr} and 32-bit unsigned integer value.
+ * Immutable IPv4 {@link Addr}ess and 32-bit unsigned integer value.
  * Use {@link Family#v4()} to create values.
  */
 public final class V4 extends Addr<V4> {
@@ -20,8 +18,8 @@ public final class V4 extends Addr<V4> {
     private static final V4[] SPECIALS = initSpecialInterned();
 
     private static V4[] initSpecialInterned() {
-        final List<V4> masks = new V4MaskList(V4::new);
-        final Set<V4> set = new HashSet<>(masks);
+        var masks = V4MaskList.from(V4::new);
+        var set = new HashSet<>(masks);
         set.add(new V4(Integer.MAX_VALUE));
         // add inverse masks
         for (V4 mask : masks) {
@@ -41,8 +39,6 @@ public final class V4 extends Addr<V4> {
     }
 
     private static int fromInts(final int... arr) {
-        // assert arr.length == Integer.SIZE / Byte.SIZE;
-
         return (arr[0] << 24)
                 | (arr[1] << 16)
                 | (arr[2] << 8)

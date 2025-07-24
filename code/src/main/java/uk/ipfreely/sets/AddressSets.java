@@ -48,7 +48,7 @@ public final class AddressSets {
      * <p>Version of {@link #of(AddressSet[])} intended for standard collections.</p>
      * <pre><code>
      *     // EXAMPLE
-     *     AddressSet&lt;V4&gt; empty = AddressSets.from(Collections.emptySet());
+     *     AddressSet&lt;V4&gt; empty = AddressSets.from(Set.of());
      * </code></pre>
      * <pre><code>
      *     // EXAMPLE
@@ -68,11 +68,11 @@ public final class AddressSets {
      */
     @SuppressWarnings("unchecked")
     public static <A extends Addr<A>, S extends AddressSet<A>> AddressSet<A> from(Iterable<S> sets) {
-        SortedSet<Range<A>> results = new TreeSet<>(AddressSets::compare);
+        var sorted = new TreeSet<Range<A>>(AddressSets::compare);
         for (S set : sets) {
-            set.ranges().forEach(r -> rationalize(results, r));
+            set.ranges().forEach(r -> rationalize(sorted, r));
         }
-        final Range<A>[] data = results.toArray(new Range[0]);
+        final Range<A>[] data = sorted.toArray(new Range[0]);
         if (data.length == 0) {
             return (AddressSet<A>) Empty.IMPL;
         }
@@ -153,7 +153,7 @@ public final class AddressSets {
      * @return the block instance
      */
     public static <A extends Addr<A>> Block<A> block(final A first, final int maskSize) {
-        final Family<A> family = first.family();
+        var family = first.family();
         int width = family.width();
         if (maskSize == width) {
             return address(first);
@@ -163,7 +163,7 @@ public final class AddressSets {
         validate(maskSize <= width, "Mask must not exceed address width 32 (IPv4) or 128 (IPv6)", maskSize, IllegalArgumentException::new);
         validate(first.trailingZeros() >= width - maskSize, "Mask must cover network address bits", maskSize, IllegalArgumentException::new);
 
-        final List<A> masks = family.subnets().masks();
+        var masks = family.subnets().masks();
         final A complement = masks.get(maskSize).not();
         final A last = first.or(complement);
         return block(first, last);
@@ -205,7 +205,7 @@ public final class AddressSets {
             }
         }
 
-        Block<A> block = new AddressBlock();
+        var block = new AddressBlock();
         validate(first.family().subnets().maskBits(first, last) >= 0, "Not an IP block", block, IllegalArgumentException::new);
         return block;
     }
@@ -363,7 +363,7 @@ public final class AddressSets {
         @Override
         public String toString() {
             final int LIMIT = 5;
-            StringJoiner buf = new StringJoiner(", ", "{", "}");
+            var buf = new StringJoiner(", ", "{", "}");
             for (int i = 0; i < Math.min(ranges.length, LIMIT); i++) {
                 buf.add(ranges[i].toString());
             }

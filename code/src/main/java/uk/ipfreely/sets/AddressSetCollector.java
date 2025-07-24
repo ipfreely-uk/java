@@ -4,7 +4,6 @@ import uk.ipfreely.Addr;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -63,6 +62,6 @@ final class AddressSetCollector<A extends Addr<A>> implements Collector<AddressS
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Collections.emptySet();
+        return Set.of();
     }
 }
