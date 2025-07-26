@@ -39,7 +39,7 @@ jobs:
           cache: maven
           cache-dependency-path: 'code/pom.xml'
       - name: Build with Maven
-        run: mvn -B javadoc:javadoc --file code/pom.xml
+        run: mvn -B package javadoc:javadoc --file code/pom.xml
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
