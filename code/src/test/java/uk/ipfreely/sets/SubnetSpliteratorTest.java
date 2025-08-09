@@ -10,6 +10,7 @@ import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;
 
@@ -36,6 +37,7 @@ class SubnetSpliteratorTest {
         assertEquals(8L, count.get());
         assertEquals(0L, s.estimateSize());
         assertEquals(0L, s.getExactSizeIfKnown());
+        assertNull(s.trySplit());
     }
 
     @Test
