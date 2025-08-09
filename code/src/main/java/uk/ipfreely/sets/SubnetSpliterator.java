@@ -16,6 +16,7 @@ final class SubnetSpliterator<A extends Addr<A>> implements Spliterator<Block<A>
     SubnetSpliterator(A first, A last, A increment) {
         this.current = first;
         this.last = last;
+        // how much to add to get end of current Block
         this.increment = increment;
     }
 
@@ -39,8 +40,17 @@ final class SubnetSpliterator<A extends Addr<A>> implements Spliterator<Block<A>
 
     @Override
     public long estimateSize() {
-        // TODO
-        return Long.MAX_VALUE;
+        if (current == null) {
+            return 0;
+        }
+        A blockSize = increment.next();
+        A remaining = last.subtract(current);
+        A size = remaining.divide(blockSize);
+        long high = size.highBits();
+        long low = size.lowBits();
+        return (high == 0) && (low >= 0)
+                ? low
+                : Long.MAX_VALUE;
     }
 
     @Override
