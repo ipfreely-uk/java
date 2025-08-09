@@ -13,11 +13,12 @@ final class SubnetSpliterator<A extends Addr<A>> implements Spliterator<Block<A>
     private final A last;
     private final A increment;
 
-    SubnetSpliterator(A first, A last, A increment) {
+    SubnetSpliterator(A first, A last, int bitSize) {
         this.current = first;
         this.last = last;
+        var family = first.family();
         // how much to add to get end of current Block
-        this.increment = increment;
+        this.increment = family.subnets().masks().get(bitSize).not();
     }
 
     @Override
@@ -48,13 +49,25 @@ final class SubnetSpliterator<A extends Addr<A>> implements Spliterator<Block<A>
         A size = remaining.divide(blockSize);
         long high = size.highBits();
         long low = size.lowBits();
-        return (high == 0) && (low >= 0)
-                ? low
+        return (high == 0) && (low >= 0) && (low < Long.MAX_VALUE)
+                ? low + 1
                 : Long.MAX_VALUE;
     }
 
     @Override
+    public long getExactSizeIfKnown() {
+        long estimate = estimateSize();
+        return (estimate == Long.MAX_VALUE)
+                ? -1
+                : estimate;
+    }
+
+    @Override
     public int characteristics() {
-        return IMMUTABLE | DISTINCT | ORDERED | NONNULL;
+        int ch = IMMUTABLE | DISTINCT | ORDERED | NONNULL;
+        if (estimateSize() != Long.MAX_VALUE) {
+            ch |= SIZED | SUBSIZED;
+        }
+        return ch;
     }
 }

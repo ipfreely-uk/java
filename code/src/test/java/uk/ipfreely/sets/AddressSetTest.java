@@ -2,7 +2,7 @@ package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static uk.ipfreely.Family.v4;
 
 class AddressSetTest {

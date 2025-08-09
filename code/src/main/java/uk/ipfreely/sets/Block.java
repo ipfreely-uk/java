@@ -105,7 +105,6 @@ public interface Block<A extends Addr<A>> extends Range<A> {
         validate(size >= maskSize(), "Not enough mask bits", size, IllegalArgumentException::new);
         validate(size <= family.width(), "Too many mask bits", size, IllegalArgumentException::new);
 
-        A s = family.subnets().masks().get(size).not();
-        return StreamSupport.stream(new SubnetSpliterator<>(first, last(), s), false);
+        return StreamSupport.stream(new SubnetSpliterator<>(first, last(), size), false);
     }
 }
