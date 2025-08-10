@@ -156,6 +156,7 @@ class AddressSetsTest {
         {
             AddressSet<V4> expected = AddressSets.range(Family.v4().min(), Family.v4().parse(1024 * 1024));
             AddressSet<V4> actual = expected.addresses()
+                    .parallel()
                     .map(AddressSets::address)
                     .collect(AddressSets.collector());
             assertEquals(expected, actual);

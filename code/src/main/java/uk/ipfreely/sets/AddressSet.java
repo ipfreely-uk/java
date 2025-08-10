@@ -102,6 +102,21 @@ public interface AddressSet<A extends Addr<A>> extends Iterable<A> {
      */
     Stream<Range<A>> ranges();
 
+    /**
+     * <p>
+     *     Default {@link Spliterator#characteristics()}:
+     *     {@link Spliterator#IMMUTABLE};
+     *     {@link Spliterator#ORDERED};
+     *     {@link Spliterator#SORTED};
+     *     {@link Spliterator#NONNULL};
+     *     {@link Spliterator#DISTINCT}.
+     *     If smaller than {@link Long#MAX_VALUE}
+     *     also {@link Spliterator#SIZED} and {@link Spliterator#SUBSIZED}.
+     * </p>
+     * <p>{@link Spliterator#trySplit()} is implemented.</p>
+     *
+     * @return all addresses in set
+     */
     @Override
     default Spliterator<A> spliterator() {
         return AddressSetSpliterator.consume(ranges());

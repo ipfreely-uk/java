@@ -136,7 +136,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      *     {@link Spliterator#trySplit()} is implemented.
      * </p>
      *
-     * @return instance
+     * @return all addresses in set
      */
     @Override
     default Spliterator<A> spliterator() {
