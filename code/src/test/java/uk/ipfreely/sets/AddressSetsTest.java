@@ -149,7 +149,7 @@ class AddressSetsTest {
 
     @Test
     void shuffled() {
-        var expected = AddressSets.parseCidr(v4(), "10.0.0.0/20");
+        var expected = AddressSets.parseCidr(v4(), "10.0.0.0/29");
         var list = new ArrayList<AddressSet<V4>>();
         for (var addr : expected) {
             list.add(AddressSets.address(addr));
@@ -157,6 +157,24 @@ class AddressSetsTest {
         var ran = new Random(0);
         Collections.shuffle(list, ran);
         var actual = AddressSets.from(list);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void split() {
+        var expected = AddressSets.parseCidr(v4(), "10.0.0.0/20");
+        var ran = new Random(0);
+        var left = new ArrayList<AddressSet<V4>>();
+        var right = new ArrayList<AddressSet<V4>>();
+        for (var addr : expected) {
+            if (ran.nextBoolean()) {
+                left.add(AddressSets.address(addr));
+            } else {
+                right.add(AddressSets.address(addr));
+            }
+        }
+        left.addAll(right);
+        var actual = AddressSets.from(left);
         assertEquals(expected, actual);
     }
 
