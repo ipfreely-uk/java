@@ -117,7 +117,7 @@ public class RangeTest {
 
   @Test
   void blocks() {
-    Block<V4> b = AddressSets.parseCidr(Family.v4(), "192.168.0.0/24");
+    Block<V4> b = AddressSets.parseCidr(v4(), "192.168.0.0/24");
     {
       // itself
       assertEquals(1L, b.blocks().count());
@@ -133,9 +133,9 @@ public class RangeTest {
 
   @Test
   void extremes() {
-    V4 zero = Family.v4().parse(0);
-    V4 one = Family.v4().parse(1);
-    V4 ten = Family.v4().parse(10);
+    V4 zero = v4().parse(0);
+    V4 one = v4().parse(1);
+    V4 ten = v4().parse(10);
     {
       // combined with self
       Range<V4> r = AddressSets.range(zero, zero);
@@ -195,8 +195,8 @@ public class RangeTest {
   @Test
   void family() {
     {
-      Range<V4> b = AddressSets.parseCidr(Family.v4(), "192.168.0.0/24");
-      assertSame(Family.v4(), b.family());
+      Range<V4> b = AddressSets.parseCidr(v4(), "192.168.0.0/24");
+      assertSame(v4(), b.family());
     }
     {
       Range<V6> b = AddressSets.parseCidr(Family.v6(), "::/128");
@@ -208,14 +208,14 @@ public class RangeTest {
   @Test
   void intersects() {
     {
-      Block<V4> min = AddressSets.address(Family.v4().min());
-      Block<V4> max = AddressSets.address(Family.v4().max());
+      Block<V4> min = AddressSets.address(v4().min());
+      Block<V4> max = AddressSets.address(v4().max());
       assertFalse(min.intersects(max));
       assertFalse(max.intersects(min));
     }
     {
-      Block<V4> min = AddressSets.address(Family.v4().min());
-      Block<V4> max = AddressSets.address(Family.v4().max());
+      Block<V4> min = AddressSets.address(v4().min());
+      Block<V4> max = AddressSets.address(v4().max());
       assertTrue(max.intersects(max));
       assertTrue(min.intersects(min));
     }
@@ -224,16 +224,30 @@ public class RangeTest {
   @Test
   void adjacent() {
     {
-      Block<V4> min = AddressSets.address(Family.v4().min());
-      Block<V4> max = AddressSets.address(Family.v4().max());
+      Block<V4> min = AddressSets.address(v4().min());
+      Block<V4> max = AddressSets.address(v4().max());
       assertFalse(min.adjacent(max));
       assertFalse(max.adjacent(min));
     }
     {
-      Block<V4> zero = AddressSets.address(Family.v4().min());
-      Block<V4> one = AddressSets.address(Family.v4().min().next());
+      Block<V4> zero = AddressSets.address(v4().min());
+      Block<V4> one = AddressSets.address(v4().min().next());
       assertTrue(zero.adjacent(one));
       assertTrue(one.adjacent(zero));
     }
+    {
+        V4 three = v4().parse(b(10), b(0), b(0), b(3));
+        V4 five = v4().parse(b(10), b(0), b(0), b(5));
+        V4 six = v4().parse(b(10), b(0), b(0), b(6));
+        V4 seven = v4().parse(b(10), b(0), b(0), b(7));
+        var left = AddressSets.range(three, five);
+        var right = AddressSets.range(six, seven);
+        assertTrue(left.adjacent(right));
+        assertTrue(right.adjacent(left));
+    }
+  }
+
+  private static byte b(int n) {
+      return (byte) n;
   }
 }
