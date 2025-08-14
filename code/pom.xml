@@ -6,7 +6,7 @@
 
     <groupId>uk.ipfreely</groupId>
     <artifactId>addresses</artifactId>
-    <version>17.1.0</version>
+    <version>17.1.1</version>
 
     <name>IPFreely.uk</name>
     <description>IP address manipulation library</description>
@@ -23,7 +23,7 @@
         <maven-javadoc-plugin>3.11.2</maven-javadoc-plugin>
         <jacoco-maven-plugin>0.8.13</jacoco-maven-plugin>
         <spotbugs-maven-plugin>4.8.6.6</spotbugs-maven-plugin>
-        <spotbugs.version>4.9.3</spotbugs.version>
+        <spotbugs.version>4.9.4</spotbugs.version>
         <maven-surefire-plugin>3.5.3</maven-surefire-plugin>
         <maven-pmd-plugin>3.27.0</maven-pmd-plugin>
         <maven-enforcer-plugin>3.6.1</maven-enforcer-plugin>

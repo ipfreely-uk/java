@@ -136,7 +136,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      *     {@link Spliterator#trySplit()} is implemented.
      * </p>
      *
-     * @return instance
+     * @return all addresses in set
      */
     @Override
     default Spliterator<A> spliterator() {
@@ -199,10 +199,7 @@ public interface Range<A extends Addr<A>> extends AddressSet<A> {
      * @return true if adjacent
      */
     default boolean adjacent(Range<A> r) {
-        return RangeContains.next(this, r.first())
-                || RangeContains.prev(this, r.last())
-                || RangeContains.next(r, first())
-                || RangeContains.prev(r, last());
+        return Adjacency.test(this, r);
     }
 
     /**

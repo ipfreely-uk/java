@@ -44,6 +44,9 @@ final class AddressSetSpliterator<A extends Addr<A>> implements Spliterator<A> {
         if (half < 1) {
             return null;
         }
+        if (half == 1) {
+            return splits.remove(0);
+        }
         var head = new ArrayList<Spliterator<A>>(half);
         for (int i = 0; i < half; i++) {
             var s = splits.remove(0);

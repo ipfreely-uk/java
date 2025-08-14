@@ -11,10 +11,7 @@ import uk.ipfreely.testing.AddressSetTester;
 import uk.ipfreely.testing.EqualsTester;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,7 +129,6 @@ class AddressSetsTest {
 
     @Test
     void sets() {
-        V6 hundred = v6().parse(100);
         Block<V6> one = AddressSets.address(v6().parse(1));
         Block<V6> fe80 = AddressSets.block(v6().parse("fe80::"), 16);
         Range<V6> r = AddressSets.range(v6().parse("a::10"), v6().parse("a::110"));
@@ -152,10 +148,42 @@ class AddressSetsTest {
     }
 
     @Test
+    void shuffled() {
+        var expected = AddressSets.parseCidr(v4(), "10.0.0.0/29");
+        var list = new ArrayList<AddressSet<V4>>();
+        for (var addr : expected) {
+            list.add(AddressSets.address(addr));
+        }
+        var ran = new Random(0);
+        Collections.shuffle(list, ran);
+        var actual = AddressSets.from(list);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void split() {
+        var expected = AddressSets.parseCidr(v4(), "10.0.0.0/20");
+        var ran = new Random(0);
+        var left = new ArrayList<AddressSet<V4>>();
+        var right = new ArrayList<AddressSet<V4>>();
+        for (var addr : expected) {
+            if (ran.nextBoolean()) {
+                left.add(AddressSets.address(addr));
+            } else {
+                right.add(AddressSets.address(addr));
+            }
+        }
+        left.addAll(right);
+        var actual = AddressSets.from(left);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void collector() {
         {
             AddressSet<V4> expected = AddressSets.range(Family.v4().min(), Family.v4().parse(1024 * 1024));
             AddressSet<V4> actual = expected.addresses()
+                    .parallel()
                     .map(AddressSets::address)
                     .collect(AddressSets.collector());
             assertEquals(expected, actual);

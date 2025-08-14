@@ -8,28 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Spliterator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;
+import static uk.ipfreely.sets.AddressSets.parseCidr;
 
 class AddressSetSpliteratorTest {
 
     private final AddressSet<V4> small = AddressSets.of(
-            AddressSets.parseCidr(v4(), "192.168.0.0/24"),
-            AddressSets.parseCidr(v4(), "10.168.0.0/24")
+            parseCidr(v4(), "192.168.0.0/24"),
+            parseCidr(v4(), "10.168.0.0/24")
     );
 
     private final AddressSet<V6> medium = AddressSets.of(
-            AddressSets.parseCidr(v6(), "::/67"),
-            AddressSets.parseCidr(v6(), "1::/67"),
-            AddressSets.parseCidr(v6(), "2::/67"),
-            AddressSets.parseCidr(v6(), "3::/67")
+            parseCidr(v6(), "::/67"),
+            parseCidr(v6(), "1::/67"),
+            parseCidr(v6(), "2::/67"),
+            parseCidr(v6(), "3::/67")
     );
 
     private final AddressSet<V6> massive = AddressSets.of(
-            AddressSets.parseCidr(v6(), "::/56"),
-            AddressSets.parseCidr(v6(), "ffff::/56")
+            parseCidr(v6(), "::/56"),
+            parseCidr(v6(), "ffff::/56")
     );
 
     @Test
@@ -37,9 +37,7 @@ class AddressSetSpliteratorTest {
         {
             var expected = toList(small);
             var split = AddressSetSpliterator.consume(small.ranges());
-            var actual = new ArrayList<V4>();
-            while(split.tryAdvance(actual::add)) {
-            }
+            var actual = toList(split);
             assertEquals(expected, actual);
         }
     }
@@ -50,18 +48,36 @@ class AddressSetSpliteratorTest {
             var expected = toList(small);
             var tail = AddressSetSpliterator.consume(small.ranges());
             var head = tail.trySplit();
-            var actual = new ArrayList<V4>();
-            while(head.tryAdvance(actual::add)) {
-            }
-            while(tail.tryAdvance(actual::add)) {
-            }
+            var actual = toList(head, tail);
             assertEquals(expected, actual);
         }
         {
             var empty = AddressSets.of();
             var nothing = AddressSetSpliterator.consume(empty.ranges());
-            var tail = nothing.trySplit();
-            assertNull(tail);
+            var head = nothing.trySplit();
+            assertNull(head);
+        }
+        {
+            var nothing = AddressSetSpliterator.consume(medium.ranges());
+            var head = nothing.trySplit();
+            assertNotNull(head);
+        }
+        {
+            var set = AddressSets.of(
+                    parseCidr(v4(), "192.168.0.0/24"),
+                    parseCidr(v4(), "192.168.1.0/24"),
+                    parseCidr(v4(), "192.168.3.0/24"),
+                    parseCidr(v4(), "192.168.4.0/24"),
+                    parseCidr(v4(), "192.168.6.0/24"),
+                    parseCidr(v4(), "192.168.7.0/24"),
+                    parseCidr(v4(), "192.168.8.0/24")
+                    );
+            var tail = AddressSetSpliterator.consume(set.ranges());
+            var head = tail.trySplit();
+            assertNotNull(head);
+            var expected = toList(set);
+            var actual = toList(head, tail);
+            assertEquals(expected, actual);
         }
     }
 
@@ -141,6 +157,15 @@ class AddressSetSpliteratorTest {
         var list = new ArrayList<T>();
         for(var element : source) {
             list.add(element);
+        }
+        return list;
+    }
+
+    @SafeVarargs
+    private <T> List<T> toList(Spliterator<T>... spliterators) {
+        var list = new ArrayList<T>();
+        for (var s : spliterators) {
+            while (s.tryAdvance(list::add));
         }
         return list;
     }
