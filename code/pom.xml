@@ -20,7 +20,7 @@
 
         <maven-jar-plugin>3.4.2</maven-jar-plugin>
         <maven-source-plugin>3.3.1</maven-source-plugin>
-        <maven-javadoc-plugin>3.11.2</maven-javadoc-plugin>
+        <maven-javadoc-plugin>3.11.3</maven-javadoc-plugin>
         <jacoco-maven-plugin>0.8.13</jacoco-maven-plugin>
         <spotbugs-maven-plugin>4.8.6.6</spotbugs-maven-plugin>
         <spotbugs.version>4.9.4</spotbugs.version>
