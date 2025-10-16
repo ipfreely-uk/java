@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Mutable {@link AddressSet} builder.
  * Attempts to compact intermediate states.
- * This type is not thread-safe.
+ * This type is thread-safe.
  *
  * @param <A> address family
  */
@@ -21,7 +21,7 @@ public final class AddressSetBuilder<A extends Addr<A>> {
      * @param set addresses
      * @return this
      */
-    public AddressSetBuilder<A> add(AddressSet<A> set) {
+    public synchronized AddressSetBuilder<A> add(AddressSet<A> set) {
         data.add(set);
         if (data.size() >= 512) {
             var compacted = AddressSets.from(data);
@@ -46,7 +46,7 @@ public final class AddressSetBuilder<A extends Addr<A>> {
      *
      * @return union of addresses
      */
-    public AddressSet<A> build() {
+    public synchronized AddressSet<A> build() {
         return AddressSets.from(data);
     }
 
@@ -55,7 +55,7 @@ public final class AddressSetBuilder<A extends Addr<A>> {
      *
      * @return this
      */
-    public AddressSetBuilder<A> clear() {
+    public synchronized AddressSetBuilder<A> clear() {
         data.clear();
         return this;
     }
