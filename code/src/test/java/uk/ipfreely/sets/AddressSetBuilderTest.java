@@ -17,12 +17,12 @@ class AddressSetBuilderTest {
         var prefix = AddressSets.range(zero, thirteen.prev());
         var suffix = AddressSets.range(thirteen.next(), tenThousand);
         var expected = AddressSets.of(prefix, suffix);
+
         var builder = new AddressSetBuilder<V4>();
-        for (var a : all) {
-            if (!a.equals(thirteen)) {
-                builder.add(a);
-            }
-        }
+        all.stream()
+                .parallel()
+                .filter(a -> !a.equals(thirteen))
+                .forEach(builder::add);
         var actual = builder.build();
         assertEquals(expected, actual);
     }

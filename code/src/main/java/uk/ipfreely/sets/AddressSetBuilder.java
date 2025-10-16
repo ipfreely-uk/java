@@ -6,9 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Mutable {@link AddressSet} builder.
+ * Mutable thread-safe {@link AddressSet} builder.
  * Attempts to compact intermediate states.
- * This type is thread-safe.
  *
  * @param <A> address family
  */
@@ -21,12 +20,14 @@ public final class AddressSetBuilder<A extends Addr<A>> {
      * @param set addresses
      * @return this
      */
-    public synchronized AddressSetBuilder<A> add(AddressSet<A> set) {
-        data.add(set);
-        if (data.size() >= 512) {
-            var compacted = AddressSets.from(data);
-            data.clear();
-            data.add(compacted);
+    public AddressSetBuilder<A> add(AddressSet<A> set) {
+        synchronized (data) {
+            data.add(set);
+            if (data.size() >= 512) {
+                var compacted = AddressSets.from(data);
+                data.clear();
+                data.add(compacted);
+            }
         }
         return this;
     }
@@ -46,8 +47,10 @@ public final class AddressSetBuilder<A extends Addr<A>> {
      *
      * @return union of addresses
      */
-    public synchronized AddressSet<A> build() {
-        return AddressSets.from(data);
+    public AddressSet<A> build() {
+        synchronized (data) {
+            return AddressSets.from(data);
+        }
     }
 
     /**
@@ -55,8 +58,10 @@ public final class AddressSetBuilder<A extends Addr<A>> {
      *
      * @return this
      */
-    public synchronized AddressSetBuilder<A> clear() {
-        data.clear();
+    public AddressSetBuilder<A> clear() {
+        synchronized (data) {
+            data.clear();
+        }
         return this;
     }
 }
