@@ -210,4 +210,22 @@ class AddressSetsTest {
     private boolean odd(Addr<?> a) {
         return a.lowBits() % 2 == 1;
     }
+
+    @Test
+    void addresses() {
+        {
+            AddressSet<V6> expected = AddressSets.of();
+            var actual = AddressSets.addresses(expected);
+            assertSame(expected, actual);
+        }
+        {
+            var one = Family.v4().parse(1);
+            var ten = Family.v4().parse(10);
+            var expected = AddressSets.range(one, ten);
+            var set = new HashSet<V4>();
+            expected.forEach(set::add);
+            var actual = AddressSets.addresses(set);
+            assertEquals(expected, actual);
+        }
+    }
 }
