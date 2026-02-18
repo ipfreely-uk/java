@@ -84,17 +84,21 @@ public final class AddressSets {
     }
 
     /**
-     * Transforms a collection of addresses into an {@link AddressSet}.
+     * Creates {@link AddressSet} from collection.
+     * <p>
+     *     If the collection is an {@link AddressSet}
+     *     it will be returned.
+     * </p>
      *
-     * @param addresses the addresses
+     * @param collection the addresses
      * @return the set
      * @param <A> address family
      */
-    public static <A extends Addr<A>> AddressSet<A> addresses(Iterable<A> addresses) {
-        if (addresses instanceof AddressSet<A> as) {
+    public static <A extends Addr<A>> AddressSet<A> addresses(Iterable<A> collection) {
+        if (collection instanceof AddressSet<A> as) {
             return as;
         }
-        return StreamSupport.stream(addresses.spliterator(), false)
+        return StreamSupport.stream(collection.spliterator(), false)
                 .map(AddressSets::address)
                 .collect(collector());
     }

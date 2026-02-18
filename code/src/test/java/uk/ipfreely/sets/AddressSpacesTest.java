@@ -1,7 +1,6 @@
 package uk.ipfreely.sets;
 
 import org.junit.jupiter.api.Test;
-import uk.ipfreely.Family;
 import uk.ipfreely.V4;
 import uk.ipfreely.V6;
 
@@ -11,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static uk.ipfreely.Family.v4;
 import static uk.ipfreely.Family.v6;
 
-class SpecialPurposeTest {
+class AddressSpacesTest {
 
     private final V4 localhost4 = v4().parse("127.0.0.1");
     private final V6 localhost6 = v6().parse("::1");
@@ -19,26 +18,26 @@ class SpecialPurposeTest {
     @Test
     void loopback() {
         {
-            var set = SpecialPurpose.loopback(v4());
+            var set = AddressSpaces.loopback(v4());
             assertTrue(set.contains(localhost4));
         }
         {
-            var set = SpecialPurpose.loopback(v6());
+            var set = AddressSpaces.loopback(v6());
             assertTrue(set.contains(localhost6));
             assertEquals(BigInteger.ONE, set.size());
         }
     }
 
     @Test
-    void localUse() {
+    void uniqueLocal() {
         {
-            var set = SpecialPurpose.localUse(v4(), true);
+            var set = AddressSpaces.uniqueLocal(v4(), true);
             assertFalse(set.contains(localhost4));
             var expected = v4().parse("192.168.100.10");
             assertTrue(set.contains(expected));
         }
         {
-            var set = SpecialPurpose.localUse(v6(), true);
+            var set = AddressSpaces.uniqueLocal(v6(), true);
             assertFalse(set.contains(localhost6));
             var expected = v6().parse("FD00::100");
             assertTrue(set.contains(expected));
@@ -46,7 +45,7 @@ class SpecialPurposeTest {
             assertFalse(set.contains(reserved));
         }
         {
-            var set = SpecialPurpose.localUse(v6(), false);
+            var set = AddressSpaces.uniqueLocal(v6(), false);
             assertFalse(set.contains(localhost6));
             var expected = v6().parse("FD00::100");
             assertTrue(set.contains(expected));
@@ -58,13 +57,13 @@ class SpecialPurposeTest {
     @Test
     void linkLocal() {
         {
-            var set = SpecialPurpose.linkLocal(v4());
+            var set = AddressSpaces.linkLocal(v4());
             assertFalse(set.contains(localhost4));
             var expected = v4().parse("169.254.10.100");
             assertTrue(set.contains(expected));
         }
         {
-            var set = SpecialPurpose.linkLocal(v6());
+            var set = AddressSpaces.linkLocal(v6());
             assertFalse(set.contains(localhost6));
             var expected = v6().parse("fe80::100");
             assertTrue(set.contains(expected));
@@ -74,15 +73,31 @@ class SpecialPurposeTest {
     @Test
     void documentation() {
         {
-            var set = SpecialPurpose.documentation(v4());
+            var set = AddressSpaces.documentation(v4());
             assertFalse(set.contains(localhost4));
             var expected = v4().parse("198.51.100.10");
             assertTrue(set.contains(expected));
         }
         {
-            var set = SpecialPurpose.documentation(v6());
+            var set = AddressSpaces.documentation(v6());
             assertFalse(set.contains(localhost6));
             var expected = v6().parse("2001:db8::100");
+            assertTrue(set.contains(expected));
+        }
+    }
+
+    @Test
+    void multicast() {
+        {
+            var set = AddressSpaces.multicast(v4());
+            assertFalse(set.contains(localhost4));
+            var expected = v4().parse("239.255.255.255");
+            assertTrue(set.contains(expected));
+        }
+        {
+            var set = AddressSpaces.multicast(v6());
+            assertFalse(set.contains(localhost6));
+            var expected = v6().parse("ff00::100");
             assertTrue(set.contains(expected));
         }
     }
