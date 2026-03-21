@@ -5,22 +5,21 @@ package uk.ipfreely.sets;
 import java.util.function.Function;
 
 final class Validation {
-
     private Validation() {}
 
-    static void validate(final boolean predicate, final String explanation, final int actual, final Function<String, RuntimeException> ex) {
+    static <T extends Throwable> void validate(final boolean predicate, final String explanation, final int actual, final Function<String, T> ex) throws T {
         if (!predicate) {
             raise(explanation, Integer.toHexString(actual), ex);
         }
     }
 
-    static void validate(final boolean predicate, final String explanation, final Object actual, final Function<String, RuntimeException> ex) {
+    static <T extends Throwable> void validate(final boolean predicate, final String explanation, final Object actual, final Function<String, T> ex) throws T {
         if (!predicate) {
             raise(explanation, actual, ex);
         }
     }
 
-    private static void raise(final String explanation, final Object actual, final Function<String, RuntimeException> ex) {
+    private static <T extends Throwable> void raise(final String explanation, final Object actual, final Function<String, T> ex) throws T {
         throw ex.apply(explanation + "; got '" + actual + "'");
     }
 }
