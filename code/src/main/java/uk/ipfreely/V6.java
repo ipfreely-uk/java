@@ -172,12 +172,8 @@ public final class V6 extends Addr<V6> {
         if (isZero(denominator)) {
             throw new ArithmeticException("divide by zero");
         }
-        if (isOne(denominator)) {
+        if (isOne(denominator) || isZero(this)) {
             return this;
-        }
-        if (high == 0 && denominator.high == 0) {
-            long newLow = Long.divideUnsigned(low, denominator.low);
-            return fromLongs(0, newLow);
         }
         final int compare = compareTo(denominator);
         if (compare == 0) {
@@ -185,6 +181,13 @@ public final class V6 extends Addr<V6> {
         }
         if (compare < 0) {
             return fromLongs(0, 0);
+        }
+        if (high == 0 && denominator.high == 0) {
+            long newLow = Long.divideUnsigned(low, denominator.low);
+            return fromLongs(0, newLow);
+        }
+        if (isTwo(denominator)) {
+            return shiftRight(1);
         }
         BigInteger val = toBigInteger().divide(denominator.toBigInteger());
         return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
