@@ -182,15 +182,41 @@ public final class V6 extends Addr<V6> {
         if (compare < 0) {
             return fromLongs(0, 0);
         }
-        if (high == 0 && denominator.high == 0) {
-            long newLow = Long.divideUnsigned(low, denominator.low);
-            return fromLongs(0, newLow);
-        }
+//        if (high == 0 && denominator.high == 0) {
+//            long newLow = Long.divideUnsigned(low, denominator.low);
+//            return fromLongs(0, newLow);
+//        }
         if (isTwo(denominator)) {
             return shiftRight(1);
         }
         BigInteger val = toBigInteger().divide(denominator.toBigInteger());
-        return V6BigIntegers.fromBigInteger(V6::fromLongs, val);
+        V6 r = V6BigIntegers.fromBigInteger(V6::fromLongs, val);
+
+        V6 test = divMod(denominator, false);
+        if (test.equals(r)) {
+            return r;
+        }
+        throw new AssertionError(this + " / " + denominator + " = " + r + "\tgot " + test);
+    }
+
+    private V6 divMod(V6 denominator, boolean modulus) {
+        V6 zero = fromLongs(0, 0);
+        V6 one = fromLongs(0, 1);
+        V6 quotient = zero;
+        V6 remainder = zero;
+        for (int i = Consts.V6_WIDTH - 1 - leadingZeros(); i >= 0; i--) {
+            remainder = remainder.shift(-1);
+            V6 bit = one.shift(-i);
+            V6 n = bit.and(this);
+            if (!isZero(n)) {
+                remainder = remainder.or(one);
+            }
+            if (remainder.compareTo(denominator) >= 0) {
+                remainder = remainder.subtract(denominator);
+                quotient = quotient.or(bit);
+            }
+        }
+        return modulus ? remainder : quotient;
     }
 
     @Override
@@ -209,9 +235,10 @@ public final class V6 extends Addr<V6> {
             long remainder = Long.remainderUnsigned(low, denominator.low);
             return fromLongs(0, remainder);
         }
-        V6 quotient = divide(denominator);
-        V6 nearest = quotient.multiply(denominator);
-        return subtract(nearest);
+        return divMod(denominator, true);
+//        V6 quotient = divide(denominator);
+//        V6 nearest = quotient.multiply(denominator);
+//        return subtract(nearest);
     }
 
     @Override

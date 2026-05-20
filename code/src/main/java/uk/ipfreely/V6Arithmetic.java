@@ -94,4 +94,56 @@ final class V6Arithmetic {
     private static int i(long l, int shift) {
         return (int) (l >>> shift);
     }
+
+    <T> T divide(V6Function<T> factory, final long h0, final long l0, final long h1, final long l1, final boolean modulus) {
+        // long division algo
+
+        // quotient
+        long qh = 0;
+        long ql = 0;
+        // remainder
+        long rh = 0;
+        long rl = 0;
+        // divide
+        for (int i = Consts.V6_WIDTH - 1; i >= 0; i--) {
+            // r << 1
+            long x = rl >>> (Long.SIZE - 1);
+            rh = (rh << 1) | x;
+            rl = rl << 1;
+            // r[0] = n[i]
+            long bh = 0;
+            long bl = 0;
+            if (i > Long.SIZE) {
+                bh = 1L << (i - Long.SIZE);
+            } else {
+                bl = 1L << i;
+            }
+            long nh = h0 | bh;
+            long nl = l0 | bl;
+            if (nh != 0 && nl != 0) {
+                rl |= 1;
+            }
+            // if r >= d
+            int cu = Long.compareUnsigned(rh, h1);
+            if (cu == 0) {
+                cu = Long.compareUnsigned(rl, l1);
+            }
+            if (cu >= 0) {
+                // r = r - d
+                rh = rh - h1;
+                rl = rl - l1;
+                if (Long.compareUnsigned(rl, l1) < 0) {
+                    rh--;
+                }
+                // q[i] = 1
+                qh |= bh;
+                ql |= bl;
+            }
+        }
+
+        if (modulus) {
+            return factory.apply(rh, rl);
+        }
+        return factory.apply(qh, ql);
+    }
 }
