@@ -95,7 +95,7 @@ final class V6Arithmetic {
         return (int) (l >>> shift);
     }
 
-    <T> T divide(V6Function<T> factory, final long h0, final long l0, final long h1, final long l1, final boolean modulus) {
+    static <T> T divide(V6Function<T> factory, final long h0, final long l0, final long h1, final long l1, final boolean modulus) {
         // long division algo
 
         // quotient
@@ -113,14 +113,15 @@ final class V6Arithmetic {
             // r[0] = n[i]
             long bh = 0;
             long bl = 0;
-            if (i > Long.SIZE) {
-                bh = 1L << (i - Long.SIZE);
+            int high = i - Long.SIZE;
+            if (high >= 0) {
+                bh = 1L << high;
             } else {
                 bl = 1L << i;
             }
-            long nh = h0 | bh;
-            long nl = l0 | bl;
-            if (nh != 0 && nl != 0) {
+            long nh = h0 & bh;
+            long nl = l0 & bl;
+            if (nh != 0 || nl != 0) {
                 rl |= 1;
             }
             // if r >= d
@@ -131,10 +132,10 @@ final class V6Arithmetic {
             if (cu >= 0) {
                 // r = r - d
                 rh = rh - h1;
-                rl = rl - l1;
                 if (Long.compareUnsigned(rl, l1) < 0) {
                     rh--;
                 }
+                rl = rl - l1;
                 // q[i] = 1
                 qh |= bh;
                 ql |= bl;

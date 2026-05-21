@@ -144,6 +144,10 @@ public abstract class IpTests<A extends Addr<A>> {
             BigInteger mod = ex.mod(size);
             A expected = internet.parse(mod);
             A actual = a.mod(b);
+            if (!actual.equals(expected)) {
+              A r = a.mod(b);
+              System.out.println(r);
+            }
             assertEquals(expected, actual, a + "%" + b);
           }
         }

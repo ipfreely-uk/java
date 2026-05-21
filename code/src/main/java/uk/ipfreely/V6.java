@@ -182,21 +182,14 @@ public final class V6 extends Addr<V6> {
         if (compare < 0) {
             return fromLongs(0, 0);
         }
-//        if (high == 0 && denominator.high == 0) {
-//            long newLow = Long.divideUnsigned(low, denominator.low);
-//            return fromLongs(0, newLow);
-//        }
+        if (high == 0 && denominator.high == 0) {
+            long newLow = Long.divideUnsigned(low, denominator.low);
+            return fromLongs(0, newLow);
+        }
         if (isTwo(denominator)) {
             return shiftRight(1);
         }
-        BigInteger val = toBigInteger().divide(denominator.toBigInteger());
-        V6 r = V6BigIntegers.fromBigInteger(V6::fromLongs, val);
-
-        V6 test = divMod(denominator, false);
-        if (test.equals(r)) {
-            return r;
-        }
-        throw new AssertionError(this + " / " + denominator + " = " + r + "\tgot " + test);
+        return V6Arithmetic.divide(V6::fromLongs, high, low, denominator.high, denominator.low, false);
     }
 
     private V6 divMod(V6 denominator, boolean modulus) {
@@ -235,10 +228,7 @@ public final class V6 extends Addr<V6> {
             long remainder = Long.remainderUnsigned(low, denominator.low);
             return fromLongs(0, remainder);
         }
-        return divMod(denominator, true);
-//        V6 quotient = divide(denominator);
-//        V6 nearest = quotient.multiply(denominator);
-//        return subtract(nearest);
+        return V6Arithmetic.divide(V6::fromLongs, high, low, denominator.high, denominator.low, true);
     }
 
     @Override
