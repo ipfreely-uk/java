@@ -98,6 +98,8 @@ final class V6Arithmetic {
     static <T> T divide(V6Function<T> factory, final long h0, final long l0, final long h1, final long l1, final boolean modulus) {
         // long division algo
 
+        final int offset = Long.numberOfLeadingZeros(h0);
+
         // quotient
         long qh = 0;
         long ql = 0;
@@ -105,7 +107,7 @@ final class V6Arithmetic {
         long rh = 0;
         long rl = 0;
         // divide
-        for (int i = Consts.V6_WIDTH - 1; i >= 0; i--) {
+        for (int i = Consts.V6_WIDTH - offset - 1; i >= 0; i--) {
             // r << 1
             long x = rl >>> (Long.SIZE - 1);
             rh = (rh << 1) | x;
