@@ -192,26 +192,6 @@ public final class V6 extends Addr<V6> {
         return V6Arithmetic.divide(V6::fromLongs, high, low, denominator.high, denominator.low, false);
     }
 
-    private V6 divMod(V6 denominator, boolean modulus) {
-        V6 zero = fromLongs(0, 0);
-        V6 one = fromLongs(0, 1);
-        V6 quotient = zero;
-        V6 remainder = zero;
-        for (int i = Consts.V6_WIDTH - 1 - leadingZeros(); i >= 0; i--) {
-            remainder = remainder.shift(-1);
-            V6 bit = one.shift(-i);
-            V6 n = bit.and(this);
-            if (!isZero(n)) {
-                remainder = remainder.or(one);
-            }
-            if (remainder.compareTo(denominator) >= 0) {
-                remainder = remainder.subtract(denominator);
-                quotient = quotient.or(bit);
-            }
-        }
-        return modulus ? remainder : quotient;
-    }
-
     @Override
     public V6 mod(V6 denominator) {
         if(isZero(denominator)) {
