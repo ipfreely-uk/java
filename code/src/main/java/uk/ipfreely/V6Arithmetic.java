@@ -34,10 +34,7 @@ final class V6Arithmetic {
         int y2 = i(l2, 32);
         int y3 = i(l2, 0);
 
-        int z7;
-        int z6;
-        int z5;
-        int z4;
+        int z7, z6, z5, z4;
 
         long product;
         long carry = 0;
@@ -101,11 +98,9 @@ final class V6Arithmetic {
         final int offset = Long.numberOfLeadingZeros(h0);
 
         // quotient
-        long qh = 0;
-        long ql = 0;
+        long qh = 0, ql = 0;
         // remainder
-        long rh = 0;
-        long rl = 0;
+        long rh = 0, rl = 0;
         // divide
         for (int i = Consts.V6_WIDTH - offset - 1; i >= 0; i--) {
             // r << 1
@@ -113,16 +108,14 @@ final class V6Arithmetic {
             rh = (rh << 1) | x;
             rl = rl << 1;
             // r[0] = n[i]
-            long bh = 0;
-            long bl = 0;
+            long bh = 0, bl = 0;
             int high = i - Long.SIZE;
             if (high >= 0) {
                 bh = 1L << high;
             } else {
                 bl = 1L << i;
             }
-            long nh = h0 & bh;
-            long nl = l0 & bl;
+            long nh = h0 & bh, nl = l0 & bl;
             if (nh != 0 || nl != 0) {
                 rl |= 1;
             }
