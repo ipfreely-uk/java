@@ -34,10 +34,7 @@ final class V6Arithmetic {
         int y2 = i(l2, 32);
         int y3 = i(l2, 0);
 
-        int z7;
-        int z6;
-        int z5;
-        int z4;
+        int z7, z6, z5, z4;
 
         long product;
         long carry = 0;
@@ -93,5 +90,56 @@ final class V6Arithmetic {
 
     private static int i(long l, int shift) {
         return (int) (l >>> shift);
+    }
+
+    static <T> T divide(V6Function<T> factory, final long h0, final long l0, final long h1, final long l1, final boolean modulus) {
+        // long division algo
+
+        final int offset = Long.numberOfLeadingZeros(h0);
+
+        // quotient
+        long qh = 0, ql = 0;
+        // remainder
+        long rh = 0, rl = 0;
+        // divide
+        for (int i = Consts.V6_WIDTH - offset - 1; i >= 0; i--) {
+            // r << 1
+            long x = rl >>> (Long.SIZE - 1);
+            rh = (rh << 1) | x;
+            rl = rl << 1;
+            // r[0] = n[i]
+            long bh = 0, bl = 0;
+            int high = i - Long.SIZE;
+            if (high >= 0) {
+                bh = 1L << high;
+            } else {
+                bl = 1L << i;
+            }
+            long nh = h0 & bh, nl = l0 & bl;
+            if (nh != 0 || nl != 0) {
+                rl |= 1;
+            }
+            // if r >= d
+            int cu = Long.compareUnsigned(rh, h1);
+            if (cu == 0) {
+                cu = Long.compareUnsigned(rl, l1);
+            }
+            if (cu >= 0) {
+                // r = r - d
+                rh = rh - h1;
+                if (Long.compareUnsigned(rl, l1) < 0) {
+                    rh--;
+                }
+                rl = rl - l1;
+                // q[i] = 1
+                qh |= bh;
+                ql |= bl;
+            }
+        }
+
+        if (modulus) {
+            return factory.apply(rh, rl);
+        }
+        return factory.apply(qh, ql);
     }
 }

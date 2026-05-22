@@ -64,6 +64,15 @@ public class V6Test extends IpTests<V6> {
   }
 
   @Test
+  void testDiv() {
+    V6 n = v6().parse(12);
+    V6 d = v6().parse(4);
+    V6 q = n.divide(d);
+    V6 expected = v6().parse(3);
+    assertEquals(expected, q);
+  }
+
+  @Test
   public void testNextAndPrev() {
     V6 one = net.first().next();
     V6 zero = one.prev();
@@ -158,6 +167,7 @@ public class V6Test extends IpTests<V6> {
 
   @Test
   public void testLeftShift() {
+    assertEquals(v6().parse(1), v6().parse(1).shift(0));
     assertEquals(v6().parse(0b10), v6().parse(1).shift(-1));
     assertEquals(v6().parse(0b100), v6().parse(1).shift(-2));
     assertEquals(v6().parse(0), v6().masks().get(1).shift(-1));

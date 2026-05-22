@@ -34,7 +34,7 @@ Version numbers are three digits - the Java version, major version, minor versio
 
 ## Building
 
-Requires [JDK17](https://whichjdk.com/)+.
+Requires [JDK17](https://adoptium.net)+.
 
 ```shell
  ./code/mvnw -f code/pom.xml install

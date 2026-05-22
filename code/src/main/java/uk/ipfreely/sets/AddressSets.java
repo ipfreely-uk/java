@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static uk.ipfreely.sets.Validation.validate;
 
@@ -80,6 +81,26 @@ public final class AddressSets {
             return data[0];
         }
         return new ArraySet<>(data);
+    }
+
+    /**
+     * Creates {@link AddressSet} from collection.
+     * <p>
+     *     If the collection is an {@link AddressSet}
+     *     it will be returned.
+     * </p>
+     *
+     * @param collection the addresses
+     * @return the set
+     * @param <A> address family
+     */
+    public static <A extends Addr<A>> AddressSet<A> addresses(Iterable<A> collection) {
+        if (collection instanceof AddressSet<A> as) {
+            return as;
+        }
+        return StreamSupport.stream(collection.spliterator(), false)
+                .map(AddressSets::address)
+                .collect(collector());
     }
 
     private static <A extends Addr<A>> void rationalize(SortedSet<Range<A>> target, Range<A> r) {

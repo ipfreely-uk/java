@@ -9,7 +9,7 @@ final class Validation {
 
     private Validation() {}
 
-    static void validate(final boolean predicate, final String explanation, final byte[] actual, final Function<String, RuntimeException> ex) {
+    static <T extends Throwable> void validate(final boolean predicate, final String explanation, final byte[] actual, final Function<String, T> ex) throws T {
         if (!predicate) {
             var joiner = new StringJoiner(" ");
             for (byte b : actual) {
@@ -19,25 +19,25 @@ final class Validation {
         }
     }
 
-    static void validate(final boolean predicate, final String explanation, final long actual, final Function<String, RuntimeException> ex) {
+    static <T extends Throwable> void validate(final boolean predicate, final String explanation, final long actual, final Function<String, T> ex) throws T {
         if (!predicate) {
             raise(explanation, Long.toHexString(actual), ex);
         }
     }
 
-    static void validate(final boolean predicate, final String explanation, final int actual, final Function<String, RuntimeException> ex) {
+    static <T extends Throwable> void validate(final boolean predicate, final String explanation, final int actual, final Function<String, T> ex) throws T {
         if (!predicate) {
             raise(explanation, Integer.toHexString(actual), ex);
         }
     }
 
-    static void validate(final boolean predicate, final String explanation, final Object actual, final Function<String, RuntimeException> ex) {
+    static <T extends Throwable> void validate(final boolean predicate, final String explanation, final Object actual, final Function<String, T> ex) throws T {
         if (!predicate) {
             raise(explanation, actual, ex);
         }
     }
 
-    private static void raise(final String explanation, final Object actual, final Function<String, RuntimeException> ex) {
+    private static <T extends Throwable> void raise(final String explanation, final Object actual, final Function<String, T> ex) throws T {
         throw ex.apply(explanation + "; got '" + actual + "'");
     }
 }
