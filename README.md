@@ -5,6 +5,11 @@
 
 IP address manipulation library.
 
+Treats IP addresses as arithmetic types.
+Supports IPv4 `32-bit unsigned int` & IPv6 `128-bit unsigned int`.
+Includes methods for arithmetic operations & bitwise operations,
+and special collections for discrete sets.
+
 ## Example
 
 ```java
@@ -20,13 +25,29 @@ V4 maskComplement = mask.not();
 V4 lastAddress = maskComplement.or(networkAddress);
 ```
 
-## Documentation
+## API Documentation
 
 [Javadoc](https://ipfreely-uk.github.io/java/)/[![javadoc](https://javadoc.io/badge2/uk.ipfreely/addresses/javadoc.svg)](https://javadoc.io/doc/uk.ipfreely/addresses) 
 
 ## Releases
 
 Libraries are published to [Maven Central](https://central.sonatype.com/artifact/uk.ipfreely/addresses/overview)
+
+### Maven
+
+```xml
+<dependency>
+    <groupId>uk.ipfreely</groupId>
+    <artifactId>addresses</artifactId>
+    <version>${version}</version>
+</dependency>
+```
+
+### Gradle
+
+```
+implementation("uk.ipfreely:addresses:${version}")
+```
 
 ## Versions
 
