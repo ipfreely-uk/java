@@ -64,17 +64,17 @@ final class V4Family extends Family<V4> {
     }
 
     @Override
-    public List<V4> masks() {
+    List<V4> masks() {
         return V4Masks.MASKS;
     }
 
     @Override
-    public int maskBitsForBlock(V4 first, V4 last) {
+    int maskBitsForBlock(V4 first, V4 last) {
         return V4.maskSizeIfBlock(first, last);
     }
 
     @Override
-    public BigInteger maskAddressCount(int maskBits) {
+    BigInteger maskAddressCount(int maskBits) {
         validate(maskBits >= 0 && maskBits <= width(), "Invalid mask size", maskBits, IllegalArgumentException::new);
 
         return InternedMaskSizes.v4(maskBits);

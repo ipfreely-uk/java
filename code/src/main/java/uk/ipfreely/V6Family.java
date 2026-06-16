@@ -60,17 +60,17 @@ final class V6Family extends Family<V6> {
     }
 
     @Override
-    public List<V6> masks() {
+    List<V6> masks() {
         return V6Masks.MASKS;
     }
 
     @Override
-    public int maskBitsForBlock(V6 first, V6 last) {
+    int maskBitsForBlock(V6 first, V6 last) {
         return V6Masking.maskSizeIfBlock(first.highBits(), first.lowBits(), last.highBits(), last.lowBits());
     }
 
     @Override
-    public BigInteger maskAddressCount(int maskBits) {
+    BigInteger maskAddressCount(int maskBits) {
         validate(maskBits >= 0 && maskBits <= width(), "Invalid mask size", maskBits, IllegalArgumentException::new);
 
         return InternedMaskSizes.v6(maskBits);
