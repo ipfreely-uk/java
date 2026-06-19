@@ -2,7 +2,6 @@ package uk.ipfreely.testing.c;
 
 import uk.ipfreely.Addr;
 import uk.ipfreely.Family;
-import uk.ipfreely.testing.Addresses;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,11 +24,15 @@ public class GenerateCTests {
                 
                 #include "../ip.h"
                 
+                typedef struct ips
+                {
+                    const ipf_addr left;
+                    const ipf_addr right;
+                } inputs;
+                
                 typedef struct tc
                 {
                     const char *desc;
-                    const ipf_addr left;
-                    const ipf_addr right;
                     const ipf_addr expected;
                 } testcase;
                 """;
@@ -122,12 +125,12 @@ public class GenerateCTests {
 
     private static <A extends Addr<A>> Collection<A> sample(Family<A> f) {
         var list = new ArrayList<A>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(f.parse(i));
-//        }
-//        list.add(f.max());
-//        list.add(f.max().shift(f.width() / 2));
-//        list.add(f.max().shift(-(f.width() / 2)));
+        for (int i = 0; i < 10; i++) {
+            list.add(f.parse(i));
+        }
+        list.add(f.max());
+        list.add(f.max().shift(f.width() / 2));
+        list.add(f.max().shift(-(f.width() / 2)));
 
         var ran = new Random(0);
         byte[] buf = new byte[f.width() / 8];
