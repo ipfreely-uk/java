@@ -9,17 +9,17 @@ final class V6Segments {
 
     private V6Segments() {}
 
-    public static Iter forwards(CharSequence cs, int offset, int limit) {
+    static Iter forwards(CharSequence cs, int offset, int limit) {
         class Forward extends Iter {
             private int pos = offset;
 
             @Override
-            public boolean hasNext() {
+            boolean hasNext() {
                 return pos < limit;
             }
 
             @Override
-            public long advance() {
+            long advance() {
                 int r = hexDigit(cs.charAt(pos++));
                 int count = 1;
                 while (pos < limit) {
@@ -41,17 +41,17 @@ final class V6Segments {
                 : new Forward();
     }
 
-    public static Iter backwards(CharSequence cs, int offset, int limit) {
+    static Iter backwards(CharSequence cs, int offset, int limit) {
         class Backwards extends Iter {
             private int pos = limit;
 
             @Override
-            public boolean hasNext() {
+            boolean hasNext() {
                 return pos > offset;
             }
 
             @Override
-            public long advance() {
+            long advance() {
                 int r = hexDigit(cs.charAt(--pos));
                 int shift = 4;
                 int count = 1;
@@ -100,12 +100,12 @@ final class V6Segments {
     private static final class Empty extends Iter {
 
         @Override
-        public boolean hasNext() {
+        boolean hasNext() {
             return false;
         }
 
         @Override
-        public long advance() {
+        long advance() {
             return 0;
         }
     }
